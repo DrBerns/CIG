@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Capital Injury Group — MRI Script Builder</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+const IMG_CIG  = "https://raw.githubusercontent.com/DrBerns/CIG/83a0cebb3143f3861380f2085a9e33024dd3e359/CIG_Logo_transparent_small.png";
+const IMG_DEEB = "https://raw.githubusercontent.com/DrBerns/CIG/8f157e7e97d936d135b5d1b54fee3ac83e6a02fe/Eldeeb_Signature_Black.png";
+</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:wght@700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--crim:#8B1A1A;--crim-dark:#6B1111;--crim-light:#c62828;--gold:#B8960C;--gold-light:#D4AF37;--gold-pale:#FFF8E1;--bg:#f3f1ec;--border:#d5c9b0;--text:#1a1a1a;}
+body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(--text);font-size:14px;}
+.app{display:grid;grid-template-columns:295px 1fr;min-height:100vh;}
+.sb{background:#1a0a0a;border-right:1px solid #3a1a1a;height:100vh;position:sticky;top:0;overflow-y:auto;display:flex;flex-direction:column;}
+.sb-hdr{padding:16px;background:linear-gradient(135deg,var(--crim-dark) 0%,#4a0e0e 100%);border-bottom:2px solid var(--gold);flex-shrink:0;text-align:center;}
+.sb-hdr img{height:60px;width:auto;object-fit:contain;margin-bottom:8px;mix-blend-mode:screen;}
+.sb-hdr h2{font-size:12px;font-weight:700;color:var(--gold-light);letter-spacing:1px;text-transform:uppercase;}
+.sb-hdr p{font-size:10px;color:#c9a96e88;margin-top:2px;}
+.sb-sec{padding:10px 13px;border-bottom:1px solid #2a1212;}
+.sbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.9px;color:var(--gold);margin-bottom:6px;}
+.sfi{width:100%;padding:7px 9px;border:1px solid #3a2020;border-radius:4px;font-size:12px;font-family:Georgia,serif;background:#2a1010;color:#f0e0c0;}
+.sfi:focus{outline:none;border-color:var(--gold);background:#320f0f;}
+.sfi option{background:#2a1010;}
+.sg2{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.ck{display:flex;align-items:center;gap:7px;padding:4px 6px;border-radius:4px;cursor:pointer;font-size:11.5px;user-select:none;color:#d0b090;}
+.ck:hover{background:#2a1515;color:#f0d080;}
+.ck input[type=checkbox]{width:13px;height:13px;accent-color:var(--gold);cursor:pointer;flex-shrink:0;}
+.ck label{cursor:pointer;line-height:1.3;}
+.sgl{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#7a5530;margin:8px 0 2px 6px;}
+.stat-row{display:flex;align-items:center;gap:9px;padding:8px 10px;background:#3a0808;border:1.5px solid var(--crim-light);border-radius:5px;cursor:pointer;}
+.stat-row input{width:14px;height:14px;accent-color:#ef5350;cursor:pointer;}
+.stat-row label{cursor:pointer;font-weight:700;font-size:12px;color:#ff8a80;}
+.sbtn{width:100%;padding:9px;border-radius:5px;font-size:12.5px;font-weight:700;cursor:pointer;border:none;font-family:Georgia,serif;margin-top:6px;letter-spacing:0.3px;}
+.sbtn-crim{background:var(--crim);color:#fff;border:1px solid var(--crim-light);}
+.sbtn-crim:hover{background:var(--crim-dark);}
+.sbtn-gold{background:var(--gold);color:#1a0a0a;border:1px solid var(--gold-light);}
+.sbtn-gold:hover{background:var(--gold-light);}
+.sbtn-outline{background:transparent;color:#ff8a80;border:1.5px solid #5a1a1a;}
+.sbtn-outline:hover{background:#2a0808;}
+.main{padding:28px;overflow-y:auto;display:flex;flex-direction:column;align-items:center;}
+.doc-wrap{display:flex;flex-direction:column;gap:4px;}
+.pg{width:856px;background:#fff;box-shadow:0 2px 16px rgba(0,0,0,0.13);font-family:Georgia,'Times New Roman',serif;}
+.addr-strip{background:#f8f5f0;border-bottom:1px solid var(--border);padding:7px 36px;text-align:center;font-size:7.5pt;color:#666;line-height:1.8;font-family:Arial,sans-serif;}
+.addr-strip .loc-selected{color:var(--crim);font-weight:700;}
+.addr-strip .loc-other{color:#999;}
+.hdr-row{display:flex;align-items:center;justify-content:space-between;padding:14px 36px 12px;border-bottom:3px solid var(--crim);background:linear-gradient(to right,#fdfaf5,#fff 60%);}
+.hdr-left{display:flex;align-items:center;gap:14px;}
+.hdr-logo{height:58px;width:auto;object-fit:contain;mix-blend-mode:multiply;}
+.hdr-title{font-size:13pt;font-weight:700;color:var(--crim-dark);font-family:'Playfair Display',Georgia,serif;line-height:1.25;}
+.hdr-title span{display:block;font-size:9pt;font-weight:400;color:var(--gold);font-family:Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;margin-top:3px;}
+.hdr-right{text-align:right;}
+.hdr-date-lbl{font-size:7pt;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#999;font-family:Arial,sans-serif;}
+.hdr-date-val{font-size:13pt;font-weight:700;color:var(--crim);margin-top:2px;font-family:'Playfair Display',Georgia,serif;}
+.hdr-loc-badge{font-size:7pt;margin-top:4px;color:#888;font-family:Arial,sans-serif;}
+.hdr-loc-badge strong{color:var(--gold);}
+.stat-banner{display:none;background:var(--crim);padding:8px 36px;align-items:center;gap:12px;justify-content:center;}
+.stat-banner.show{display:flex;}
+.stat-text{font-size:13pt;font-weight:900;color:#fff;text-decoration:underline;letter-spacing:2px;font-family:Arial,sans-serif;}
+.body-pad{padding:16px 36px 26px;}
+.two-col{display:grid;grid-template-columns:44% 53%;gap:0 3%;margin-bottom:14px;align-items:start;}
+.sec-box{border:1.5px solid var(--border);align-self:start;}
+.sec-box-hdr{background:var(--crim);color:#fff;font-size:10.5pt;font-weight:700;text-align:center;padding:6px 0;letter-spacing:0.5px;font-family:Arial,sans-serif;}
+.sec-box-body{padding:11px 13px;}
+.mri-row{display:flex;align-items:flex-start;gap:8px;margin:5px 0;font-size:9pt;line-height:1.35;}
+.mri-row .study-name{font-weight:700;font-size:9pt;color:var(--text);font-family:Arial,sans-serif;}
+.mri-row .study-sub{font-size:7.5pt;color:#777;margin-top:1px;font-family:Arial,sans-serif;}
+.msq{width:11px;height:11px;border:1.5px solid #666;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;font-size:7.5pt;font-weight:900;margin-top:1px;color:var(--crim);}
+.mri-empty{font-style:italic;font-size:9pt;color:#bbb;padding:6px 0;font-family:Arial,sans-serif;}
+.nline{border-bottom:0.5px solid #ccc;min-height:20px;margin-bottom:5px;padding:1px 0;font-size:9.5pt;font-family:Arial,sans-serif;}
+.nrule{border:none;border-top:0.8px solid #ddd;margin:8px 0 7px;}
+.rtitle{color:var(--crim);font-weight:700;text-align:center;text-decoration:underline;font-size:9.5pt;margin-bottom:6px;font-family:Arial,sans-serif;}
+.rbody{font-size:7.5pt;line-height:1.6;text-align:justify;color:#333;font-family:Arial,sans-serif;}
+.rthanks{text-align:right;font-weight:700;margin-top:7px;font-size:9.5pt;color:var(--crim-dark);}
+.tech-strip{background:#fdf8ee;border:1px solid #e8d8a0;padding:9px 13px;margin-bottom:13px;}
+.tech-hdr{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;margin-bottom:5px;}
+.tech-hdr-bold{font-size:9.5pt;font-weight:700;text-decoration:underline;color:var(--crim-dark);font-family:Arial,sans-serif;}
+.tech-hdr-sub{font-style:italic;font-size:7.5pt;color:#8a6800;font-family:Arial,sans-serif;}
+.tech-line{font-size:9.5pt;font-weight:700;margin:2px 0;color:var(--text);font-family:Arial,sans-serif;}
+.tech-empty{font-style:italic;font-size:8.5pt;color:#999;font-family:Arial,sans-serif;}
+.dx-intro{font-size:9.5pt;font-weight:700;margin-bottom:5px;font-family:Arial,sans-serif;}
+.dx-two-col{display:grid;grid-template-columns:38% 59%;gap:0 3%;}
+.dx-col-left{border-right:1px solid #ddd;padding-right:10px;}
+.dx-col-right{padding-left:4px;}
+.dx-col-hdr{font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;color:var(--crim);border-bottom:1px solid var(--crim);padding-bottom:3px;margin-bottom:5px;font-family:Arial,sans-serif;}
+.dx-item{display:flex;align-items:center;gap:5px;font-size:9pt;margin:2px 0;font-family:Arial,sans-serif;}
+.dx-other-row{display:flex;align-items:center;gap:5px;margin-top:4px;font-size:9pt;font-family:Arial,sans-serif;}
+.dx-empty{font-style:italic;font-size:8.5pt;color:#999;margin-bottom:6px;font-family:Arial,sans-serif;}
+.sig-rule{border:none;border-top:1.5px solid #333;margin:0;}
+.sig-col{display:flex;flex-direction:column;align-items:center;padding:0 8px;}
+.sig-name{font-size:11pt;color:var(--crim-dark);font-weight:700;min-height:30px;display:flex;align-items:flex-end;padding-bottom:2px;font-family:'Playfair Display',Georgia,serif;}
+.sig-img-wrap{min-height:30px;display:flex;align-items:flex-end;padding-bottom:2px;}
+.sig-img{height:42px;object-fit:contain;max-width:220px;}
+.sig-lbl{font-size:7.5pt;color:#888;text-align:center;margin-top:3px;border-top:0.5px solid #999;width:100%;padding-top:3px;font-family:Arial,sans-serif;}
+.gold-rule{border:none;border-top:2px solid var(--gold);margin:0;}
+.office-bar{display:none;background:#fdf8ee;border-bottom:2px solid var(--gold);padding:9px 36px;font-family:Arial,sans-serif;}
+.office-bar.show{display:flex;align-items:center;justify-content:space-between;}
+.office-bar-name{font-size:10pt;font-weight:700;color:var(--crim-dark);}
+.office-bar-addr{font-size:9pt;color:#555;}
+.office-bar-contact{font-size:9pt;color:var(--crim-dark);font-weight:700;text-align:right;}
+.office-bar-unset{display:block;text-align:center;font-size:8.5pt;color:#c9a96e;background:#fdf0d0;border-bottom:1px solid #e8d8a0;padding:7px 36px;font-family:Arial,sans-serif;font-style:italic;}
+.p2note{text-align:right;font-style:italic;font-size:7.5pt;color:#777;max-width:280px;margin-left:auto;margin-bottom:12px;line-height:1.6;font-family:Arial,sans-serif;}
+.pt-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;margin-bottom:10px;}
+.pt-f{margin-bottom:10px;}
+.pt-lbl{font-size:7pt;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#999;margin-bottom:2px;font-family:Arial,sans-serif;}
+.pt-val{border-bottom:0.8px solid #444;min-height:18px;font-size:10.5pt;padding:1px 0 2px;font-family:Arial,sans-serif;}
+.pt-full{grid-column:span 2;}
+.cd-notice{background:var(--crim);color:#fff;text-align:center;font-weight:700;font-size:10.5pt;padding:8px;margin:10px 0 9px;letter-spacing:0.4px;font-family:Arial,sans-serif;}
+.loc-selector-label{font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--crim);margin-bottom:6px;font-family:Arial,sans-serif;border-bottom:1px solid var(--border);padding-bottom:4px;}
+.loc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.loc-card{border:2px solid var(--border);padding:10px 12px;cursor:pointer;transition:all 0.15s;border-radius:3px;}
+.loc-card:hover{border-color:var(--crim);background:#fff5f0;}
+.loc-card.selected{border:2.5px solid var(--crim);background:#fff0ee;}
+.loc-card .lc-name{font-weight:700;font-size:9.5pt;color:var(--crim);margin-bottom:3px;border-bottom:0.5px solid var(--border);padding-bottom:3px;font-family:Arial,sans-serif;}
+.loc-card .lc-addr{font-size:7.8pt;line-height:1.65;color:#555;margin-top:3px;font-family:Arial,sans-serif;}
+.loc-hint{font-size:7.5pt;color:#bbb;text-align:center;margin-bottom:8px;font-style:italic;font-family:Arial,sans-serif;}
+.loc-spotlight{display:none;border:2.5px solid var(--crim);border-radius:4px;overflow:hidden;margin-bottom:10px;}
+.loc-spotlight.show{display:flex;}
+.spotlight-info{padding:13px 16px;flex:1;}
+.spotlight-name{font-weight:700;font-size:12pt;color:var(--crim);margin-bottom:5px;font-family:'Playfair Display',Georgia,serif;}
+.spotlight-det{font-size:9.5pt;line-height:1.8;color:#333;font-family:Arial,sans-serif;}
+.centers-lbl{font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--crim);margin-bottom:6px;margin-top:8px;font-family:Arial,sans-serif;border-bottom:1px solid var(--border);padding-bottom:4px;}
+.centers-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.ctr{border:1.5px solid var(--border);padding:9px 11px;cursor:pointer;transition:all 0.15s;border-radius:3px;}
+.ctr:hover{border-color:var(--crim);background:#fff5f0;}
+.ctr.selected{border:2.5px solid var(--crim);background:#fff0ee;}
+.ctr-name{font-weight:700;font-size:9pt;color:var(--crim-dark);margin-bottom:3px;border-bottom:0.5px solid var(--border);padding-bottom:3px;font-family:Arial,sans-serif;}
+.ctr-city{font-size:7.5pt;color:var(--gold);font-weight:700;margin-bottom:2px;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
+.ctr-det{font-size:7.8pt;line-height:1.6;color:#555;font-family:Arial,sans-serif;}
+.ctr-hint{font-size:7.5pt;color:#bbb;text-align:center;margin-top:12px;font-style:italic;font-family:Arial,sans-serif;}
+.ctr-spotlight{display:none;border:2.5px solid var(--crim);border-radius:4px;overflow:hidden;margin-bottom:10px;}
+.ctr-spotlight.show{display:flex;}
+.ctr-spotlight-info{padding:13px 16px;flex:1;}
+.ctr-spotlight-name{font-weight:700;font-size:11pt;color:var(--crim);margin-bottom:4px;font-family:'Playfair Display',Georgia,serif;}
+.ctr-spotlight-city{font-size:7.5pt;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;font-family:Arial,sans-serif;}
+.ctr-spotlight-det{font-size:9pt;line-height:1.8;color:#333;font-family:Arial,sans-serif;}
+.ctr-spotlight-back{display:inline-block;margin-top:8px;font-size:8.5pt;color:var(--crim);cursor:pointer;text-decoration:underline;font-family:Arial,sans-serif;}
+.doc-footer{margin-top:18px;border-top:2px solid var(--gold);padding-top:8px;text-align:center;font-size:8.5pt;color:var(--crim-dark);font-weight:700;letter-spacing:0.3px;font-family:Arial,sans-serif;}
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;}
+.modal-overlay.show{display:flex;}
+.modal-box{background:#fff;border-radius:8px;width:90vw;max-width:960px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 8px 48px rgba(0,0,0,0.4);}
+.modal-top{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;background:var(--crim-dark);color:#fff;flex-shrink:0;}
+.modal-top h3{font-size:13px;font-weight:700;font-family:Arial,sans-serif;}
+.modal-close{background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:17px;width:28px;height:28px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:rgba(255,255,255,0.3);}
+.modal-scroll{flex:1;overflow-y:auto;padding:20px;background:var(--bg);display:flex;flex-direction:column;align-items:center;gap:4px;}
+.modal-actions{display:flex;gap:10px;padding:13px 20px;border-top:1px solid #eee;background:#fff;flex-shrink:0;}
+.modal-btn{flex:1;padding:10px;border-radius:5px;font-size:12.5px;font-weight:700;cursor:pointer;border:none;font-family:Arial,sans-serif;}
+.modal-btn-crim{background:var(--crim);color:#fff;}
+.modal-btn-crim:hover{background:var(--crim-dark);}
+.modal-btn-gray{background:#f0f0f0;color:#555;border:1px solid #ddd;}
+.modal-btn-gray:hover{background:#e8e8e8;}
+@media print{
+  body{background:white;}
+  .app{display:block!important;}
+  .sb{display:none!important;}
+  .main{padding:0!important;background:white;display:block;align-items:unset;}
+  .doc-wrap{gap:0;}
+  .pg{box-shadow:none;width:100%;page-break-after:always;}
+  .pg:last-child{page-break-after:avoid;}
+  .ctr-hint,.spotlight-back,.ctr-spotlight-back,.loc-hint{display:none!important;}
+  .office-bar-unset{display:none!important;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="sb">
+  <div class="sb-hdr"><img src="" id="sb-logo" alt="Capital Injury Group"><h2>MRI Script Builder</h2><p>Capital Injury Group</p></div>
+  <div class="sb-sec"><div class="sbl">Physician</div><select class="sfi" id="physician" onchange="render()"><option value="deeb">Dr. Mohammad Eldeeb, M.D. — Capital Injury Group</option></select></div>
+  <div class="sb-sec"><div class="sbl">Office Location</div><select class="sfi" id="office_loc" onchange="render()"><option value="">— Select location —</option><option value="tallahassee">Tallahassee Office</option><option value="panamacity">Panama City Office</option></select></div>
+  <div class="sb-sec">
+    <div class="sbl">Patient</div>
+    <div style="display:flex;flex-direction:column;gap:5px;">
+      <input class="sfi" id="pt_name" placeholder="Patient full name" oninput="render()">
+      <div class="sg2"><input class="sfi" id="pt_dob" placeholder="DOB mm/dd/yyyy" oninput="render()"><input class="sfi" id="pt_dol" placeholder="DOL mm/dd/yyyy" oninput="render()"></div>
+      <input class="sfi" id="pt_phone" placeholder="Phone number" oninput="render()">
+      <input class="sfi" id="pt_ins" placeholder="Insurance company" oninput="render()">
+      <input class="sfi" id="pt_claim" placeholder="Claim number" oninput="render()">
+      <input class="sfi" id="pt_atty" placeholder="Attorney name &amp; firm" oninput="render()">
+      <input class="sfi" id="rx_date" type="date" oninput="render()">
+    </div>
+  </div>
+  <div class="sb-sec">
+    <div class="sbl">MRI Studies</div>
+    <div class="sgl">Spine</div>
+    <label class="ck"><input type="checkbox" id="cervical_wo" onchange="render()"><label for="cervical_wo">Cervical Spine</label></label>
+    <label class="ck"><input type="checkbox" id="thoracic_wo" onchange="render()"><label for="thoracic_wo">Thoracic Spine</label></label>
+    <label class="ck"><input type="checkbox" id="lumbar_wo" onchange="render()"><label for="lumbar_wo">Lumbar Spine</label></label>
+    <label class="ck"><input type="checkbox" id="seated_cerv" onchange="render()"><label for="seated_cerv">Cervical w/ Flex/Ext (Seated)</label></label>
+    <label class="ck"><input type="checkbox" id="seated_lumb" onchange="render()"><label for="seated_lumb">Lumbar w/ Flex/Ext (Seated)</label></label>
+    <label class="ck"><input type="checkbox" id="harness" onchange="render()"><label for="harness">Lumbar w/ Weightbearing Harness</label></label>
+    <div class="sgl">Brain</div>
+    <label class="ck"><input type="checkbox" id="brain_wo" onchange="render()"><label for="brain_wo">Brain w/o Contrast</label></label>
+    <label class="ck"><input type="checkbox" id="swi" onchange="render()"><label for="swi">Brain — SWI Sequence</label></label>
+    <label class="ck"><input type="checkbox" id="dti" onchange="render()"><label for="dti">Brain — DTI Sequence</label></label>
+    <div class="sgl">Extremities</div>
+    <label class="ck"><input type="checkbox" id="shoulder_wo" onchange="render()"><label for="shoulder_wo">Shoulder w/o Contrast</label></label>
+    <div style="display:flex;"><label class="ck" style="flex:1;"><input type="checkbox" id="shoulder_l" onchange="render()"><label for="shoulder_l">Left</label></label><label class="ck" style="flex:1;"><input type="checkbox" id="shoulder_r" onchange="render()"><label for="shoulder_r">Right</label></label></div>
+    <label class="ck"><input type="checkbox" id="elbow_wo" onchange="render()"><label for="elbow_wo">Elbow w/o Contrast</label></label>
+    <div style="display:flex;"><label class="ck" style="flex:1;"><input type="checkbox" id="elbow_l" onchange="render()"><label for="elbow_l">Left</label></label><label class="ck" style="flex:1;"><input type="checkbox" id="elbow_r" onchange="render()"><label for="elbow_r">Right</label></label></div>
+    <label class="ck"><input type="checkbox" id="wrist_wo" onchange="render()"><label for="wrist_wo">Wrist w/o Contrast</label></label>
+    <div style="display:flex;"><label class="ck" style="flex:1;"><input type="checkbox" id="wrist_l" onchange="render()"><label for="wrist_l">Left</label></label><label class="ck" style="flex:1;"><input type="checkbox" id="wrist_r" onchange="render()"><label for="wrist_r">Right</label></label></div>
+    <label class="ck"><input type="checkbox" id="knee_wo" onchange="render()"><label for="knee_wo">Knee w/o Contrast</label></label>
+    <div style="display:flex;"><label class="ck" style="flex:1;"><input type="checkbox" id="knee_l" onchange="render()"><label for="knee_l">Left</label></label><label class="ck" style="flex:1;"><input type="checkbox" id="knee_r" onchange="render()"><label for="knee_r">Right</label></label></div>
+    <label class="ck"><input type="checkbox" id="ankle_wo" onchange="render()"><label for="ankle_wo">Ankle w/o Contrast</label></label>
+    <div style="display:flex;"><label class="ck" style="flex:1;"><input type="checkbox" id="ankle_l" onchange="render()"><label for="ankle_l">Left</label></label><label class="ck" style="flex:1;"><input type="checkbox" id="ankle_r" onchange="render()"><label for="ankle_r">Right</label></label></div>
+    <div class="sgl">Custom Study</div>
+    <label class="ck"><input type="checkbox" id="custom_ext" onchange="render()"><label for="custom_ext">Other (free text)</label></label>
+    <input class="sfi" id="custom_ext_text" placeholder="Describe study..." oninput="render()" style="margin-top:4px;font-size:11.5px;">
+    <div class="sgl" style="color:#c9a96e;">Cervical Special Protocol</div>
+    <label class="ck" style="background:#1e0808;border-radius:4px;"><input type="checkbox" id="alar" onchange="render()"><label for="alar" style="color:#ffb3ae;font-weight:700;">Alar Ligament Protocol</label></label>
+    <div class="sgl" style="color:#c9a96e;">Lumbar Special Protocol</div>
+    <label class="ck" style="background:#080e1e;border-radius:4px;"><input type="checkbox" id="sacral" onchange="render()"><label for="sacral" style="color:#90b3ff;font-weight:700;">Sacral Plexus Protocol</label></label>
+  </div>
+  <div class="sb-sec"><div class="sbl">Priority</div><label class="stat-row"><input type="checkbox" id="is_stat" onchange="render()"><label for="is_stat">! &nbsp;Mark as STAT / Urgent</label></label></div>
+  <div class="sb-sec"><div class="sbl">Notes to Radiologist</div><textarea class="sfi" id="notes" rows="2" oninput="render()" style="resize:vertical;font-size:11.5px;"></textarea></div>
+  <div class="sb-sec">
+    <button class="sbtn sbtn-crim" onclick="showPreview()">&#128065;&nbsp; Preview &amp; Export PDF</button>
+    <button class="sbtn sbtn-gold" onclick="window.print()">&#128438;&nbsp; Print Document</button>
+    <button class="sbtn sbtn-outline" onclick="clearAll()">Clear All</button>
+  </div>
+</div>
+<div class="main">
+<div class="doc-wrap" id="pdf-content">
+<div class="pg">
+  <div class="addr-strip" id="addr-strip-p1"></div>
+  <div class="hdr-row">
+    <div class="hdr-left">
+      <img id="pv-logo" class="hdr-logo" src="" alt="Capital Injury Group">
+      <div class="hdr-title">MRI Imaging Prescription<span>Capital Injury Group</span></div>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-date-lbl">Date of Prescription</div>
+      <div class="hdr-date-val" id="pv-date"></div>
+      <div class="hdr-loc-badge" id="pv-loc-badge"></div>
+    </div>
+  </div>
+  <div class="office-bar-unset" id="office-bar-unset">Select your office location in the sidebar to display practice information</div>
+  <div class="office-bar" id="office-bar"><div><div class="office-bar-name" id="ob-name"></div><div class="office-bar-addr" id="ob-addr"></div></div><div class="office-bar-contact" id="ob-contact"></div></div>
+  <div class="stat-banner" id="stat-banner"><div class="stat-text">! &nbsp; STAT &mdash; URGENT IMAGING REQUESTED &nbsp; !</div></div>
+  <div class="body-pad">
+    <div class="two-col">
+      <div class="sec-box"><div class="sec-box-hdr">MRI Studies Ordered</div><div class="sec-box-body" id="mri-list"></div></div>
+      <div class="sec-box"><div class="sec-box-hdr">Notes</div><div class="sec-box-body">
+        <div id="nl1" class="nline"></div><div class="nline"></div><div class="nline"></div><div class="nrule"></div>
+        <div class="rtitle">To the Reading Radiologist</div>
+        <div class="rbody">When present, comment on areas of increased signal or findings consistent with soft tissue or ligamentous injury. Pay particular attention to the upper cervical ligaments and interspinous ligaments. Assess the posterior elements of the spinal joints for derangement of the pedicles, pars, and uncovertebral joints. If, in your professional opinion, any findings are causally related to the mechanism of injury noted in the study indication within a reasonable degree of medical probability, document that conclusion in your report.</div>
+        <div class="rthanks">Thank you!</div>
+      </div></div>
+    </div>
+    <div class="tech-strip">
+      <div class="tech-hdr"><span class="tech-hdr-bold">Minimal Required Series &amp; Techniques</span><span class="tech-hdr-sub">&ndash; all slice thicknesses and gaps should be set to the minimal setting allowed by your scanner &amp; software without compromise of image quality. At least one axial slice must pass through the disc space without boney interference if disc height allows.</span></div>
+      <div id="tech-protocols"></div>
+    </div>
+    <div style="margin-bottom:13px;">
+      <div style="border-top:2px solid var(--crim);margin-bottom:9px;"></div>
+      <div class="dx-intro">Clinical Rationale:</div>
+      <div id="dx-content"></div>
+    </div>
+    <hr class="sig-rule">
+    <!-- FIX 1: Name + Date on top row, Signature centered below -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;padding:6px 0 2px;">
+      <div class="sig-col">
+        <div class="sig-name" id="pv-physician"></div>
+        <div class="sig-lbl">Ordering Physician</div>
+      </div>
+      <div class="sig-col">
+        <div class="sig-name" id="pv-date2"></div>
+        <div class="sig-lbl">Date</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;padding:4px 0 6px;">
+      <div class="sig-col" style="align-items:center;">
+        <div class="sig-img-wrap">
+          <img id="pv-sig" class="sig-img" src="" alt="Signature" style="display:block;">
+          <div id="pv-sig-text" style="display:none;font-family:'Dancing Script',cursive;font-size:17pt;color:var(--crim-dark);line-height:1;padding-bottom:2px;">Mohammad Eldeeb, M.D.</div>
+        </div>
+        <div class="sig-lbl" style="width:220px;">Signature</div>
+      </div>
+    </div>
+    <hr class="gold-rule" style="margin-top:6px;">
+  </div>
+</div>
+<div class="pg">
+  <div class="addr-strip" id="addr-strip-p2"></div>
+  <div class="hdr-row" style="padding:12px 36px;"><img id="pv-logo2" class="hdr-logo" src="" alt="Capital Injury Group" style="height:50px;"><div class="p2note">*Please call the ordering physician if there are any questions related to these orders PRIOR to imaging the patient.</div></div>
+  <div class="body-pad">
+    <div class="pt-grid">
+      <div class="pt-f"><div class="pt-lbl">Patient Name</div><div class="pt-val" id="p2-name"></div></div>
+      <div class="pt-f"><div class="pt-lbl">Date of Birth</div><div class="pt-val" id="p2-dob"></div></div>
+      <div class="pt-f"><div class="pt-lbl">Phone Number</div><div class="pt-val" id="p2-phone"></div></div>
+      <div class="pt-f"><div class="pt-lbl">Date of Loss</div><div class="pt-val" id="p2-dol"></div></div>
+      <div class="pt-f"><div class="pt-lbl">Insurance Company</div><div class="pt-val" id="p2-ins"></div></div>
+      <div class="pt-f"><div class="pt-lbl">Claim Number</div><div class="pt-val" id="p2-claim"></div></div>
+      <div class="pt-f pt-full"><div class="pt-lbl">Attorney Name &amp; Firm</div><div class="pt-val" id="p2-atty"></div></div>
+    </div>
+    <div class="cd-notice">Please Give CD of Images to the Patient</div>
+    <div class="loc-selector-label">Send Results To — Capital Injury Group</div>
+    <div class="loc-grid" id="loc-grid"></div>
+    <div class="loc-hint" id="loc-hint">&#8593; Select your office above (in the sidebar) to display sending address</div>
+    <div class="loc-spotlight" id="loc-spotlight"><div class="spotlight-info" id="loc-spotlight-info" style="width:100%;"></div></div>
+    <div class="centers-lbl" id="centers-lbl">Preferred Imaging Centers</div>
+    <div class="ctr-spotlight" id="ctr-spotlight"><div class="ctr-spotlight-info" id="ctr-spotlight-info" style="width:100%;"></div></div>
+    <div class="centers-grid" id="centers-grid"></div>
+    <div class="ctr-hint" id="ctr-hint">Click an imaging center to select it and view details</div>
+    <div class="doc-footer" id="footer-txt">Capital Injury Group &nbsp;&bull;&nbsp; info@capitalinjurygroup.com &nbsp;&bull;&nbsp; Ph 850-766-7018 &nbsp;&bull;&nbsp; Fax 850-387-0590</div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+<script>
+const OFFICES={tallahassee:{name:"Tallahassee Office",addr1:"3375 Capital Cir NE, Building C100",addr2:"Tallahassee, FL 32308",phone:"850-766-7018",fax:"850-387-0590",email:"info@capitalinjurygroup.com",map:"3375+Capital+Circle+NE+Tallahassee+FL+32308"},panamacity:{name:"Panama City Office",addr1:"2629 W 23rd St, Unit F",addr2:"Panama City, FL 32405",phone:"850-766-7018",fax:"850-387-0590",email:"info@capitalinjurygroup.com",map:"2629+W+23rd+St+Panama+City+FL+32405"}};
+const CENTERS={tallahassee:[{name:"Encore Imaging",city:"Tallahassee, FL",det:"1920 N Monroe Street\nTallahassee, FL 32303\nTEL: 850-597-9207  |  FAX: 850-597-9208\nTallyscheduling@encoremri.com",map:"1920+N+Monroe+Street+Tallahassee+FL+32303"},{name:"Stand Up MRI of Tallahassee",city:"Tallahassee, FL",det:"2332 Capital Circle NE\nTallahassee, FL 32308\nTEL: 850-385-6422  |  FAX: 850-422-8993\nstandupmrioftallahassee@hmca.com",map:"2332+Capital+Circle+NE+Tallahassee+FL+32308"},{name:"CareFirst Imaging",city:"Tallahassee, FL",det:"2013 Miccosukee Rd\nTallahassee, FL 32308\nTEL: 448-206-1280\ninfo@carefirstimaging.com",map:"2013+Miccosukee+Rd+Tallahassee+FL+32308"}],panamacity:[{name:"CareFirst Imaging",city:"Panama City, FL",det:"2525 MLK Jr. Blvd\nPanama City, FL 32405\nTEL: 850-873-6900  |  FAX: 850-873-6902\ninfo@carefirstimaging.com",map:"2525+MLK+Jr+Blvd+Panama+City+FL+32405"}]};
+const MRI_STUDIES=[
+  {id:"cervical_wo",name:"MRI Cervical Spine",sub:"Without contrast · see protocol requirements below"},
+  {id:"thoracic_wo",name:"MRI Thoracic Spine",sub:"Without contrast · see protocol requirements below"},
+  {id:"lumbar_wo",name:"MRI Lumbar Spine",sub:"Without contrast · see protocol requirements below"},
+  {id:"seated_cerv",name:"MRI Cervical Spine — Flexion / Extension",sub:"Seated upright · dynamic imaging"},
+  {id:"seated_lumb",name:"MRI Lumbar Spine — Flexion / Extension",sub:"Seated upright · dynamic imaging"},
+  {id:"harness",name:"MRI Lumbar Spine — Weightbearing Harness",sub:"Axial loading series"},
+  {id:"brain_wo",name:"MRI Brain",sub:"Without contrast · standard sequences"},
+  {id:"swi",name:"MRI Brain — SWI Sequence",sub:"Susceptibility weighted imaging"},
+  {id:"dti",name:"MRI Brain — DTI Sequence",sub:"Diffusion tensor imaging · tractography"},
+  {id:"shoulder_wo",name:"MRI Shoulder",sub:"Without contrast",sides:["shoulder_l","shoulder_r"]},
+  {id:"elbow_wo",name:"MRI Elbow",sub:"Without contrast",sides:["elbow_l","elbow_r"]},
+  {id:"wrist_wo",name:"MRI Wrist",sub:"Without contrast",sides:["wrist_l","wrist_r"]},
+  {id:"knee_wo",name:"MRI Knee",sub:"Without contrast",sides:["knee_l","knee_r"]},
+  {id:"ankle_wo",name:"MRI Ankle",sub:"Without contrast",sides:["ankle_l","ankle_r"]},
+  {id:"custom_ext",name:"",sub:"",custom:true},
+  {id:"alar",name:"Alar Ligament Protocol",sub:"Proton density · coronal / axial / sagittal",protocol:true,color:"#8B1A1A"},
+  {id:"sacral",name:"Sacral Plexus Protocol",sub:"Sagittal T2 Fat-Sat·STIR · Coronal T2·STIR",protocol:true,color:"#1a237e"}
+];
+const DX_MAP={cervical:[{id:"neck_pain",lbl:"Neck Pain (M54.2)"},{id:"cs_neuritis",lbl:"Cervical Neuritis (M54.12)"},{id:"headache",lbl:"Headache (R51)"},{id:"concussion",lbl:"Concussion (S06.0X0)"},{id:"paresthesia",lbl:"Paresthesia (R20.9)"}],thoracic:[{id:"thoracic_pain",lbl:"Thoracic Pain (M54.6)"}],lumbar:[{id:"lumbalgia",lbl:"Lumbalgia (M54.5)"},{id:"ls_neuritis",lbl:"Lumbar Neuritis (M54.17)"}],shoulder:[{id:"shoulder_pain",lbl:"Shoulder Pain (M25.51)"}],knee:[{id:"knee_pain",lbl:"Knee Pain (M25.56)"},{id:"hip_pain",lbl:"Hip Pain (M25.55)"},{id:"ankle_pain",lbl:"Ankle/Foot Pain (M25.57)"}],elbow:[{id:"elbow_pain",lbl:"Elbow Pain (M25.52)"},{id:"wrist_pain",lbl:"Wrist Pain (M25.53)"},{id:"hand_pain",lbl:"Hand Pain (M79.64)"}],ankle:[{id:"ankle_pain2",lbl:"Ankle/Foot Pain (M25.57)"}]};
+let selectedCenter=-1,selectedCenterLoc=null;
+function v(id){const e=document.getElementById(id);return e?e.value:"";}
+function c(id){const e=document.getElementById(id);return e&&e.checked;}
+function sq(chk){return '<div class="msq">'+(chk?'&#10003;':'')+'</div>';}
+function getDate(){const raw=v("rx_date");if(raw){const[y,m,d]=raw.split("-");return m+'/'+d+'/'+y;}const n=new Date();return (n.getMonth()+1)+'/'+n.getDate()+'/'+n.getFullYear();}
+function renderAddrStrip(el){
+  const loc=v("office_loc");
+  if(!loc){el.innerHTML='<span class="loc-other">3375 Capital Cir NE, Building C100 &bull; Tallahassee, FL 32308 &bull; Ph 850-766-7018 &bull; Fax 850-387-0590</span> &nbsp;&mdash;&nbsp; <span class="loc-other">2629 W 23rd St, Unit F &bull; Panama City, FL 32405 &bull; Ph 850-766-7018 &bull; Fax 850-387-0590</span>';return;}
+  if(loc==="tallahassee"){el.innerHTML='<span class="loc-selected">&#10003; 3375 Capital Cir NE, Building C100 &bull; Tallahassee, FL 32308 &bull; Ph 850-766-7018 &bull; Fax 850-387-0590</span> &nbsp;&mdash;&nbsp; <span class="loc-other">2629 W 23rd St, Unit F &bull; Panama City, FL 32405</span>';}
+  else{el.innerHTML='<span class="loc-other">3375 Capital Cir NE, Building C100 &bull; Tallahassee, FL 32308</span> &nbsp;&mdash;&nbsp; <span class="loc-selected">&#10003; 2629 W 23rd St, Unit F &bull; Panama City, FL 32405 &bull; Ph 850-766-7018 &bull; Fax 850-387-0590</span>';}
+}
+function getRelevantDx(){
+  const seen=new Set(),res=[];
+  const add=g=>{for(const d of DX_MAP[g]){if(!seen.has(d.id)){seen.add(d.id);res.push(d);}}};
+  if(c("cervical_wo")||c("seated_cerv")||c("alar"))add("cervical");
+  if(c("thoracic_wo"))add("thoracic");
+  if(c("lumbar_wo")||c("seated_lumb")||c("harness")||c("sacral"))add("lumbar");
+  if(c("shoulder_wo")||c("shoulder_l")||c("shoulder_r"))add("shoulder");
+  if(c("knee_wo")||c("knee_l")||c("knee_r"))add("knee");
+  if(c("elbow_wo")||c("elbow_l")||c("elbow_r"))add("elbow");
+  if(c("wrist_wo")||c("wrist_l")||c("wrist_r"))add("elbow");
+  if(c("ankle_wo")||c("ankle_l")||c("ankle_r"))add("ankle");
+  if(c("brain_wo")){if(!seen.has("headache")){seen.add("headache");res.push({id:"headache",lbl:"Headache (R51)"});}if(!seen.has("concussion")){seen.add("concussion");res.push({id:"concussion",lbl:"Concussion (S06.0X0)"}); }}
+  return res;
+}
+function render(){
+  const logo=IMG_CIG;
+  ["pv-logo","pv-logo2","sb-logo"].forEach(id=>{const e=document.getElementById(id);if(e)e.src=logo;});
+  document.getElementById("pv-physician").textContent="Mohammad Eldeeb, M.D.";
+  const sigEl=document.getElementById("pv-sig");
+  if(sigEl&&IMG_DEEB){sigEl.src=IMG_DEEB;sigEl.style.display="block";}
+  const sigTextEl=document.getElementById("pv-sig-text");
+  if(sigTextEl)sigTextEl.style.display="none";
+  const ds=getDate();
+  document.getElementById("pv-date").textContent=ds;
+  document.getElementById("pv-date2").textContent=ds;
+  const loc=v("office_loc");
+  const locBadge=document.getElementById("pv-loc-badge");
+  if(locBadge){if(loc)locBadge.innerHTML='Issuing Office: <strong>'+OFFICES[loc].name+'</strong>';else locBadge.innerHTML='<span style="color:#c00;">⚠ Select office location in sidebar</span>';}
+  const obUnset=document.getElementById("office-bar-unset"),obBar=document.getElementById("office-bar");
+  if(loc&&OFFICES[loc]){const o=OFFICES[loc];if(obUnset)obUnset.style.display="none";if(obBar)obBar.classList.add("show");const obName=document.getElementById("ob-name"),obAddr=document.getElementById("ob-addr"),obContact=document.getElementById("ob-contact");if(obName)obName.textContent=o.name+" — Capital Injury Group";if(obAddr)obAddr.textContent=o.addr1+" · "+o.addr2;if(obContact)obContact.innerHTML='Ph: '+o.phone+' &nbsp;|&nbsp; Fax: '+o.fax+'<br>'+o.email;}
+  else{if(obUnset)obUnset.style.display="block";if(obBar)obBar.classList.remove("show");}
+  ["addr-strip-p1","addr-strip-p2"].forEach(id=>{const el=document.getElementById(id);if(el)renderAddrStrip(el);});
+  if(c("is_stat"))document.getElementById("stat-banner").classList.add("show");
+  else document.getElementById("stat-banner").classList.remove("show");
+  let mh="";
+  for(const s of MRI_STUDIES){if(!c(s.id))continue;let nm=s.custom?v("custom_ext_text"):s.name;if(!nm)continue;let sideStr="";if(s.sides){const sl=c(s.sides[0]),sr=c(s.sides[1]);if(sl&&sr)sideStr=" — Bilateral";else if(sl)sideStr=" — Left";else if(sr)sideStr=" — Right";}const nc=s.color||"#111";const bg=s.protocol?'background:'+s.color+'15;border-left:3px solid '+s.color+';padding-left:5px;border-radius:2px;':"";mh+='<div class="mri-row" style="'+bg+'">'+sq(true)+'<div><div class="study-name" style="color:'+nc+'">'+nm+sideStr+'</div><div class="study-sub">'+s.sub+'</div></div></div>';}
+  if(!mh)mh='<div class="mri-empty">Select studies from the sidebar.</div>';
+  document.getElementById("mri-list").innerHTML=mh;
+  document.getElementById("nl1").textContent=v("notes");
+  const hasCerv=c("cervical_wo")||c("seated_cerv"),hasThor=c("thoracic_wo"),hasLumb=c("lumbar_wo")||c("seated_lumb")||c("harness"),hasAlar=c("alar"),hasSacral=c("sacral"),hasAny=hasCerv||hasThor||hasLumb||hasAlar||hasSacral||c("brain_wo")||c("shoulder_wo")||c("knee_wo");
+  let tech="";
+  if(!hasAny)tech='<div class="tech-empty">Select MRI studies to display imaging protocols.</div>';
+  else{if(hasCerv)tech+='<div class="tech-line"><strong>Cervical Spine:</strong> Sagittal: Neutral T2\T1\STIR | Flexion\Extension T2 | Axial T2</div>';if(hasThor)tech+='<div class="tech-line"><strong>Thoracic Spine:</strong> Sagittal T2\T1\STIR | Axial T2 | Coronal T2\STIR</div>';if(hasLumb)tech+='<div class="tech-line"><strong>Lumbar Spine:</strong> Sagittal: Neutral T2\T1\STIR | Axial T2</div>';if(hasAlar)tech+='<div class="tech-line"><strong>Alar Ligament Protocol:</strong> Proton Density: Coronal\Axial\Sagittal</div>';if(hasSacral)tech+='<div class="tech-line"><strong>Sacral Plexus Protocol:</strong> Sagittal T2 Fat-Sat\STIR | Coronal T2\STIR</div>';}
+  document.getElementById("tech-protocols").innerHTML=tech;
+  const rdx=getRelevantDx();let dxh="";
+  if(!rdx.length){dxh='<div class="dx-two-col"><div class="dx-col-left"><div class="dx-col-hdr">Indication for Study</div><div class="dx-empty">Select studies to populate.</div></div><div class="dx-col-right"><div class="dx-col-hdr">Diagnosis</div><div class="dx-empty">Select studies to populate.</div></div></div>';}
+  else{const inds=[{id:"ind_mvc",lbl:"Motor vehicle crash (MVC)"},{id:"ind_work",lbl:"Work-related injury"},{id:"ind_slip",lbl:"Slip and fall injury"},{id:"ind_sport",lbl:"Sports injury"},{id:"ind_other",lbl:"Other"}];let lh='<div class="dx-col-hdr">Indication for Study</div>';for(const ind of inds){lh+='<div class="dx-item"><div class="msq" onclick="toggleInd(''+ind.id+'')" id="sq-'+ind.id+'" style="cursor:pointer;">'+(window["ind_"+ind.id+"_checked"]?'&#10003;':'')+'</div> <span>'+ind.lbl+'</span></div>';}let rh='<div class="dx-col-hdr">Diagnosis</div>';for(const dx of rdx){rh+='<div class="dx-item"><div class="msq" onclick="toggleDx(''+dx.id+'')" id="sq-'+dx.id+'" style="cursor:pointer;">'+(window["dx_"+dx.id+"_checked"]?'&#10003;':'')+'</div> <span>'+dx.lbl+'</span></div>';}rh+='<div class="dx-other-row"><div class="msq" id="sq-other-dx" onclick="toggleDx('other-dx')" style="cursor:pointer;">'+(window["dx_other-dx_checked"]?'&#10003;':'')+'</div><span style="white-space:nowrap;">Other:</span><input type="text" id="other-dx-text" style="flex:1;border:none;border-bottom:0.7px solid #444;outline:none;font-size:9pt;font-family:Arial,sans-serif;padding:1px 4px;background:transparent;min-width:80px;" placeholder="Free text diagnosis..." oninput="document.getElementById('sq-other-dx').innerHTML=this.value?'&#10003;':''"></div>';dxh='<div class="dx-two-col"><div class="dx-col-left">'+lh+'</div><div class="dx-col-right">'+rh+'</div></div>';}
+  document.getElementById("dx-content").innerHTML=dxh;
+  document.getElementById("p2-name").textContent=v("pt_name");
+  document.getElementById("p2-dob").textContent=v("pt_dob");
+  document.getElementById("p2-phone").textContent=v("pt_phone");
+  document.getElementById("p2-dol").textContent=v("pt_dol");
+  document.getElementById("p2-ins").textContent=v("pt_ins");
+  document.getElementById("p2-claim").textContent=v("pt_claim");
+  document.getElementById("p2-atty").textContent=v("pt_atty");
+  renderLocSelector();renderCenters();
+}
+function renderLocSelector(){
+  const loc=v("office_loc"),grid=document.getElementById("loc-grid"),hint=document.getElementById("loc-hint"),spotlight=document.getElementById("loc-spotlight");
+  if(!loc){hint.style.display="block";spotlight.classList.remove("show");let gh="";Object.entries(OFFICES).forEach(([key,o])=>{gh+='<div class="loc-card" onclick="selectOfficePage2(''+key+'')"><div class="lc-name">'+o.name+' — Capital Injury Group</div><div class="lc-addr">'+o.addr1+'<br>'+o.addr2+'<br>Ph: '+o.phone+' | Fax: '+o.fax+'</div></div>';});grid.innerHTML=gh;return;}
+  hint.style.display="none";grid.innerHTML="";spotlight.classList.add("show");const o=OFFICES[loc];
+  document.getElementById("loc-spotlight-info").innerHTML='<div class="spotlight-name">'+o.name+' — Capital Injury Group</div><div class="spotlight-det">'+o.addr1+'<br>'+o.addr2+'<br>Ph: '+o.phone+' &nbsp;|&nbsp; Fax: '+o.fax+'<br>'+o.email+'</div><div style="margin-top:6px;font-size:8pt;color:#888;font-family:Arial,sans-serif;">Send imaging results &amp; CD to this location</div>';
+}
+function selectOfficePage2(key){document.getElementById("office_loc").value=key;render();}
+function renderCenters(){
+  const loc=v("office_loc"),grid=document.getElementById("centers-grid"),hint=document.getElementById("ctr-hint"),spotlight=document.getElementById("ctr-spotlight"),lbl=document.getElementById("centers-lbl");
+  let ctrs=[];if(loc&&CENTERS[loc])ctrs=CENTERS[loc];else{ctrs=[...(CENTERS.tallahassee||[]),...(CENTERS.panamacity||[])];}
+  if(selectedCenter>=0&&selectedCenter<ctrs.length){const ctr=ctrs[selectedCenter];spotlight.classList.add("show");hint.style.display="none";document.getElementById("ctr-spotlight-info").innerHTML='<div class="ctr-spotlight-name">'+ctr.name+'</div><div class="ctr-spotlight-city">'+ctr.city+'</div><div class="ctr-spotlight-det">'+ctr.det.replace(/\n/g,"<br>")+'</div><div class="ctr-spotlight-back" onclick="clearCenter()">← Show all imaging centers</div>';grid.innerHTML='<div class="ctr selected"><div class="ctr-name">'+ctr.name+'</div><div class="ctr-city">'+ctr.city+'</div><div class="ctr-det">'+ctr.det.split("\n")[0]+'<br>'+(ctr.det.split("\n")[1]||'')+'</div></div>';return;}
+  spotlight.classList.remove("show");hint.style.display="block";let gh="";ctrs.forEach((ctr,i)=>{gh+='<div class="ctr" onclick="selectCenter('+i+')"><div class="ctr-name">'+ctr.name+'</div><div class="ctr-city">'+ctr.city+'</div><div class="ctr-det">'+ctr.det.split("\n")[0]+'<br>'+(ctr.det.split("\n")[1]||'')+'</div></div>';});grid.innerHTML=gh;
+  if(lbl&&loc){const locName=loc==="tallahassee"?"Tallahassee":"Panama City";lbl.textContent="Preferred Imaging Centers — "+locName;}else if(lbl){lbl.textContent="Preferred Imaging Centers";}
+}
+function selectCenter(i){selectedCenter=i;renderCenters();}
+function clearCenter(){selectedCenter=-1;renderCenters();}
+function showPreview(){const src=document.getElementById("pdf-content");const clone=src.cloneNode(true);clone.style.transform="scale(0.63)";clone.style.transformOrigin="top center";clone.style.width="856px";clone.style.marginBottom="-37%";const container=document.getElementById("modal-content");container.innerHTML="";container.appendChild(clone);document.getElementById("preview-modal").classList.add("show");}
+function closePreview(){document.getElementById("preview-modal").classList.remove("show");}
+function doExport(){closePreview();setTimeout(exportPDF,100);}
+function exportPDF(){
+  const nm=v("pt_name").replace(/\s+/g,"_")||"MRI_Prescription";
+  const hint=document.getElementById("ctr-hint");
+  const lochint=document.getElementById("loc-hint");
+  hint.style.display="none";
+  if(lochint)lochint.style.display="none";
+  const sb=document.querySelector(".sb");
+  const main=document.querySelector(".main");
+  const el=document.getElementById("pdf-content");
+  const prevSbDisplay=sb.style.display;
+  const prevMainPadding=main.style.padding;
+  const prevMainAlign=main.style.alignItems;
+  const prevMainDisplay=main.style.display;
+  sb.style.display="none";
+  main.style.padding="0";
+  main.style.alignItems="unset";
+  main.style.display="block";
+  el.style.width="856px";
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      html2pdf().set({
+        margin:0,
+        filename:nm+"_CIG_MRI_Prescription.pdf",
+        image:{type:"jpeg",quality:0.97},
+        html2canvas:{scale:2,useCORS:true,letterRendering:true,scrollX:0,scrollY:0,width:856,windowWidth:856},
+        jsPDF:{unit:"px",format:[856,1108],orientation:"portrait",hotfixes:["px_scaling"]},
+        pagebreak:{before:".pg:nth-child(2)"}
+      }).from(el).save().then(()=>{
+        sb.style.display=prevSbDisplay;
+        main.style.padding=prevMainPadding;
+        main.style.alignItems=prevMainAlign;
+        main.style.display=prevMainDisplay;
+        el.style.width="";
+        hint.style.display="block";
+        if(lochint)lochint.style.display="block";
+      });
+    });
+  });
+}
+function toggleInd(id){const key="ind_"+id+"_checked";window[key]=!window[key];const el=document.getElementById("sq-"+id);if(el)el.innerHTML=window[key]?"&#10003;":"";}
+function toggleDx(id){const key="dx_"+id+"_checked";window[key]=!window[key];const el=document.getElementById("sq-"+id);if(el)el.innerHTML=window[key]?"&#10003;":"";}
+function clearAll(){document.querySelectorAll("input[type=checkbox]").forEach(e=>e.checked=false);["pt_name","pt_dob","pt_dol","pt_phone","pt_ins","pt_claim","pt_atty","notes","custom_ext_text"].forEach(id=>{const e=document.getElementById(id);if(e)e.value="";});document.getElementById("office_loc").value="";selectedCenter=-1;selectedCenterLoc=null;render();}
+const t=new Date();
+document.getElementById("rx_date").value=t.getFullYear()+"-"+String(t.getMonth()+1).padStart(2,"0")+"-"+String(t.getDate()).padStart(2,"0");
+render();
+</script>
+<div class="modal-overlay" id="preview-modal">
+  <div class="modal-box">
+    <div class="modal-top"><h3>Preview &mdash; Capital Injury Group MRI Prescription</h3><button class="modal-close" onclick="closePreview()">&#10005;</button></div>
+    <div class="modal-scroll" id="modal-content"></div>
+    <div class="modal-actions"><button class="modal-btn modal-btn-crim" onclick="doExport()">&#8675;&nbsp; Export PDF</button><button class="modal-btn modal-btn-gray" onclick="closePreview()">Close Preview</button></div>
+  </div>
+</div>
+</body>
+</html>
