@@ -555,10 +555,10 @@ function buildSidebar(q) {
     const hdr = document.createElement('div');
     hdr.className = 'group-header';
     hdr.style.cssText = `background:${group.color};border-left:4px solid ${group.border};color:${group.headerColor}`;
-    hdr.innerHTML = `<span>${group.label} <span style="font-weight:400;opacity:0.7;">(${matches.length})</span></span><span class="group-chevron open">▶</span>`;
+    hdr.innerHTML = `<span>${group.label} <span style="font-weight:400;opacity:0.7;">(${matches.length})</span></span><span class="group-chevron">▶</span>`;
 
     const codesDiv = document.createElement('div');
-    codesDiv.className = 'group-codes open';
+    codesDiv.className = 'group-codes';
 
     hdr.onclick = () => {
       codesDiv.classList.toggle('open');
