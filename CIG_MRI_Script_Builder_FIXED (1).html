@@ -176,8 +176,8 @@ body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(
     <div class="sbl">Patient</div>
     <div style="display:flex;flex-direction:column;gap:5px;">
       <input class="sfi" id="pt_name" placeholder="Patient full name" oninput="render()">
-      <div class="sg2"><input class="sfi" id="pt_dob" placeholder="DOB mm/dd/yyyy" oninput="render()"><input class="sfi" id="pt_dol" placeholder="DOL mm/dd/yyyy" oninput="render()"></div>
-      <input class="sfi" id="pt_phone" placeholder="Phone number" oninput="render()">
+      <div class="sg2"><input class="sfi" id="pt_dob" placeholder="DOB mm/dd/yyyy" inputmode="numeric" maxlength="10" oninput="fmtDate(this);render()"><input class="sfi" id="pt_dol" placeholder="DOL mm/dd/yyyy" inputmode="numeric" maxlength="10" oninput="fmtDate(this);render()"></div>
+      <input class="sfi" id="pt_phone" placeholder="Phone number" inputmode="numeric" maxlength="14" oninput="fmtPhone(this);render()">
       <input class="sfi" id="pt_ins" placeholder="Insurance company" oninput="render()">
       <input class="sfi" id="pt_claim" placeholder="Claim number" oninput="render()">
       <input class="sfi" id="pt_atty" placeholder="Attorney name &amp; firm" oninput="render()">
@@ -339,6 +339,19 @@ const DX_MAP={cervical:[{id:"neck_pain",lbl:"Neck Pain (M54.2)"},{id:"cs_neuriti
 let selectedCenter=-1,selectedCenterLoc=null;
 function v(id){const e=document.getElementById(id);return e?e.value:"";}
 function c(id){const e=document.getElementById(id);return e&&e.checked;}
+function fmtDate(el){
+  const x=(el.value||"").replace(/\D/g,"").slice(0,8);
+  if(x.length>4) el.value=x.slice(0,2)+"/"+x.slice(2,4)+"/"+x.slice(4);
+  else if(x.length>2) el.value=x.slice(0,2)+"/"+x.slice(2);
+  else el.value=x;
+}
+function fmtPhone(el){
+  const x=(el.value||"").replace(/\D/g,"").slice(0,10);
+  if(x.length>6) el.value="("+x.slice(0,3)+") "+x.slice(3,6)+"-"+x.slice(6);
+  else if(x.length>3) el.value="("+x.slice(0,3)+") "+x.slice(3);
+  else if(x.length>0) el.value="("+x;
+  else el.value="";
+}
 function sq(chk){return '<div class="msq">'+(chk?'&#10003;':'')+'</div>';}
 function getDate(){const raw=v("rx_date");if(raw){const[y,m,d]=raw.split("-");return m+'/'+d+'/'+y;}const n=new Date();return (n.getMonth()+1)+'/'+n.getDate()+'/'+n.getFullYear();}
 function renderAddrStrip(el){

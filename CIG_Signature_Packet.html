@@ -1141,6 +1141,9 @@ document.addEventListener('DOMContentLoaded', function(){
   document.querySelectorAll('.pt-name-pop, .pt-today-pop, .sw-pop').forEach(function(el){
     el.addEventListener('input', function(){el.dataset.userEdited='1';});
   });
+  document.querySelectorAll('.pt-today-pop').forEach(function(el){
+    el.addEventListener('input', function(){fmtDate(el);});
+  });
   var t=new Date();
   var td=String(t.getMonth()+1).padStart(2,'0')+'/'+String(t.getDate()).padStart(2,'0')+'/'+t.getFullYear();
   var tf=document.getElementById('pt_today');
