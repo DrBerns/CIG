@@ -295,6 +295,18 @@
         <div id="vin-result" class="vin-result"><div id="vin-result-inner"></div></div>
       </div>
 
+      <!-- Florida Bar Lookup -->
+      <div class="panel">
+        <div class="panel-title" style="margin-bottom:10px;">Florida Bar Lookup</div>
+        <input id="fbar-lname" type="text" placeholder="Last name"
+          class="vin-input" style="text-transform:none;letter-spacing:0;"
+          onkeydown="if(event.key==='Enter')floridaBarSearch()">
+        <input id="fbar-fname" type="text" placeholder="First name (optional)"
+          class="vin-input" style="text-transform:none;letter-spacing:0;"
+          onkeydown="if(event.key==='Enter')floridaBarSearch()">
+        <button onclick="floridaBarSearch()" class="vin-btn">Search Florida Bar →</button>
+      </div>
+
     </div><!-- /side-col -->
 
   </div><!-- /layout -->
@@ -691,6 +703,23 @@
   document.getElementById('vin-input').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') lookupVin();
   });
+
+  // ── Florida Bar Lookup ────────────────────────────────────
+  function floridaBarSearch() {
+    var lEl = document.getElementById('fbar-lname');
+    var fEl = document.getElementById('fbar-fname');
+    var lname = (lEl.value || '').trim();
+    var fname = (fEl.value || '').trim();
+    if (!lname) {
+      lEl.style.borderColor = '#c62828';
+      setTimeout(function(){ lEl.style.borderColor = '#e5d3d6'; }, 1500);
+      return;
+    }
+    var params = new URLSearchParams({ lName: lname });
+    if (fname) params.set('fName', fname);
+    window.open('https://www.floridabar.org/directories/find-mbr/?' + params.toString(), '_blank');
+  }
+  window.floridaBarSearch = floridaBarSearch;
 </script>
 
 </body>
