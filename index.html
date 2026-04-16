@@ -198,18 +198,34 @@
     <!-- RIGHT SIDEBAR -->
     <div class="side-col">
 
-      <!-- Date/Time/Weather -->
+      <!-- Date/Time/Weather — Tallahassee -->
       <div class="panel">
         <div class="dtw-top">
-          <div class="dtw-time"><span id="dtwTime">—</span><span class="dtw-ampm" id="dtwAmpm"></span></div>
+          <div class="dtw-time"><span id="dtwTimeTal">—</span><span class="dtw-ampm" id="dtwAmpmTal"></span></div>
         </div>
-        <div class="dtw-date" id="dtwDate">—</div>
+        <div class="dtw-date" id="dtwDateTal">—</div>
         <div class="dtw-weather">
-          <div class="dtw-wx-icon" id="dtwWxIcon">⏳</div>
+          <div class="dtw-wx-icon" id="dtwWxIconTal">⏳</div>
           <div class="dtw-wx-info">
-            <div class="dtw-wx-temp" id="dtwWxTemp">—</div>
-            <div class="dtw-wx-cond" id="dtwWxCond">Loading weather…</div>
-            <div class="dtw-wx-loc" id="dtwWxLoc">Tallahassee, FL</div>
+            <div class="dtw-wx-temp" id="dtwWxTempTal">—</div>
+            <div class="dtw-wx-cond" id="dtwWxCondTal">Loading weather…</div>
+            <div class="dtw-wx-loc">Tallahassee, FL</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date/Time/Weather — Panama City -->
+      <div class="panel">
+        <div class="dtw-top">
+          <div class="dtw-time"><span id="dtwTimePC">—</span><span class="dtw-ampm" id="dtwAmpmPC"></span></div>
+        </div>
+        <div class="dtw-date" id="dtwDatePC">—</div>
+        <div class="dtw-weather">
+          <div class="dtw-wx-icon" id="dtwWxIconPC">⏳</div>
+          <div class="dtw-wx-info">
+            <div class="dtw-wx-temp" id="dtwWxTempPC">—</div>
+            <div class="dtw-wx-cond" id="dtwWxCondPC">Loading weather…</div>
+            <div class="dtw-wx-loc">Panama City, FL</div>
           </div>
         </div>
       </div>
@@ -294,13 +310,22 @@
   var WORKER_SECRET = 'SpineMed2026';
 
   // ── Date / Time / Weather ──────────────────────────────────
+  var DTW_LOCS = [
+    { suffix: 'Tal', tz: 'America/New_York', lat: 30.4383, lon: -84.2807 }, // Tallahassee (Eastern)
+    { suffix: 'PC',  tz: 'America/Chicago',  lat: 30.1588, lon: -85.6602 }  // Panama City (Central)
+  ];
+
   function dtwTick() {
     var now = new Date();
-    var t = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-    var parts = t.split(' ');
-    document.getElementById('dtwTime').textContent = parts[0];
-    document.getElementById('dtwAmpm').textContent = parts[1] || '';
-    document.getElementById('dtwDate').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    DTW_LOCS.forEach(function(loc) {
+      var t = now.toLocaleTimeString('en-US', { timeZone: loc.tz, hour: 'numeric', minute: '2-digit' });
+      var parts = t.split(' ');
+      document.getElementById('dtwTime' + loc.suffix).textContent = parts[0];
+      document.getElementById('dtwAmpm' + loc.suffix).textContent = parts[1] || '';
+      document.getElementById('dtwDate' + loc.suffix).textContent = now.toLocaleDateString('en-US', {
+        timeZone: loc.tz, weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+      });
+    });
   }
   dtwTick(); setInterval(dtwTick, 30000);
 
@@ -319,35 +344,26 @@
     return { icon: '🌡️', label: '—' };
   }
 
-  function fetchWeather(lat, lon, locLabel) {
-    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon
+  function fetchWeather(loc) {
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + loc.lat + '&longitude=' + loc.lon
             + '&current=temperature_2m,weather_code,is_day&temperature_unit=fahrenheit';
     fetch(url)
       .then(function(r) { return r.json(); })
       .then(function(data) {
         var cur = data.current || {};
         var info = wxInfo(cur.weather_code, cur.is_day === 1);
-        document.getElementById('dtwWxIcon').textContent = info.icon;
-        document.getElementById('dtwWxTemp').textContent = Math.round(cur.temperature_2m) + '°F';
-        document.getElementById('dtwWxCond').textContent = info.label;
-        if (locLabel) document.getElementById('dtwWxLoc').textContent = locLabel;
+        document.getElementById('dtwWxIcon' + loc.suffix).textContent = info.icon;
+        document.getElementById('dtwWxTemp' + loc.suffix).textContent = Math.round(cur.temperature_2m) + '°F';
+        document.getElementById('dtwWxCond' + loc.suffix).textContent = info.label;
       })
       .catch(function() {
-        document.getElementById('dtwWxCond').textContent = 'Weather unavailable';
-        document.getElementById('dtwWxIcon').textContent = '🌡️';
-        document.getElementById('dtwWxTemp').textContent = '';
+        document.getElementById('dtwWxCond' + loc.suffix).textContent = 'Weather unavailable';
+        document.getElementById('dtwWxIcon' + loc.suffix).textContent = '🌡️';
+        document.getElementById('dtwWxTemp' + loc.suffix).textContent = '';
       });
   }
 
-  function initWeather() {
-    var tallahassee = function() { fetchWeather(30.4383, -84.2807, 'Tallahassee, FL'); };
-    if (!navigator.geolocation) return tallahassee();
-    navigator.geolocation.getCurrentPosition(
-      function(pos) { fetchWeather(pos.coords.latitude, pos.coords.longitude, 'Current location'); },
-      function() { tallahassee(); },
-      { timeout: 4000, maximumAge: 10 * 60 * 1000 }
-    );
-  }
+  function initWeather() { DTW_LOCS.forEach(fetchWeather); }
   initWeather();
   setInterval(initWeather, 15 * 60 * 1000);
 
