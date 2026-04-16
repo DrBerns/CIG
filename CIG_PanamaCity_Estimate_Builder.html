@@ -700,7 +700,7 @@ function buildDoc() {
   document.getElementById('estimateDoc').innerHTML = `
     <div class="d-header">
       <div>
-        <div class="d-logo" style="background:#fff8f0;padding:6px 8px;border-radius:6px;display:inline-block;"><img src="data:image/png;base64,${LOGO_B64}" alt="PainMed"/></div>
+        <div class="d-logo" style="background:#fff8f0;padding:6px 8px;border-radius:6px;display:inline-block;"><img src="data:image/png;base64,${LOGO_B64}" alt="CIG"/></div>
         <div class="d-company">
           <strong>${val('physicianName') || '[Physician Name, MD]'}</strong><br/>
           ${val('physicianTitle') || 'Pain Management Physician'}<br/>
@@ -791,7 +791,7 @@ function downloadPDF() {
   const el = document.getElementById('estimateDoc');
   const patient = val('patientName').replace(/[^a-zA-Z0-9]/g, '_') || 'Estimate';
   const date = val('estDate') || todayISO();
-  const filename = `PainMed_Estimate_${patient}_${date}.pdf`;
+  const filename = `CIG_Estimate_${patient}_${date}.pdf`;
 
   html2pdf().set({
     margin: 0,
@@ -828,7 +828,7 @@ function _writeAppData(data) {
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
   a.href     = url;
-  a.download = 'PainMed_Estimate_Builder.html';
+  a.download = 'CIG_Estimate_Builder.html';
   a.click();
   URL.revokeObjectURL(url);
 
