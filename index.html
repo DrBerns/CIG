@@ -13,7 +13,11 @@
   .hdr h1 { font-size: 22px; font-weight: 800; letter-spacing: 0.3px; margin-bottom: 4px; }
   .hdr p { font-size: 13px; opacity: 0.9; font-weight: 400; }
 
-  main { flex: 1; max-width: 760px; margin: 0 auto; padding: 40px 20px; width: 100%; }
+  main { flex: 1; max-width: 1120px; margin: 0 auto; padding: 40px 20px; width: 100%; }
+  .layout { display: flex; gap: 22px; align-items: flex-start; }
+  .main-col { flex: 1; min-width: 0; }
+  .side-col { width: 300px; flex-shrink: 0; position: sticky; top: 20px; display: flex; flex-direction: column; gap: 16px; }
+
   .section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; color: #7b1a2e; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
   .section-label::after { content: ''; flex: 1; height: 1px; background: #d9c5c8; }
 
@@ -25,9 +29,103 @@
   .tile-name { font-size: 15px; font-weight: 700; color: #1a1a1a; line-height: 1.3; }
   .tile-tag { font-size: 12px; color: #6b5a5c; line-height: 1.4; }
 
+  /* Sidebar panels */
+  .panel { background: #fff; border: 1px solid #e5d3d6; border-radius: 10px; padding: 16px; }
+  .panel-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; color: #7b1a2e; margin-bottom: 2px; }
+  .panel-sub { font-size: 11px; color: #6b5a5c; line-height: 1.5; }
+
+  /* Date/Time/Weather */
+  .dtw-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .dtw-time { font-size: 24px; font-weight: 800; color: #1a1a1a; letter-spacing: 0.5px; line-height: 1; }
+  .dtw-ampm { font-size: 12px; color: #6b5a5c; font-weight: 600; margin-left: 3px; }
+  .dtw-date { font-size: 11px; color: #6b5a5c; margin-top: 4px; }
+  .dtw-weather { display: flex; align-items: center; gap: 10px; padding-top: 10px; border-top: 1px solid #f0dada; margin-top: 10px; }
+  .dtw-wx-icon { font-size: 24px; line-height: 1; flex-shrink: 0; }
+  .dtw-wx-info { flex: 1; min-width: 0; }
+  .dtw-wx-temp { font-size: 15px; font-weight: 700; color: #1a1a1a; line-height: 1.1; }
+  .dtw-wx-cond { font-size: 10.5px; color: #6b5a5c; margin-top: 2px; }
+  .dtw-wx-loc { font-size: 9.5px; color: #a0898c; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+  /* PDF Merger */
+  .pdf-panel { display: flex; flex-direction: column; gap: 12px; }
+  .pdf-drop-zone { border: 1.5px dashed #d9c5c8; border-radius: 8px; padding: 18px 12px; text-align: center; cursor: pointer; transition: background 0.15s, border-color 0.15s; background: #fff8f9; }
+  .pdf-drop-zone:hover, .pdf-drop-zone.drag-over { background: #fff0f2; border-color: #7b1a2e; }
+  .pdf-drop-icon { font-size: 24px; margin-bottom: 6px; display: block; }
+  .pdf-drop-label { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 2px; }
+  .pdf-drop-hint { font-size: 11px; color: #6b5a5c; }
+  .pdf-order-hint { font-size: 11px; color: #a0898c; }
+  .pdf-file-list { display: flex; flex-direction: column; gap: 6px; }
+  .pdf-file-item { display: flex; align-items: center; gap: 8px; background: #fff8f9; border: 1px solid #e5d3d6; border-radius: 8px; padding: 8px 10px; cursor: default; transition: opacity 0.15s; }
+  .pdf-file-item.dragging { opacity: 0.3; }
+  .pdf-drag-handle { color: #a0898c; font-size: 13px; cursor: grab; user-select: none; flex-shrink: 0; }
+  .pdf-file-name { flex: 1; font-size: 11px; color: #1a1a1a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pdf-file-size { font-size: 10px; color: #a0898c; white-space: nowrap; flex-shrink: 0; }
+  .pdf-remove-btn { background: none; border: none; cursor: pointer; color: #a0898c; font-size: 16px; line-height: 1; padding: 0 2px; flex-shrink: 0; transition: color 0.1s; }
+  .pdf-remove-btn:hover { color: #c62828; }
+  .pdf-add-more { display: inline-flex; align-items: center; gap: 5px; background: none; border: 1px dashed #d9c5c8; border-radius: 6px; color: #6b5a5c; font-size: 12px; cursor: pointer; padding: 6px 12px; transition: border-color 0.15s, color 0.15s; width: 100%; justify-content: center; font-family: inherit; }
+  .pdf-add-more:hover { border-color: #7b1a2e; color: #7b1a2e; }
+  .pdf-merge-btn { width: 100%; padding: 10px 14px; font-size: 13px; font-weight: 700; border-radius: 8px; border: none; background: #7b1a2e; color: #fff; cursor: pointer; transition: background 0.15s, opacity 0.15s; font-family: inherit; }
+  .pdf-merge-btn:hover:not(:disabled) { background: #9e1b32; }
+  .pdf-merge-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .pdf-status { font-size: 11px; color: #6b5a5c; text-align: center; min-height: 16px; }
+  .pdf-status.success { color: #166534; }
+  .pdf-status.error { color: #c62828; }
+  .pdf-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; }
+  .pdf-toggle-label { font-size: 12px; color: #1a1a1a; }
+  .toggle-switch { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; inset: 0; background: #e5d3d6; border-radius: 10px; cursor: pointer; transition: background 0.2s; }
+  .toggle-slider::before { content: ''; position: absolute; width: 14px; height: 14px; left: 3px; top: 3px; background: #a0898c; border-radius: 50%; transition: transform 0.2s, background 0.2s; }
+  .toggle-switch input:checked + .toggle-slider { background: #7b1a2e; }
+  .toggle-switch input:checked + .toggle-slider::before { transform: translateX(16px); background: #fff; }
+  .pdf-result { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+  .pdf-result-msg { font-size: 13px; color: #166534; font-weight: 700; }
+  .pdf-result-btns { display: flex; gap: 8px; width: 100%; }
+  .pdf-result-btns button { flex: 1; padding: 10px 10px; font-size: 13px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; transition: background 0.15s; font-family: inherit; }
+  .btn-download { background: #7b1a2e; color: #fff; }
+  .btn-download:hover { background: #9e1b32; }
+  .btn-fax { background: #fff; color: #7b1a2e; border: 1px solid #e5d3d6 !important; }
+  .btn-fax:hover { border-color: #7b1a2e !important; }
+  .pdf-start-over { font-size: 11px; color: #a0898c; cursor: pointer; background: none; border: none; text-decoration: underline; font-family: inherit; }
+  .pdf-start-over:hover { color: #1a1a1a; }
+
+  /* Fax panel */
+  .fax-panel { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #f0dada; padding-top: 12px; margin-top: 4px; }
+  .fax-panel-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; color: #7b1a2e; }
+  .fax-field { display: flex; flex-direction: column; gap: 3px; }
+  .fax-field label { font-size: 11px; color: #6b5a5c; font-weight: 500; }
+  .fax-field input, .fax-field textarea, .fax-field select { background: #fff; border: 1px solid #e5d3d6; border-radius: 6px; padding: 7px 10px; font-size: 12px; color: #1a1a1a; outline: none; transition: border-color 0.15s; font-family: inherit; }
+  .fax-field input:focus, .fax-field textarea:focus { border-color: #7b1a2e; }
+  .fax-field textarea { resize: vertical; min-height: 50px; }
+  .fax-fav-row { display: flex; align-items: center; gap: 6px; }
+  .fax-fav-row input[type="checkbox"] { accent-color: #7b1a2e; }
+  .fax-fav-row label { font-size: 11px; color: #1a1a1a; cursor: pointer; }
+  .fax-fav-load { display: flex; gap: 6px; align-items: center; }
+  .fax-fav-load select { flex: 1; }
+  .fax-fav-del { background: none; border: none; color: #a0898c; cursor: pointer; font-size: 15px; padding: 0 4px; transition: color 0.1s; }
+  .fax-fav-del:hover { color: #c62828; }
+  .fax-send-btn { width: 100%; padding: 10px 14px; font-size: 13px; font-weight: 700; border-radius: 8px; border: none; background: #7b1a2e; color: #fff; cursor: pointer; transition: background 0.15s; font-family: inherit; }
+  .fax-send-btn:hover:not(:disabled) { background: #9e1b32; }
+  .fax-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .fax-status { font-size: 11px; color: #6b5a5c; text-align: center; min-height: 16px; }
+  .fax-status.success { color: #166534; }
+  .fax-status.error { color: #c62828; }
+  .fax-status.sending { color: #b45309; }
+
+  /* VIN Lookup */
+  .vin-input { width: 100%; background: #fff; border: 1px solid #e5d3d6; border-radius: 6px; color: #1a1a1a; padding: 7px 10px; font-size: 13px; margin-bottom: 8px; outline: none; text-transform: uppercase; letter-spacing: 0.5px; font-family: inherit; }
+  .vin-input:focus { border-color: #7b1a2e; }
+  .vin-btn { width: 100%; background: #7b1a2e; color: #fff; border: none; border-radius: 6px; padding: 8px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.15s; }
+  .vin-btn:hover { background: #9e1b32; }
+  .vin-result { margin-top: 10px; display: none; background: #fff8f9; border: 1px solid #e5d3d6; border-radius: 6px; padding: 10px; font-size: 13px; color: #1a1a1a; line-height: 1.7; }
+
   footer { text-align: center; padding: 22px 20px; font-size: 11px; color: #7a6b6d; border-top: 1px solid #e5d3d6; background: #fff; }
   footer a { color: #7b1a2e; text-decoration: none; }
 
+  @media (max-width: 860px) {
+    .layout { flex-direction: column; }
+    .side-col { width: 100%; position: static; }
+  }
   @media (max-width: 560px) {
     .tiles { grid-template-columns: 1fr; }
     .hdr { padding: 24px 16px 22px; }
@@ -45,39 +143,521 @@
 </header>
 
 <main>
-  <div class="section-label">Estimate Builders</div>
-  <div class="tiles">
-    <a class="tile" href="CIG_PanamaCity_Estimate_Builder.html">
-      <div class="tile-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-      <div>
-        <div class="tile-name">Panama City Estimate Builder</div>
-        <div class="tile-tag">Surgical cost estimate — Panama City location</div>
-      </div>
-    </a>
-    <a class="tile" href="CIG_Tallahassee_Estimate_Builder.html">
-      <div class="tile-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-      <div>
-        <div class="tile-name">Tallahassee Estimate Builder</div>
-        <div class="tile-tag">Surgical cost estimate — Tallahassee location</div>
-      </div>
-    </a>
-  </div>
+  <div class="layout">
 
-  <div class="section-label">Imaging</div>
-  <div class="tiles">
-    <a class="tile" href="CIG_MRI_Script_Builder_FIXED (1).html">
-      <div class="tile-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg></div>
-      <div>
-        <div class="tile-name">MRI Script Builder</div>
-        <div class="tile-tag">MRI prescription order form</div>
+    <!-- MAIN COLUMN -->
+    <div class="main-col">
+      <div class="section-label">Estimate Builders</div>
+      <div class="tiles">
+        <a class="tile" href="CIG_PanamaCity_Estimate_Builder.html">
+          <div class="tile-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div>
+            <div class="tile-name">Panama City Estimate Builder</div>
+            <div class="tile-tag">Surgical cost estimate — Panama City location</div>
+          </div>
+        </a>
+        <a class="tile" href="CIG_Tallahassee_Estimate_Builder.html">
+          <div class="tile-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div>
+            <div class="tile-name">Tallahassee Estimate Builder</div>
+            <div class="tile-tag">Surgical cost estimate — Tallahassee location</div>
+          </div>
+        </a>
       </div>
-    </a>
-  </div>
+
+      <div class="section-label">Imaging</div>
+      <div class="tiles">
+        <a class="tile" href="CIG_MRI_Script_Builder_FIXED (1).html">
+          <div class="tile-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg></div>
+          <div>
+            <div class="tile-name">MRI Script Builder</div>
+            <div class="tile-tag">MRI prescription order form</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="side-col">
+
+      <!-- Date/Time/Weather -->
+      <div class="panel">
+        <div class="dtw-top">
+          <div class="dtw-time"><span id="dtwTime">—</span><span class="dtw-ampm" id="dtwAmpm"></span></div>
+        </div>
+        <div class="dtw-date" id="dtwDate">—</div>
+        <div class="dtw-weather">
+          <div class="dtw-wx-icon" id="dtwWxIcon">⏳</div>
+          <div class="dtw-wx-info">
+            <div class="dtw-wx-temp" id="dtwWxTemp">—</div>
+            <div class="dtw-wx-cond" id="dtwWxCond">Loading weather…</div>
+            <div class="dtw-wx-loc" id="dtwWxLoc">Tallahassee, FL</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PDF Merger -->
+      <div class="panel pdf-panel">
+        <div>
+          <div class="panel-title">PDF Merger</div>
+          <div class="panel-sub">Combine PDFs into one file — stays on your device.</div>
+        </div>
+
+        <div class="pdf-drop-zone" id="pdfDropZone">
+          <span class="pdf-drop-icon">📄</span>
+          <div class="pdf-drop-label">Drop PDFs here</div>
+          <div class="pdf-drop-hint">or click to browse</div>
+          <input type="file" id="pdfFileInput" accept=".pdf,application/pdf" multiple style="display:none">
+        </div>
+
+        <div id="pdfFileListWrapper" style="display:none; flex-direction:column; gap:8px;">
+          <div class="pdf-order-hint">Drag to reorder — merges top to bottom</div>
+          <div class="pdf-file-list" id="pdfFileItems"></div>
+          <button class="pdf-add-more" id="pdfAddMoreBtn">+ add more files</button>
+          <input type="file" id="pdfAddMoreInput" accept=".pdf,application/pdf" multiple style="display:none">
+          <div class="pdf-toggle-row">
+            <span class="pdf-toggle-label">Add page numbers</span>
+            <label class="toggle-switch"><input type="checkbox" id="pageNumToggle"><span class="toggle-slider"></span></label>
+          </div>
+          <button class="pdf-merge-btn" id="pdfMergeBtn" disabled>Add at least 2 PDFs</button>
+          <div class="pdf-status" id="pdfStatus"></div>
+        </div>
+
+        <div id="pdfResultPanel" style="display:none;">
+          <div class="pdf-result">
+            <div class="pdf-result-msg">&#10003; PDFs merged.</div>
+            <div class="pdf-result-btns">
+              <button class="btn-download" id="pdfDownloadBtn">&#11015; Download</button>
+              <button class="btn-fax" id="pdfFaxBtn">&#128224; Fax It</button>
+            </div>
+            <button class="pdf-start-over" id="pdfStartOver">start over</button>
+          </div>
+          <div class="fax-panel" id="faxPanel" style="display:none;">
+            <div class="fax-panel-title">Fax Cover Sheet</div>
+            <div class="fax-fav-load">
+              <select id="faxFavSelect" class="fax-field"><option value="">Load a favorite...</option></select>
+              <button class="fax-fav-del" id="faxFavDel" title="Delete selected favorite">&times;</button>
+            </div>
+            <div class="fax-field"><label>To — Name</label><input type="text" id="faxTo"></div>
+            <div class="fax-field"><label>To — Fax number</label><input type="tel" id="faxNumber" placeholder="(XXX) XXX-XXXX"></div>
+            <div class="fax-field"><label>From</label><input type="text" id="faxFrom" value="Capital Injury Group"></div>
+            <div class="fax-field"><label>Re</label><input type="text" id="faxRe"></div>
+            <div class="fax-field"><label>Notes</label><textarea id="faxNotes" rows="3"></textarea></div>
+            <div class="fax-fav-row">
+              <input type="checkbox" id="faxSaveFav"><label for="faxSaveFav">&#11088; Save as favorite</label>
+            </div>
+            <div class="fax-field" id="faxFavNameWrap" style="display:none;"><label>Favorite name</label><input type="text" id="faxFavName"></div>
+            <button class="fax-send-btn" id="faxSendBtn">Send Fax</button>
+            <div class="fax-status" id="faxStatus"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIN Lookup -->
+      <div class="panel">
+        <div class="panel-title" style="margin-bottom:10px;">VIN Lookup</div>
+        <input id="vin-input" type="text" placeholder="VIN (17 characters)" maxlength="17" class="vin-input">
+        <button onclick="lookupVin()" class="vin-btn">Look Up</button>
+        <div id="vin-result" class="vin-result"><div id="vin-result-inner"></div></div>
+      </div>
+
+    </div><!-- /side-col -->
+
+  </div><!-- /layout -->
 </main>
 
 <footer>
   Capital Injury Group &middot; Document Portal
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script>
+  var WORKER_URL    = 'https://spinemed-imap-worker.drberns.workers.dev';
+  var WORKER_SECRET = 'SpineMed2026';
+
+  // ── Date / Time / Weather ──────────────────────────────────
+  function dtwTick() {
+    var now = new Date();
+    var t = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    var parts = t.split(' ');
+    document.getElementById('dtwTime').textContent = parts[0];
+    document.getElementById('dtwAmpm').textContent = parts[1] || '';
+    document.getElementById('dtwDate').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  }
+  dtwTick(); setInterval(dtwTick, 30000);
+
+  function wxInfo(code, isDay) {
+    if (code === 0) return { icon: isDay ? '☀️' : '🌙', label: 'Clear' };
+    if (code === 1) return { icon: isDay ? '🌤️' : '🌙', label: 'Mostly clear' };
+    if (code === 2) return { icon: '⛅', label: 'Partly cloudy' };
+    if (code === 3) return { icon: '☁️', label: 'Overcast' };
+    if (code === 45 || code === 48) return { icon: '🌫️', label: 'Fog' };
+    if (code >= 51 && code <= 57) return { icon: '🌦️', label: 'Drizzle' };
+    if (code >= 61 && code <= 67) return { icon: '🌧️', label: 'Rain' };
+    if (code >= 71 && code <= 77) return { icon: '🌨️', label: 'Snow' };
+    if (code >= 80 && code <= 82) return { icon: '🌧️', label: 'Showers' };
+    if (code >= 85 && code <= 86) return { icon: '🌨️', label: 'Snow showers' };
+    if (code >= 95) return { icon: '⛈️', label: 'Thunderstorm' };
+    return { icon: '🌡️', label: '—' };
+  }
+
+  function fetchWeather(lat, lon, locLabel) {
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon
+            + '&current=temperature_2m,weather_code,is_day&temperature_unit=fahrenheit';
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var cur = data.current || {};
+        var info = wxInfo(cur.weather_code, cur.is_day === 1);
+        document.getElementById('dtwWxIcon').textContent = info.icon;
+        document.getElementById('dtwWxTemp').textContent = Math.round(cur.temperature_2m) + '°F';
+        document.getElementById('dtwWxCond').textContent = info.label;
+        if (locLabel) document.getElementById('dtwWxLoc').textContent = locLabel;
+      })
+      .catch(function() {
+        document.getElementById('dtwWxCond').textContent = 'Weather unavailable';
+        document.getElementById('dtwWxIcon').textContent = '🌡️';
+        document.getElementById('dtwWxTemp').textContent = '';
+      });
+  }
+
+  function initWeather() {
+    var tallahassee = function() { fetchWeather(30.4383, -84.2807, 'Tallahassee, FL'); };
+    if (!navigator.geolocation) return tallahassee();
+    navigator.geolocation.getCurrentPosition(
+      function(pos) { fetchWeather(pos.coords.latitude, pos.coords.longitude, 'Current location'); },
+      function() { tallahassee(); },
+      { timeout: 4000, maximumAge: 10 * 60 * 1000 }
+    );
+  }
+  initWeather();
+  setInterval(initWeather, 15 * 60 * 1000);
+
+  // ── Shared utilities ───────────────────────────────────────
+  var FAV_KEY = 'cig_fax_favorites';
+  function getFavs() { try { return JSON.parse(localStorage.getItem(FAV_KEY)) || []; } catch(e) { return []; } }
+  function saveFavs(arr) { localStorage.setItem(FAV_KEY, JSON.stringify(arr)); }
+  function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function isPDF(f) { return f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf'); }
+
+  function buildCoverSheet(toName, faxNo, fromName, re, notes, pageCount) {
+    var today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    return '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
+      '<style>body{margin:0;padding:40px 50px;font-family:Arial,sans-serif;color:#1a1a18;background:#fff;}' +
+      '.hdr{display:flex;align-items:center;gap:16px;margin-bottom:20px;}' +
+      '.hdr img{height:48px;}' +
+      '.hdr-text{font-size:20px;font-weight:700;color:#1a1a18;}' +
+      '.divider{height:2px;background:#7b1a2e;margin-bottom:24px;}' +
+      'table{width:100%;border-collapse:collapse;margin-bottom:24px;}' +
+      'td{padding:8px 12px;font-size:14px;border-bottom:1px solid #e5e7eb;vertical-align:top;}' +
+      'td.lbl{width:100px;font-weight:600;color:#4a5568;text-transform:uppercase;font-size:11px;letter-spacing:0.5px;}' +
+      '.notes{margin-top:16px;padding:16px;background:#f9fafb;border-radius:8px;font-size:13px;line-height:1.6;white-space:pre-wrap;}' +
+      '.footer{margin-top:40px;padding-top:14px;border-top:1px solid #e5e7eb;font-size:10px;color:#6b7280;line-height:1.6;}</style></head><body>' +
+      '<div class="hdr"><img src="https://raw.githubusercontent.com/DrBerns/CIG/main/CIG_Logo_transparent.png" crossorigin="anonymous">' +
+      '<div class="hdr-text">Capital Injury Group</div></div>' +
+      '<div class="divider"></div>' +
+      '<table>' +
+      '<tr><td class="lbl">To</td><td>' + esc(toName) + '</td></tr>' +
+      '<tr><td class="lbl">Fax</td><td>' + esc(faxNo) + '</td></tr>' +
+      '<tr><td class="lbl">From</td><td>' + esc(fromName) + '</td></tr>' +
+      '<tr><td class="lbl">Date</td><td>' + today + '</td></tr>' +
+      '<tr><td class="lbl">Re</td><td>' + esc(re || '\u2014') + '</td></tr>' +
+      '<tr><td class="lbl">Pages</td><td>' + pageCount + ' (including cover sheet)</td></tr>' +
+      '</table>' +
+      (notes ? '<div class="notes">' + esc(notes) + '</div>' : '') +
+      '<div class="footer">This fax may contain confidential information. If you received this in error, please destroy it and notify us immediately.</div>' +
+      '</body></html>';
+  }
+
+  function encodePdfToB64(bytes) {
+    var u8 = new Uint8Array(bytes);
+    var bin = '';
+    var chunk = 8192;
+    for (var i = 0; i < u8.length; i += chunk) bin += String.fromCharCode.apply(null, u8.subarray(i, i + chunk));
+    return btoa(bin);
+  }
+
+  function fmtFaxInput(el) {
+    var x = el.value.replace(/\D/g, '').slice(0, 10);
+    if (x.length > 6) el.value = '(' + x.slice(0,3) + ') ' + x.slice(3,6) + '-' + x.slice(6);
+    else if (x.length > 3) el.value = '(' + x.slice(0,3) + ') ' + x.slice(3);
+    else if (x.length > 0) el.value = '(' + x;
+    else el.value = '';
+  }
+
+  function loadFavInto(selectEl) {
+    var favs = getFavs();
+    selectEl.innerHTML = '<option value="">Load a favorite...</option>';
+    favs.forEach(function(f, i) {
+      var opt = document.createElement('option');
+      opt.value = i; opt.textContent = f.name;
+      selectEl.appendChild(opt);
+    });
+  }
+
+  async function mergePdfFiles(files, addPageNums) {
+    var merged = await PDFLib.PDFDocument.create();
+    for (var i = 0; i < files.length; i++) {
+      var buf = await files[i].arrayBuffer();
+      var doc = await PDFLib.PDFDocument.load(buf);
+      var pages = await merged.copyPages(doc, doc.getPageIndices());
+      pages.forEach(function(p) { merged.addPage(p); });
+    }
+    if (addPageNums) {
+      var allPages = merged.getPages();
+      var total = allPages.length;
+      var font = await merged.embedFont(PDFLib.StandardFonts.Helvetica);
+      for (var p = 0; p < total; p++) {
+        var pg = allPages[p];
+        var txt = 'Page ' + (p + 1) + ' of ' + total;
+        var tw = font.widthOfTextAtSize(txt, 9);
+        var pw = pg.getWidth();
+        pg.drawText(txt, { x: (pw - tw) / 2, y: 20, size: 9, font: font, color: PDFLib.rgb(0.58, 0.64, 0.72) });
+      }
+    }
+    return { bytes: await merged.save(), pageCount: merged.getPageCount() };
+  }
+
+  async function sendFax(toName, faxNo, fromName, re, notes, pdfBytes, pdfPageCount, statusEl, sendBtn) {
+    var coverHtml = buildCoverSheet(toName, faxNo, fromName, re, notes, pdfPageCount + 1);
+    var coverB64 = btoa(unescape(encodeURIComponent(coverHtml)));
+    var pdfB64 = encodePdfToB64(pdfBytes);
+
+    statusEl.className = 'fax-status sending';
+    statusEl.textContent = 'Sending fax\u2026';
+    sendBtn.disabled = true;
+
+    try {
+      var resp = await fetch(WORKER_URL + '/sendfax', {
+        method: 'POST',
+        headers: { 'x-api-secret': WORKER_SECRET, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          recipname: toName, faxno: faxNo, tagname: fromName, re: re,
+          faxfilenames: ['cover_sheet.html', 'merged.pdf'],
+          faxfiledata: [coverB64, pdfB64]
+        })
+      });
+      var text = await resp.text();
+      if (resp.ok && text.trim().match(/^\d+$/)) {
+        statusEl.className = 'fax-status success';
+        statusEl.textContent = '\u2713 Fax queued \u2014 Job ID: ' + text.trim();
+        return true;
+      } else if (resp.ok) {
+        statusEl.className = 'fax-status success';
+        statusEl.textContent = '\u2713 Sent \u2014 ' + text.trim();
+        return true;
+      } else {
+        statusEl.className = 'fax-status error';
+        statusEl.textContent = 'Error: ' + text.trim();
+        return false;
+      }
+    } catch(err) {
+      statusEl.className = 'fax-status error';
+      statusEl.textContent = 'Send failed: ' + (err.message || 'network error');
+      return false;
+    } finally {
+      sendBtn.disabled = false;
+    }
+  }
+
+  // ── PDF MERGER ─────────────────────────────────────────────
+  var pdfDropZone       = document.getElementById('pdfDropZone');
+  var pdfFileInput      = document.getElementById('pdfFileInput');
+  var pdfFileListWrapper= document.getElementById('pdfFileListWrapper');
+  var pdfFileItemsEl    = document.getElementById('pdfFileItems');
+  var pdfMergeBtn       = document.getElementById('pdfMergeBtn');
+  var pdfStatusEl       = document.getElementById('pdfStatus');
+  var pdfAddMoreBtn     = document.getElementById('pdfAddMoreBtn');
+  var pdfAddMoreInput   = document.getElementById('pdfAddMoreInput');
+
+  var pdfFiles = [];
+  var pdfDragSrcIdx = null;
+  var mergedPdfBytes = null;
+  var mergedPageCount = 0;
+
+  pdfDropZone.addEventListener('click', function() { pdfFileInput.click(); });
+  pdfDropZone.addEventListener('dragover', function(e) { e.preventDefault(); pdfDropZone.classList.add('drag-over'); });
+  pdfDropZone.addEventListener('dragleave', function() { pdfDropZone.classList.remove('drag-over'); });
+  pdfDropZone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    pdfDropZone.classList.remove('drag-over');
+    pdfAddFiles(Array.from(e.dataTransfer.files).filter(isPDF));
+  });
+  pdfFileInput.addEventListener('change', function() { pdfAddFiles(Array.from(pdfFileInput.files)); pdfFileInput.value = ''; });
+  pdfAddMoreBtn.addEventListener('click', function() { pdfAddMoreInput.click(); });
+  pdfAddMoreInput.addEventListener('change', function() { pdfAddFiles(Array.from(pdfAddMoreInput.files)); pdfAddMoreInput.value = ''; });
+
+  function pdfAddFiles(newFiles) { pdfFiles = pdfFiles.concat(newFiles); pdfRender(); }
+
+  function pdfFormatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return Math.round(bytes / 1024) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+  }
+
+  function pdfRender() {
+    pdfFileItemsEl.innerHTML = '';
+    pdfFiles.forEach(function(f, i) {
+      var item = document.createElement('div');
+      item.className = 'pdf-file-item';
+      item.draggable = true;
+      item.innerHTML =
+        '<span class="pdf-drag-handle" title="Drag to reorder">\u2807</span>' +
+        '<span class="pdf-file-name">' + esc(f.name) + '</span>' +
+        '<span class="pdf-file-size">' + pdfFormatSize(f.size) + '</span>' +
+        '<button class="pdf-remove-btn" data-i="' + i + '" title="Remove">\u00d7</button>';
+      item.addEventListener('dragstart', function() {
+        pdfDragSrcIdx = i;
+        setTimeout(function() { item.classList.add('dragging'); }, 0);
+      });
+      item.addEventListener('dragend', function() { item.classList.remove('dragging'); });
+      item.addEventListener('dragover', function(e) { e.preventDefault(); });
+      item.addEventListener('drop', function(e) {
+        e.preventDefault();
+        if (pdfDragSrcIdx === null || pdfDragSrcIdx === i) return;
+        var moved = pdfFiles.splice(pdfDragSrcIdx, 1)[0];
+        pdfFiles.splice(i, 0, moved);
+        pdfDragSrcIdx = null;
+        pdfRender();
+      });
+      item.querySelector('.pdf-remove-btn').addEventListener('click', function() { pdfFiles.splice(i, 1); pdfRender(); });
+      pdfFileItemsEl.appendChild(item);
+    });
+    var hasFiles = pdfFiles.length > 0;
+    pdfFileListWrapper.style.display = hasFiles ? 'flex' : 'none';
+    pdfDropZone.style.display = hasFiles ? 'none' : 'block';
+    pdfMergeBtn.disabled = pdfFiles.length < 2;
+    pdfMergeBtn.textContent = pdfFiles.length < 2
+      ? 'Add at least 2 PDFs'
+      : 'Merge ' + pdfFiles.length + ' PDFs';
+    pdfStatusEl.textContent = '';
+    pdfStatusEl.className = 'pdf-status';
+  }
+
+  pdfMergeBtn.addEventListener('click', async function() {
+    if (pdfFiles.length < 2) return;
+    pdfMergeBtn.disabled = true;
+    pdfStatusEl.className = 'pdf-status';
+    pdfStatusEl.textContent = 'Merging\u2026';
+    try {
+      var result = await mergePdfFiles(pdfFiles, document.getElementById('pageNumToggle').checked);
+      mergedPdfBytes = result.bytes;
+      mergedPageCount = result.pageCount;
+      pdfFileListWrapper.style.display = 'none';
+      pdfDropZone.style.display = 'none';
+      document.getElementById('pdfResultPanel').style.display = 'block';
+      pdfStatusEl.textContent = '';
+    } catch(err) {
+      pdfStatusEl.className = 'pdf-status error';
+      pdfStatusEl.textContent = 'Error: ' + (err.message || 'Could not merge.');
+    } finally {
+      pdfMergeBtn.disabled = false;
+    }
+  });
+
+  document.getElementById('pdfDownloadBtn').addEventListener('click', function() {
+    if (!mergedPdfBytes) return;
+    var blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a'); a.href = url; a.download = 'merged.pdf';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('pdfFaxBtn').addEventListener('click', function() {
+    document.getElementById('faxPanel').style.display = 'flex';
+    loadFavInto(document.getElementById('faxFavSelect'));
+  });
+
+  document.getElementById('pdfStartOver').addEventListener('click', function() {
+    mergedPdfBytes = null; mergedPageCount = 0; pdfFiles = [];
+    document.getElementById('pdfResultPanel').style.display = 'none';
+    document.getElementById('faxPanel').style.display = 'none';
+    pdfDropZone.style.display = 'block';
+    pdfFileListWrapper.style.display = 'none';
+    pdfRender();
+    ['faxTo','faxNumber','faxRe','faxNotes','faxFavName'].forEach(function(id){ document.getElementById(id).value = ''; });
+    document.getElementById('faxFrom').value = 'Capital Injury Group';
+    document.getElementById('faxSaveFav').checked = false;
+    document.getElementById('faxFavNameWrap').style.display = 'none';
+    document.getElementById('faxStatus').textContent = '';
+  });
+
+  document.getElementById('faxSaveFav').addEventListener('change', function() {
+    document.getElementById('faxFavNameWrap').style.display = this.checked ? 'flex' : 'none';
+  });
+  document.getElementById('faxNumber').addEventListener('input', function() { fmtFaxInput(this); });
+
+  document.getElementById('faxFavSelect').addEventListener('change', function() {
+    var idx = this.value; if (idx === '') return;
+    var fav = getFavs()[parseInt(idx)]; if (!fav) return;
+    document.getElementById('faxTo').value = fav.recipname || '';
+    document.getElementById('faxNumber').value = fav.faxno || '';
+    document.getElementById('faxFrom').value = fav.from || 'Capital Injury Group';
+    document.getElementById('faxRe').value = fav.re || '';
+    document.getElementById('faxNumber').dispatchEvent(new Event('input'));
+  });
+
+  document.getElementById('faxFavDel').addEventListener('click', function() {
+    var sel = document.getElementById('faxFavSelect');
+    if (sel.value === '') return;
+    var favs = getFavs(); favs.splice(parseInt(sel.value), 1); saveFavs(favs);
+    loadFavInto(sel);
+  });
+
+  document.getElementById('faxSendBtn').addEventListener('click', async function() {
+    var toName = document.getElementById('faxTo').value.trim();
+    var faxNo = document.getElementById('faxNumber').value.replace(/\D/g, '');
+    var fromName = document.getElementById('faxFrom').value.trim() || 'Capital Injury Group';
+    var re = document.getElementById('faxRe').value.trim();
+    var notes = document.getElementById('faxNotes').value.trim();
+    var statusEl = document.getElementById('faxStatus');
+    if (!toName) { statusEl.className = 'fax-status error'; statusEl.textContent = 'Recipient name is required.'; return; }
+    if (faxNo.length !== 10) { statusEl.className = 'fax-status error'; statusEl.textContent = 'Fax number must be 10 digits.'; return; }
+    if (!mergedPdfBytes) { statusEl.className = 'fax-status error'; statusEl.textContent = 'No merged PDF available.'; return; }
+    if (document.getElementById('faxSaveFav').checked) {
+      var favName = document.getElementById('faxFavName').value.trim();
+      if (favName) { var favs = getFavs(); favs.push({ name: favName, recipname: toName, faxno: faxNo, from: fromName, re: re }); saveFavs(favs); loadFavInto(document.getElementById('faxFavSelect')); }
+    }
+    await sendFax(toName, faxNo, fromName, re, notes, mergedPdfBytes, mergedPageCount, statusEl, document.getElementById('faxSendBtn'));
+  });
+
+  // ── VIN Lookup ─────────────────────────────────────────────
+  async function lookupVin() {
+    var vin = document.getElementById('vin-input').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+    var resultBox = document.getElementById('vin-result');
+    var resultInner = document.getElementById('vin-result-inner');
+    if (vin.length !== 17) {
+      resultInner.innerHTML = '<span style="color:#c62828;">VIN must be 17 characters.</span>';
+      resultBox.style.display = 'block';
+      return;
+    }
+    resultInner.innerHTML = '<span style="color:#a0898c;">Looking up…</span>';
+    resultBox.style.display = 'block';
+    try {
+      var res = await fetch(WORKER_URL + '/vin?vin=' + encodeURIComponent(vin), { headers: { 'x-api-secret': WORKER_SECRET } });
+      var data = await res.json();
+      if (!res.ok || !data.year) {
+        resultInner.innerHTML = '<span style="color:#c62828;">No vehicle found for that VIN.</span>';
+        return;
+      }
+      var make = (data.make && (data.make.name || data.make)) || '';
+      var model = (data.model && (data.model.name || data.model)) || '';
+      var trim = (data.trim && (data.trim.name || data.trim)) || '';
+      var extra = [data.engine && (data.engine.name || data.engine), data.bodyType].filter(Boolean).join(' \u00b7 ');
+      resultInner.innerHTML =
+        '<div style="color:#a0898c; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;">VIN \u00b7 ' + vin + '</div>' +
+        '<div style="font-size:15px; font-weight:700; color:#7b1a2e;">' + data.year + ' ' + make + ' ' + model + '</div>' +
+        (trim ? '<div style="color:#9e1b32; font-size:12px; margin-top:2px;">' + trim + '</div>' : '') +
+        (extra ? '<div style="color:#6b5a5c; font-size:11px; margin-top:3px;">' + extra + '</div>' : '');
+    } catch(err) {
+      resultInner.innerHTML = '<span style="color:#c62828;">Lookup failed. Check your connection.</span>';
+    }
+  }
+  document.getElementById('vin-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') lookupVin();
+  });
+</script>
 
 </body>
 </html>
