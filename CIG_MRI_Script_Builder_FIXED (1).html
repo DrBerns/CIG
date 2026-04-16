@@ -4,7 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Capital Injury Group — MRI Script Builder</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 const IMG_CIG  = "https://raw.githubusercontent.com/DrBerns/CIG/main/CIG_Logo_transparent.png";
 const IMG_DEEB = "https://raw.githubusercontent.com/DrBerns/CIG/main/Eldeeb_Signature_Black.png";
@@ -154,15 +155,17 @@ body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(
 .modal-btn-gray{background:#f0f0f0;color:#555;border:1px solid #ddd;}
 .modal-btn-gray:hover{background:#e8e8e8;}
 @media print{
-  body{background:white;}
+  @page{size:letter;margin:0.3in;}
+  html,body{background:white;margin:0;padding:0;}
   .app{display:block!important;}
   .sb{display:none!important;}
-  .main{padding:0!important;background:white;display:block;align-items:unset;}
-  .doc-wrap{gap:0;}
-  .pg{box-shadow:none;width:100%;page-break-after:always;}
+  .main{padding:0!important;margin:0!important;background:white;display:block!important;align-items:unset!important;}
+  .doc-wrap{gap:0;display:block!important;width:100%!important;}
+  .pg{box-shadow:none!important;width:100%!important;margin:0!important;page-break-after:always;page-break-inside:avoid;break-inside:avoid;}
   .pg:last-child{page-break-after:avoid;}
   .ctr-hint,.spotlight-back,.ctr-spotlight-back,.loc-hint{display:none!important;}
   .office-bar-unset{display:none!important;}
+  .modal-overlay{display:none!important;}
 }
 </style>
 </head>
@@ -230,7 +233,7 @@ body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(
   <div class="addr-strip" id="addr-strip-p1"></div>
   <div class="hdr-row">
     <div class="hdr-left">
-      <img id="pv-logo" class="hdr-logo" src="" alt="Capital Injury Group">
+      <img id="pv-logo" class="hdr-logo" src="" crossorigin="anonymous" alt="Capital Injury Group">
       <div class="hdr-title">MRI Imaging Prescription<span>Capital Injury Group</span></div>
     </div>
     <div class="hdr-right">
@@ -276,7 +279,7 @@ body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(
     <div style="display:flex;justify-content:center;padding:4px 0 6px;">
       <div class="sig-col" style="align-items:center;">
         <div class="sig-img-wrap">
-          <img id="pv-sig" class="sig-img" src="" alt="Signature" style="display:block;">
+          <img id="pv-sig" class="sig-img" src="" crossorigin="anonymous" alt="Signature" style="display:block;">
           <div id="pv-sig-text" style="display:none;font-family:'Dancing Script',cursive;font-size:17pt;color:var(--crim-dark);line-height:1;padding-bottom:2px;">Mohammad Eldeeb, M.D.</div>
         </div>
         <div class="sig-lbl" style="width:220px;">Signature</div>
@@ -287,7 +290,7 @@ body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(
 </div>
 <div class="pg">
   <div class="addr-strip" id="addr-strip-p2"></div>
-  <div class="hdr-row" style="padding:12px 36px;"><img id="pv-logo2" class="hdr-logo" src="" alt="Capital Injury Group" style="height:50px;"><div class="p2note">*Please call the ordering physician if there are any questions related to these orders PRIOR to imaging the patient.</div></div>
+  <div class="hdr-row" style="padding:12px 36px;"><img id="pv-logo2" class="hdr-logo" src="" crossorigin="anonymous" alt="Capital Injury Group" style="height:50px;"><div class="p2note">*Please call the ordering physician if there are any questions related to these orders PRIOR to imaging the patient.</div></div>
   <div class="body-pad">
     <div class="pt-grid">
       <div class="pt-f"><div class="pt-lbl">Patient Name</div><div class="pt-val" id="p2-name"></div></div>
@@ -436,44 +439,43 @@ function clearCenter(){selectedCenter=-1;renderCenters();}
 function showPreview(){const src=document.getElementById("pdf-content");const clone=src.cloneNode(true);clone.style.transform="scale(0.63)";clone.style.transformOrigin="top center";clone.style.width="856px";clone.style.marginBottom="-37%";const container=document.getElementById("modal-content");container.innerHTML="";container.appendChild(clone);document.getElementById("preview-modal").classList.add("show");}
 function closePreview(){document.getElementById("preview-modal").classList.remove("show");}
 function doExport(){closePreview();setTimeout(exportPDF,100);}
-function exportPDF(){
+async function exportPDF(){
   const nm=v("pt_name").replace(/\s+/g,"_")||"MRI_Prescription";
   const hint=document.getElementById("ctr-hint");
   const lochint=document.getElementById("loc-hint");
-  hint.style.display="none";
+  if(hint)hint.style.display="none";
   if(lochint)lochint.style.display="none";
-  const sb=document.querySelector(".sb");
-  const main=document.querySelector(".main");
-  const el=document.getElementById("pdf-content");
-  const prevSbDisplay=sb.style.display;
-  const prevMainPadding=main.style.padding;
-  const prevMainAlign=main.style.alignItems;
-  const prevMainDisplay=main.style.display;
-  sb.style.display="none";
-  main.style.padding="0";
-  main.style.alignItems="unset";
-  main.style.display="block";
-  el.style.width="856px";
-  requestAnimationFrame(()=>{
-    requestAnimationFrame(()=>{
-      html2pdf().set({
-        margin:0,
-        filename:nm+"_CIG_MRI_Prescription.pdf",
-        image:{type:"jpeg",quality:0.97},
-        html2canvas:{scale:2,useCORS:true,letterRendering:true,scrollX:0,scrollY:0,width:856,windowWidth:856},
-        jsPDF:{unit:"px",format:[856,1108],orientation:"portrait",hotfixes:["px_scaling"]},
-        pagebreak:{before:".pg:nth-child(2)"}
-      }).from(el).save().then(()=>{
-        sb.style.display=prevSbDisplay;
-        main.style.padding=prevMainPadding;
-        main.style.alignItems=prevMainAlign;
-        main.style.display=prevMainDisplay;
-        el.style.width="";
-        hint.style.display="block";
-        if(lochint)lochint.style.display="block";
-      });
-    });
-  });
+  try{
+    if(!(window.jspdf&&window.jspdf.jsPDF))throw new Error("jsPDF 2.x not loaded (window.jspdf.jsPDF missing)");
+    if(typeof html2canvas!=="function")throw new Error("html2canvas not loaded");
+    const root=document.getElementById("pdf-content");
+    if(!root)throw new Error("#pdf-content not found");
+    const pages=root.querySelectorAll(".pg");
+    if(!pages.length)throw new Error("No .pg pages found inside #pdf-content");
+    const JsPDF=window.jspdf.jsPDF;
+    const pdf=new JsPDF("portrait","in","letter");
+    const pageW=8.5,pageH=11,pageAspect=pageH/pageW;
+    for(let i=0;i<pages.length;i++){
+      const canvas=await html2canvas(pages[i],{scale:2,useCORS:true,logging:false,backgroundColor:"#ffffff"});
+      if(!canvas||!canvas.width||!canvas.height)throw new Error("html2canvas returned empty canvas for page "+(i+1));
+      const imgData=canvas.toDataURL("image/jpeg",0.95);
+      const canvasAspect=canvas.height/canvas.width;
+      let imgW,imgH;
+      if(canvasAspect>pageAspect){imgH=pageH;imgW=pageH/canvasAspect;}
+      else{imgW=pageW;imgH=pageW*canvasAspect;}
+      const x=(pageW-imgW)/2;
+      if(i>0)pdf.addPage();
+      pdf.addImage(imgData,"JPEG",x,0,imgW,imgH);
+    }
+    pdf.save(nm+"_CIG_MRI_Prescription.pdf");
+  }catch(err){
+    const stack=err&&err.stack?"\n\n"+err.stack.split("\n").slice(0,4).join("\n"):"";
+    alert("PDF export error: "+(err&&err.message?err.message:err)+stack);
+    console.error("PDF export error",err);
+  }finally{
+    if(hint)hint.style.display="block";
+    if(lochint)lochint.style.display="block";
+  }
 }
 function toggleInd(id){const key="ind_"+id+"_checked";window[key]=!window[key];const el=document.getElementById("sq-"+id);if(el)el.innerHTML=window[key]?"&#10003;":"";}
 function toggleDx(id){const key="dx_"+id+"_checked";window[key]=!window[key];const el=document.getElementById("sq-"+id);if(el)el.innerHTML=window[key]?"&#10003;":"";}
