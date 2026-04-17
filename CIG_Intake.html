@@ -172,6 +172,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
 .xray-section{display:none;}
 .xray-section.show{display:block;}
 
+/* ── PHOTO ATTACHMENTS ── */
+.photo-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.photo-btns .btn{min-height:48px;font-size:14px;}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+.photo-thumb{position:relative;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;aspect-ratio:1;background:var(--lgray);}
+.photo-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.photo-thumb .photo-badge{position:absolute;top:6px;left:6px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1;}
+.photo-thumb .photo-del{position:absolute;top:5px;right:5px;background:rgba(255,255,255,0.85);border:none;width:28px;height:28px;border-radius:50%;font-size:16px;font-weight:700;color:var(--gray);cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.15s;}
+.photo-thumb .photo-del:hover{background:#c0392b;color:#fff;}
+.photo-empty{color:var(--gray);font-size:13px;padding:14px 0;text-align:center;}
+.photo-cap{font-size:12px;color:var(--gray);margin-top:6px;text-align:center;}
+
 @media(max-width:600px){
   .g2,.g3{grid-template-columns:1fr;}
   .s2,.s3{grid-column:span 1;}
@@ -180,6 +192,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   .choices.grid2{grid-template-columns:1fr;}
   .pb{width:36px;height:36px;font-size:12px;}
   .body-wrap{flex-direction:column;}
+  .photo-grid{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
@@ -634,6 +647,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
           <input type="hidden" id="preg_status">
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- PHOTO ATTACHMENTS -->
+  <div class="card">
+    <div class="card-hdr"><h2>Photo Attachments</h2><p>Please attach photos of your driver's license (front &amp; back) and insurance card(s) (front &amp; back). Up to 6 photos total.</p></div>
+    <div class="card-body">
+      <div class="photo-btns" id="photoBtns">
+        <button class="btn btn-navy" type="button" onclick="document.getElementById('photoCam').click()">Take Photo</button>
+        <button class="btn btn-ghost" type="button" onclick="document.getElementById('photoFile').click()">Choose from Files</button>
+      </div>
+      <input type="file" id="photoCam" accept="image/*" capture="environment" style="display:none">
+      <input type="file" id="photoFile" accept="image/*" multiple style="display:none">
+      <div class="photo-cap" id="photoCap">No photos attached yet</div>
+      <div class="photo-grid" id="photoGrid"></div>
     </div>
   </div>
 
@@ -1171,6 +1199,76 @@ async function sendToWorker(){
   }
 }
 
+// ── PHOTO ATTACHMENTS ──────────────────
+var photoDataUrls = [];
+var PHOTO_MAX = 6;
+
+function downscaleImage(file) {
+  return new Promise(function(resolve) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var img = new Image();
+      img.onload = function() {
+        var MAX = 1600, w = img.width, h = img.height;
+        if (w > MAX || h > MAX) {
+          if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+          else { w = Math.round(w * MAX / h); h = MAX; }
+        }
+        var c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(c.toDataURL('image/jpeg', 0.85));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function addPhotos(files) {
+  for (var i = 0; i < files.length && photoDataUrls.length < PHOTO_MAX; i++) {
+    if (!files[i].type.startsWith('image/')) continue;
+    photoDataUrls.push(await downscaleImage(files[i]));
+  }
+  renderPhotoGrid();
+}
+
+function removePhoto(idx) {
+  photoDataUrls.splice(idx, 1);
+  renderPhotoGrid();
+}
+
+function renderPhotoGrid() {
+  var grid = document.getElementById('photoGrid');
+  var cap = document.getElementById('photoCap');
+  var btns = document.getElementById('photoBtns');
+  grid.innerHTML = '';
+  if (photoDataUrls.length === 0) {
+    cap.textContent = 'No photos attached yet';
+    btns.querySelectorAll('button').forEach(function(b){ b.disabled = false; });
+    return;
+  }
+  cap.textContent = photoDataUrls.length + ' of ' + PHOTO_MAX + ' photos attached';
+  var atMax = photoDataUrls.length >= PHOTO_MAX;
+  btns.querySelectorAll('button').forEach(function(b){ b.disabled = atMax; });
+  if (atMax) cap.textContent = 'Maximum ' + PHOTO_MAX + ' photos reached';
+  photoDataUrls.forEach(function(dataUrl, i) {
+    var thumb = document.createElement('div');
+    thumb.className = 'photo-thumb';
+    thumb.innerHTML = '<img src="' + dataUrl + '"><div class="photo-badge">' + (i+1) + '</div><button class="photo-del" type="button" onclick="removePhoto('+i+')">&times;</button>';
+    grid.appendChild(thumb);
+  });
+}
+
+document.getElementById('photoCam').addEventListener('change', function() {
+  if (this.files.length) addPhotos(this.files);
+  this.value = '';
+});
+document.getElementById('photoFile').addEventListener('change', function() {
+  if (this.files.length) addPhotos(this.files);
+  this.value = '';
+});
+
 // ── PDF HTML BUILDER (shared by exportPDF and sendToWorker) ──
 function buildPDFHtml(){
   const gv = id => { const e=document.getElementById(id); return e?e.value.trim():''; };
@@ -1305,7 +1403,26 @@ function buildPDFHtml(){
   <div style="margin-top:18px;padding-top:10px;border-top:2px solid #cccccc;font-size:9pt;color:#777777;text-align:center;font-family:Arial,sans-serif;">
     Capital Injury Group &nbsp;\u2022&nbsp; info@capitalinjurygroup.com &nbsp;\u2022&nbsp; Ph (850) 766-7018 &nbsp;\u2022&nbsp; Fax (850) 387-0590
   </div>
-</div>`;
+</div>` + buildPhotoPages();
+}
+
+function buildPhotoPages() {
+  if (!photoDataUrls.length) return '';
+  var html = '';
+  for (var i = 0; i < photoDataUrls.length; i++) {
+    if (i % 2 === 0) {
+      html += '<div style="page-break-before:always;font-family:Arial,Helvetica,sans-serif;width:680px;background:#fff;padding-top:16px;">';
+      if (i === 0) {
+        html += '<div style="font-size:10pt;font-weight:700;text-transform:uppercase;letter-spacing:0.9px;color:#7b1a2e;padding-bottom:5px;border-bottom:3px solid #7b1a2e;margin-bottom:14px;">Photo Attachments</div>';
+      }
+    }
+    html += '<div style="margin-bottom:14px;page-break-inside:avoid;">'
+      + '<img src="' + photoDataUrls[i] + '" style="max-width:100%;height:auto;border:1px solid #ccc;border-radius:4px;display:block;">'
+      + '<div style="font-size:9pt;color:#555;margin-top:4px;font-family:Arial,sans-serif;">Photo ' + (i+1) + '</div>'
+      + '</div>';
+    if (i % 2 === 1 || i === photoDataUrls.length - 1) html += '</div>';
+  }
+  return html;
 }
 
 // ── PDF EXPORT ──────────────────────
