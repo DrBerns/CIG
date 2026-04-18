@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Suncoast SpineMed — Evaluaciones de Resultados</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#7b1a2e; --blue:#9e1b32; --lblue:#faeff1;
+  --green:#7b1a2e; --lgreen:#faeff1;
+  --red:#c0392b; --lred:#fdf3f3;
+  --gray:#5a6a7d; --lgray:#f4f6f9; --border:#cdd5e0;
+  --white:#fff; --radius:14px; --shadow:0 4px 24px rgba(123,26,46,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-height:100vh;}
+button{font-family:inherit;}
+
+.hdr{background:var(--white);border-bottom:3px solid var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 18px rgba(123,26,46,0.09);}
+.hdr-inner{max-width:860px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;}
+.brand-mark{line-height:1;}
+.brand-mark .sp,.brand-mark .me,.brand-mark .d{font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;letter-spacing:-0.5px;}
+.brand-mark .sp,.brand-mark .d{color:var(--navy);}
+.brand-mark .me{color:var(--green);}
+.brand-sub{font-size:10.5px;color:var(--gray);margin-top:2px;letter-spacing:0.2px;text-transform:uppercase;font-weight:600;}
+.hdr-right{text-align:right;}
+.hdr-step-lbl{font-size:10.5px;color:var(--gray);}
+.hdr-step-name{font-size:13.5px;font-weight:700;color:var(--navy);margin-top:1px;}
+.prog-dots{display:flex;gap:4px;padding:0 20px 10px;max-width:860px;margin:0 auto;}
+.dot{height:5px;border-radius:3px;background:var(--border);flex:1;transition:background 0.3s;}
+.dot.done{background:rgba(123,26,46,0.55);}
+.dot.active{background:var(--navy);}
+
+.stage{max-width:860px;margin:22px auto;padding:0 20px 140px;}
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px;}
+.card-hdr{background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);padding:20px 24px 16px;color:var(--white);}
+.card-hdr h1{font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;line-height:1.2;}
+.card-hdr h2{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:400;margin-bottom:3px;}
+.card-hdr p{font-size:13px;opacity:0.85;line-height:1.5;margin-top:4px;}
+.card-body{padding:22px 24px;}
+
+.fg{display:grid;gap:14px;}
+.g2{grid-template-columns:1fr 1fr;}
+.f{display:flex;flex-direction:column;gap:5px;}
+.f label{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.8px;}
+.fi{border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;font-size:16px;font-family:'DM Sans',sans-serif;color:#1a2535;background:var(--lgray);outline:none;transition:border-color 0.2s,background 0.2s,box-shadow 0.2s;width:100%;min-height:48px;}
+.fi:focus{border-color:var(--navy);background:var(--white);box-shadow:0 0 0 3px rgba(123,26,46,0.12);}
+
+.sec-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--navy);margin:18px 0 10px;padding-bottom:5px;border-bottom:2px solid var(--lblue);}
+
+.ck-list{display:grid;gap:9px;}
+.brand-toggle{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.brand-btn{padding:14px 16px;border:1.5px solid var(--border);border-radius:11px;background:var(--white);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;color:#1a2535;text-align:center;transition:all 0.15s;display:flex;flex-direction:column;gap:3px;align-items:center;line-height:1.2;}
+.brand-btn .brand-sub{font-size:11px;font-weight:500;color:var(--gray);text-transform:none;letter-spacing:0;}
+.brand-btn:hover{border-color:var(--navy);}
+.brand-btn.on{border-color:var(--navy);background:var(--lblue);color:var(--navy);}
+.brand-btn.on .brand-sub{color:var(--navy);}
+.ck{display:flex;align-items:center;gap:12px;padding:13px 15px;border:1.5px solid var(--border);border-radius:11px;cursor:pointer;user-select:none;min-height:54px;background:var(--white);transition:all 0.15s;}
+.ck:active{transform:scale(0.995);}
+.ck input[type=checkbox]{width:22px;height:22px;accent-color:var(--navy);cursor:pointer;flex-shrink:0;}
+.ck-text{font-size:15.5px;line-height:1.35;color:#1a2535;flex:1;}
+.ck-text .ck-sub{display:block;font-size:12px;color:var(--gray);margin-top:2px;font-weight:400;}
+.ck.on{border-color:var(--navy);background:var(--lblue);}
+
+/* Question block (used by each scored assessment) */
+.q-block{padding:16px 0;border-top:1px solid #eef1f6;}
+.q-block:first-of-type{border-top:none;padding-top:4px;}
+.q-num{display:inline-block;background:var(--navy);color:#fff;font-weight:700;font-size:12px;min-width:26px;height:26px;border-radius:13px;text-align:center;line-height:26px;padding:0 8px;margin-right:8px;vertical-align:middle;}
+.q-title{font-size:15.5px;font-weight:600;color:#1a2535;line-height:1.35;display:inline;}
+.q-intro{font-size:13.5px;color:var(--gray);line-height:1.45;margin-top:6px;margin-left:34px;}
+
+/* Radio choices (0-5 lists for ODI/NDI) */
+.opt-list{display:grid;gap:8px;margin-top:12px;}
+.opt{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;background:var(--white);min-height:50px;transition:all 0.15s;}
+.opt:active{transform:scale(0.995);}
+.opt .opt-dot{width:22px;height:22px;border:2px solid var(--border);border-radius:50%;flex-shrink:0;background:var(--white);position:relative;}
+.opt .opt-dot::after{content:'';position:absolute;inset:4px;border-radius:50%;background:var(--navy);transform:scale(0);transition:transform 0.15s;}
+.opt.on{border-color:var(--navy);background:var(--lblue);}
+.opt.on .opt-dot{border-color:var(--navy);}
+.opt.on .opt-dot::after{transform:scale(1);}
+.opt-text{font-size:14.5px;line-height:1.35;color:#1a2535;}
+.opt-text b{color:var(--navy);font-weight:700;margin-right:6px;}
+
+/* Numeric scale (0–10, PDI / SPADI) */
+.nrs-wrap{margin-top:14px;}
+.nrs-row{display:flex;gap:5px;align-items:stretch;flex-wrap:nowrap;}
+.nrs-btn{flex:1;min-width:0;height:50px;border:1.5px solid var(--border);border-radius:9px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;color:#1a2535;cursor:pointer;transition:all 0.12s;}
+.nrs-btn:active{transform:scale(0.95);}
+.nrs-btn.on{background:var(--navy);color:var(--white);border-color:var(--navy);}
+.nrs-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--gray);margin-top:6px;text-transform:uppercase;letter-spacing:0.6px;}
+
+/* Likert 0–4 (UEFI / LEFS) */
+.lik-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px;}
+.lik-btn{padding:10px 6px;border:1.5px solid var(--border);border-radius:9px;background:var(--white);cursor:pointer;text-align:center;font-size:12px;font-weight:600;color:var(--gray);line-height:1.25;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:all 0.12s;}
+.lik-btn .lik-num{font-size:16px;font-weight:800;color:#1a2535;}
+.lik-btn.on{background:var(--navy);border-color:var(--navy);color:#fff;}
+.lik-btn.on .lik-num{color:#fff;}
+
+/* Yes / Sometimes / No (HDI) */
+.ysn-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.ysn-btn{padding:14px 10px;border:1.5px solid var(--border);border-radius:10px;background:var(--white);cursor:pointer;font-size:14.5px;font-weight:700;color:#1a2535;min-height:56px;transition:all 0.12s;}
+.ysn-btn.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+/* SPADI subscale heading */
+.sub-head{margin:14px 0 4px;padding:10px 14px;background:var(--lblue);border-left:4px solid var(--navy);border-radius:8px;font-weight:700;color:var(--navy);font-size:14px;}
+.sub-head-intro{font-size:12.5px;color:var(--gray);margin-top:3px;font-weight:500;}
+
+/* Bottom bar */
+.navbar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:2px solid var(--navy);padding:12px 20px;box-shadow:0 -4px 18px rgba(123,26,46,0.10);z-index:90;}
+.navbar-inner{max-width:860px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.navbar-status{font-size:12px;color:var(--gray);}
+.navbar-status b{color:var(--navy);}
+.btn-row{display:flex;gap:10px;}
+.btn{padding:14px 24px;border-radius:11px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;letter-spacing:0.2px;min-height:50px;display:inline-flex;align-items:center;justify-content:center;gap:8px;}
+.btn:disabled{opacity:0.4;cursor:not-allowed;}
+.btn-navy{background:var(--navy);color:var(--white);box-shadow:0 3px 12px rgba(123,26,46,0.25);}
+.btn-navy:hover:not(:disabled){background:#153e82;}
+.btn-ghost{background:var(--lgray);color:var(--gray);border:1.5px solid var(--border);}
+.btn-ghost:hover:not(:disabled){background:var(--white);border-color:var(--gray);color:#3a4a5a;}
+.btn-green{background:var(--green);color:var(--white);box-shadow:0 3px 12px rgba(123,26,46,0.28);}
+.btn-green:hover:not(:disabled){background:#245f27;}
+
+.score-card{background:var(--lgreen);border:1.5px solid var(--green);border-radius:12px;padding:16px 18px;margin-top:12px;}
+.score-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(123,26,46,0.15);}
+.score-row:last-child{border-bottom:none;}
+.score-name{font-size:13px;color:#1a2535;font-weight:600;}
+.score-val{font-size:14px;color:var(--green);font-weight:700;}
+.score-interp{font-size:12px;color:var(--gray);margin-left:8px;font-weight:500;}
+
+/* Final screen */
+.success-circle{width:84px;height:84px;background:var(--lgreen);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:44px;}
+.success-title{font-family:'Libre Baskerville',serif;font-size:26px;color:var(--navy);margin-bottom:8px;text-align:center;}
+.success-sub{text-align:center;color:var(--gray);font-size:14px;line-height:1.6;margin-bottom:20px;}
+.send-status{font-size:13px;margin-top:10px;padding:10px 14px;border-radius:8px;display:none;}
+.send-status.show{display:block;}
+.send-status.ok{background:var(--lgreen);color:var(--green);}
+.send-status.err{background:var(--lred);color:var(--red);}
+
+.hide{display:none !important;}
+
+@media (max-width:640px){
+  .g2{grid-template-columns:1fr;}
+  .stage{padding:0 14px 140px;}
+  .card-body{padding:18px 18px;}
+  .nrs-btn{height:44px;font-size:14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-inner">
+    <div>
+      <div class="brand-mark"><span class="sp">Spine</span><span class="me">Me</span><span class="d">d</span></div>
+      <div class="brand-sub">Evaluaciones de Resultados</div>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-step-lbl" id="hdrStepLbl">Configuración</div>
+      <div class="hdr-step-name" id="hdrStepName">Seleccione las evaluaciones</div>
+    </div>
+  </div>
+  <div class="prog-dots" id="progDots"></div>
+</div>
+
+<!-- SCREEN 1: STAFF SETUP -->
+<div class="stage" id="screenSetup">
+  <div class="card">
+    <div class="card-hdr">
+      <h1>Batería de Evaluaciones de Resultados</h1>
+      <p>Seleccione las evaluaciones a administrar, luego entregue el iPad al paciente.</p>
+    </div>
+    <div class="card-body">
+      <div class="fg g2">
+        <div class="f">
+          <label>Nombre del Paciente</label>
+          <input class="fi" id="pt_name" placeholder="Nombre y apellido">
+        </div>
+        <div class="f">
+          <label>Fecha de Evaluación</label>
+          <input class="fi" id="pt_date" type="date">
+        </div>
+      </div>
+
+      <div class="sec-lbl">Seleccione las Evaluaciones</div>
+      <div class="ck-list" id="assessmentList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 2: ASSESSMENT (content rendered dynamically) -->
+<div class="stage hide" id="screenAssessment">
+  <div class="card">
+    <div class="card-hdr" id="assessHdr">
+      <h2 id="assessTitle"></h2>
+      <p id="assessIntro"></p>
+    </div>
+    <div class="card-body" id="assessBody"></div>
+  </div>
+</div>
+
+<!-- SCREEN 3: DONE -->
+<div class="stage hide" id="screenDone">
+  <div class="card">
+    <div class="card-body" style="padding:36px 24px;">
+      <div class="success-circle">✓</div>
+      <div class="success-title">Thank you!</div>
+      <div class="success-sub">Your responses have been recorded.<br>A staff member will review the results with you.</div>
+
+      <div class="sec-lbl">Score Summary</div>
+      <div id="scoreSummary"></div>
+
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+        <button class="btn btn-navy" onclick="savePdfs()" id="savePdfBtn">⬇ Save PDFs</button>
+        <button class="btn btn-green" onclick="sendToOffice()" id="sendBtn">✉ Send to Office</button>
+      </div>
+      <div class="send-status" id="sendStatus"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAVBAR -->
+<div class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <div class="navbar-status" id="navStatus">Ready</div>
+    <div class="btn-row" id="navBtns">
+      <button class="btn btn-ghost hide" id="btnBack" onclick="goBack()">← Back</button>
+      <button class="btn btn-navy" id="btnNext" onclick="goNext()" disabled>Begin Assessment →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// ASSESSMENT DEFINITIONS
+// ═══════════════════════════════════════════════════════════════════
+
+// Helper to make a 0–5 radio list (shared format)
+const R6 = (opts) => opts.map((text,i)=>({val:i,text}));
+
+// ODI español — Flórez García validated version (item order differs from English)
+const ODI_SECTIONS = [
+  { title:'Intensidad del dolor', opts:R6(['Puedo soportar el dolor sin necesidad de tomar calmantes.','El dolor es fuerte pero me arreglo sin tomar calmantes.','Los calmantes me alivian completamente el dolor.','Los calmantes me alivian un poco el dolor.','Los calmantes apenas me alivian el dolor.','Los calmantes no me alivian el dolor y no los tomo.']) },
+  { title:'Estar de pie', opts:R6(['Puedo estar de pie tanto tiempo como quiera sin que me aumente el dolor.','Puedo estar de pie tanto tiempo como quiera pero me aumenta el dolor.','El dolor me impide estar de pie más de una hora.','El dolor me impide estar de pie más de media hora.','El dolor me impide estar de pie más de 10 minutos.','El dolor me impide estar de pie.']) },
+  { title:'Cuidados personales', opts:R6(['Me las puedo arreglar solo sin que me aumente el dolor.','Me las puedo arreglar solo pero esto me aumenta el dolor.','Lavarme, vestirme, etc., me produce dolor y tengo que hacerlo despacio y con cuidado.','Necesito alguna ayuda pero consigo hacer la mayoría de las cosas yo solo.','Necesito ayuda para hacer la mayoría de las cosas.','No puedo vestirme, me cuesta lavarme y suelo quedarme en la cama.']) },
+  { title:'Dormir', opts:R6(['El dolor no me impide dormir bien.','Sólo puedo dormir si tomo pastillas.','Incluso tomando pastillas duermo menos de 6 horas.','Incluso tomando pastillas duermo menos de 4 horas.','Incluso tomando pastillas duermo menos de 2 horas.','El dolor me impide totalmente dormir.']) },
+  { title:'Levantar peso', opts:R6(['Puedo levantar objetos pesados sin que me aumente el dolor.','Puedo levantar objetos pesados pero me aumenta el dolor.','El dolor me impide levantar objetos pesados del suelo, pero puedo hacerlo si están en un sitio cómodo (ej. en una mesa).','El dolor me impide levantar objetos pesados, pero sí puedo levantar objetos ligeros o medianos si están en un sitio cómodo.','Sólo puedo levantar objetos muy ligeros.','No puedo levantar ni elevar ningún objeto.']) },
+  { title:'Actividad sexual (si aplica)', opts:R6(['Mi actividad sexual es normal y no me aumenta el dolor.','Mi actividad sexual es normal pero me aumenta el dolor.','Mi actividad sexual es casi normal pero me aumenta mucho el dolor.','Mi actividad sexual se ha visto muy limitada a causa del dolor.','Mi actividad sexual es casi nula a causa del dolor.','El dolor me impide todo tipo de actividad sexual.']), optional:true },
+  { title:'Andar', opts:R6(['El dolor no me impide andar.','El dolor me impide andar más de un kilómetro.','El dolor me impide andar más de 500 metros.','El dolor me impide andar más de 250 metros.','Sólo puedo andar con bastón o muletas.','Permanezco en la cama casi todo el tiempo y tengo que ir a rastras al baño.']) },
+  { title:'Vida social', opts:R6(['Mi vida social es normal y no me aumenta el dolor.','Mi vida social es normal pero me aumenta el dolor.','El dolor no tiene un efecto importante en mi vida social, pero impide mis actividades más enérgicas como bailar, etc.','El dolor ha limitado mi vida social y no salgo tan a menudo.','El dolor ha limitado mi vida social al hogar.','No tengo vida social a causa del dolor.']) },
+  { title:'Estar sentado', opts:R6(['Puedo estar sentado en cualquier tipo de silla todo el tiempo que quiera.','Puedo estar sentado en mi silla favorita todo el tiempo que quiera.','El dolor me impide estar sentado más de una hora.','El dolor me impide estar sentado más de media hora.','El dolor me impide estar sentado más de 10 minutos.','El dolor me impide estar sentado.']) },
+  { title:'Viajar', opts:R6(['Puedo viajar a cualquier sitio sin que me aumente el dolor.','Puedo viajar a cualquier sitio, pero me aumenta el dolor.','El dolor es fuerte pero aguanto viajes de más de 2 horas.','El dolor me limita a viajes de menos de una hora.','El dolor me limita a viajes cortos y necesarios de menos de media hora.','El dolor me impide viajar excepto para ir al médico o al hospital.']) }
+];
+
+// NDI español — validated Spanish version
+const NDI_SECTIONS = [
+  { title:'Intensidad del dolor', opts:R6(['No tengo dolor en este momento.','El dolor es muy leve en este momento.','El dolor es moderado en este momento.','El dolor es bastante intenso en este momento.','El dolor es muy intenso en este momento.','El dolor es el peor imaginable en este momento.']) },
+  { title:'Cuidado personal (lavado, vestido, etc.)', opts:R6(['Puedo cuidarme normalmente sin causar dolor adicional.','Puedo cuidarme normalmente, pero me causa más dolor.','Es doloroso cuidarme y soy lento y cuidadoso.','Necesito ayuda, pero administro la mayor parte de mi cuidado personal.','Necesito ayuda todos los días en la mayoría de los aspectos del cuidado personal.','No me visto, me lavo con dificultad y me quedo en la cama.']) },
+  { title:'Levantamiento', opts:R6(['Puedo levantar objetos pesados sin dolor adicional.','Puedo levantar objetos pesados, pero me da más dolor.','El dolor me impide levantar objetos pesados del suelo, pero puedo hacerlo si están convenientemente colocados (sobre una mesa).','El dolor me impide levantar objetos pesados, pero puedo manejar objetos livianos a medianos si están convenientemente colocados.','Puedo levantar objetos muy ligeros.','No puedo levantar ni cargar nada en absoluto.']) },
+  { title:'Lectura', opts:R6(['Puedo leer el tiempo que quiero sin dolor en el cuello.','Puedo leer el tiempo que quiero con un ligero dolor en el cuello.','Puedo leer el tiempo que quiero con un dolor moderado.','No puedo leer el tiempo que quiero debido a mi dolor en mi cuello.','Apenas puedo leer debido al fuerte dolor en mi cuello.','No puedo leer nada.']) },
+  { title:'Dolores de cabeza', opts:R6(['No tengo dolores de cabeza.','Tengo dolores de cabeza leves, que vienen con poca frecuencia.','Tengo dolores de cabeza moderados, que vienen con poca frecuencia.','Tengo dolores de cabeza moderados, que vienen con frecuencia.','Tengo fuertes dolores de cabeza, que vienen con frecuencia.','Tengo dolores de cabeza casi todo el tiempo.']) },
+  { title:'Concentración', opts:R6(['Puedo concentrarme completamente cuando quiero sin dificultad.','Puedo concentrarme completamente cuando quiero con ligera dificultad.','Tengo un nivel moderado de dificultad para concentrarme cuando quiero.','Tengo mucha dificultad para concentrarme cuando quiero.','Tengo bastante dificultad para concentrarme cuando quiero.','No puedo concentrarme.']) },
+  { title:'Trabajo / Actividades de la Vida Diaria', opts:R6(['Puedo hacer todo lo que quiera.','Solo puedo hacer mi trabajo / actividades habituales, pero nada más.','Puedo hacer la mayor parte de mi trabajo / actividades habituales, pero no más.','No puedo hacer mi trabajo / actividades habituales.','Casi no puedo hacer ningún trabajo / actividad en absoluto.','No puedo hacer ningún trabajo / actividad en absoluto.']) },
+  { title:'Conducción', opts:R6(['Conduzco mi carro sin ningún dolor de cuello.','Puedo conducir mi carro todo el tiempo que quiera con un ligero dolor en el cuello.','Puedo conducir mi carro todo el tiempo que quiera con un dolor moderado en el cuello.','No puedo manejar mi carro todo el tiempo que quiero debido a un dolor moderado en mi cuello.','Apenas puedo conducir mi carro debido a un fuerte dolor en el cuello.','No puedo manejar mi carro.']) },
+  { title:'Dormir', opts:R6(['No tengo problemas para dormir.','Mi sueño está levemente perturbado (menos de 1 hora de pérdida de sueño).','Mi sueño está levemente perturbado (pérdida de sueño de 1 a 2 horas).','Mi sueño está moderadamente perturbado (pérdida de sueño de 2 a 3 horas).','Mi sueño está muy perturbado (pérdida de sueño de 3 a 4 horas).','Mi sueño está completamente perturbado (pérdida de sueño de 5 a 7 horas).']) },
+  { title:'Recreación', opts:R6(['Puedo participar en todas mis actividades recreativas sin ningún dolor de cuello.','Puedo participar en todas mis actividades recreativas con algo de dolor en el cuello.','Puedo participar en la mayoría de mis actividades recreativas habituales, pero no en todas, debido al dolor en el cuello.','Puedo participar en algunas de mis actividades recreativas habituales debido al dolor en el cuello.','Apenas puedo realizar actividades recreativas debido al dolor en el cuello.','No puedo hacer ninguna actividad recreativa.']) }
+];
+
+// PDI español — working translation (sin validación formal)
+const PDI_ITEMS = [
+  'Responsabilidades Familiares / del Hogar — tareas domésticas, jardinería, diligencias para la familia',
+  'Recreación — pasatiempos, deportes, ocio',
+  'Actividad Social — actividades con amigos / conocidos aparte de la familia',
+  'Ocupación — trabajo, capacidad para desempeñar el empleo (o capacidad para trabajar si actualmente desempleado)',
+  'Comportamiento Sexual — frecuencia y calidad de la vida sexual',
+  'Cuidado Personal — higiene, aseo, arreglo personal',
+  'Actividades de Mantenimiento Vital — comer, dormir, respirar'
+];
+
+// HDI español — Índice de Incapacidad por Dolor de Cabeza (Jacobson et al., Spanish)
+const HDI_ITEMS = [
+  'Debido a mis dolores de cabeza me siento discapacitado.',
+  'Debido a mis dolores de cabeza me siento restringido para llevar a cabo mi rutina diaria.',
+  'Nadie entiende el efecto que mis dolores de cabeza tienen en mi vida.',
+  'Limito mis actividades recreativas debido a mis dolores de cabeza.',
+  'Mis dolores de cabeza me enfadan.',
+  'A veces siento que voy a perder el control debido a mis dolores de cabeza.',
+  'Debido a mis dolores de cabeza es menos probable que yo socialice.',
+  'Mi cónyuge / pareja, o familia y amigos no tienen ni idea de lo que estoy pasando a causa de mis dolores de cabeza.',
+  'Mis dolores de cabeza son tan malos que siento que me voy a volver loco.',
+  'Mi visión del mundo se ve afectada por mis dolores de cabeza.',
+  'Tengo miedo de salir cuando siento que comienza un dolor de cabeza.',
+  'Me siento desesperado debido a mis dolores de cabeza.',
+  'Me preocupa que sufra penas en el trabajo o en la casa debido a mis dolores de cabeza.',
+  'Mis dolores de cabeza estresan mis relaciones con la familia o los amigos.',
+  'Evito a otras personas cuando sufro un dolor de cabeza.',
+  'Creo que mis dolores de cabeza dificultan mi capacidad para alcanzar mis metas en la vida.',
+  'No puedo pensar con claridad debido a mis dolores de cabeza.',
+  'Me pongo tenso (ej. tensión muscular) debido a mis dolores de cabeza.',
+  'No disfruto las reuniones sociales debido a mis dolores de cabeza.',
+  'Me siento de mal humor debido a mis dolores de cabeza.',
+  'Evito el viajar debido a mis dolores de cabeza.',
+  'Mis dolores de cabeza me hacen sentirme confundido.',
+  'Mis dolores de cabeza me hacen sentirme frustrado.',
+  'Me resulta difícil leer debido a mis dolores de cabeza.',
+  'Me resulta difícil concentrar la atención lejos de mis dolores de cabeza y en otras cosas.'
+];
+
+// UEFI español — Escala Funcional de la Extremidad Superior (validated Spanish)
+const UEFI_ITEMS = [
+  'Cualquier trabajo usual, trabajo doméstico, o actividades de la escuela',
+  'Sus pasatiempos usuales, actividades recreativas o deportivas',
+  'Levantar una bolsa de comestibles al nivel de la cintura',
+  'Levantar una bolsa de comestibles por encima de la cabeza',
+  'Arreglarse el pelo',
+  'Poner presión en las manos como al levantarse de la bañera o silla',
+  'Preparar comida como pelar o cortar',
+  'Conducir',
+  'Limpiar con la aspiradora, barrer, o rastrillar',
+  'Vestirse',
+  'Abrocharse los botones',
+  'Utilizar instrumentos o aparatos',
+  'Abrir puertas',
+  'Limpiar',
+  'Atar los zapatos',
+  'Lavar, planchar, doblar ropa',
+  'Abrir un frasco',
+  'Tirar una pelota',
+  'Cargar una maleta pequeña con la extremidad afectada',
+  'Lavarse la espalda'
+];
+
+// LEFS español — Escala Funcional de la Extremidad Inferior (validated Spanish)
+const LEFS_ITEMS = [
+  'Cualquier trabajo usual, trabajo de la casa, o actividades en la escuela',
+  'Sus pasatiempos usuales, recreaciones o deportes',
+  'Entrar y salir de un baño',
+  'Caminar de un cuarto al otro',
+  'Ponerse los zapatos y calcetines',
+  'Agacharse',
+  'Levantar algo del piso, como una bolsa llena de comestibles',
+  'Hacer tareas livianas en su casa',
+  'Hacer tareas pesadas en su casa',
+  'Subir o bajar de un carro',
+  'Caminar 2 cuadras',
+  'Caminar una milla',
+  'Subir y bajar 10 escalones (aproximadamente un tramo de escaleras)',
+  'Pararse por una hora',
+  'Sentarse por una hora',
+  'Correr en terreno plano',
+  'Correr en terreno que no es plano',
+  'Girar bruscamente cuando está corriendo',
+  'Brincar',
+  'Voltearse en la cama'
+];
+
+// SPADI español — Índice de Dolor y Discapacidad del Hombro (Membrilla-Mesa validated)
+const SPADI_PAIN = [
+  '¿En su peor momento?',
+  '¿Cuando se acuesta sobre ese lado?',
+  '¿Al alcanzar algo en un estante alto?',
+  '¿Al tocarse la parte posterior de su cuello?',
+  '¿Al empujar con el brazo afectado?'
+];
+const SPADI_DIS = [
+  '¿Lavándose el pelo?',
+  '¿Lavándose la espalda?',
+  '¿Poniéndose una camiseta o un jersey?',
+  '¿Poniéndose una camisa con los botones delante?',
+  '¿Poniéndose los pantalones?',
+  '¿Colocando un objeto en un estante alto?',
+  '¿Llevando un objeto pesado (4.5 kg / 10 libras)?',
+  '¿Cogiendo algo de su bolsillo trasero?'
+];
+
+const LIKERT5 = [
+  {val:0,num:'0',lbl:'Extrema dificultad / Incapaz'},
+  {val:1,num:'1',lbl:'Bastante dificultad'},
+  {val:2,num:'2',lbl:'Dificultad moderada'},
+  {val:3,num:'3',lbl:'Un poco de dificultad'},
+  {val:4,num:'4',lbl:'Nada de dificultad'}
+];
+
+// ACE — Acute Concussion Evaluation (Gioia & Collins, CDC HEADS UP)
+// Section B symptom checklist. 22 items across 4 categories, each 0 (No) or 1 (Yes).
+const ACE_PHYSICAL = ['Headache','Nausea','Vomiting','Balance problems','Dizziness','Visual problems','Fatigue','Sensitivity to light','Sensitivity to noise','Numbness / Tingling'];
+const ACE_COGNITIVE = ['Feeling mentally foggy','Feeling slowed down','Difficulty concentrating','Difficulty remembering'];
+const ACE_EMOTIONAL = ['Irritability','Sadness','More emotional','Nervousness'];
+const ACE_SLEEP = ['Drowsiness','Sleeping less than usual','Sleeping more than usual','Trouble falling asleep'];
+
+const ASSESSMENTS = {
+  odi: {
+    id:'odi', short:'ODI', name:'Oswestry Disability Index',
+    intro:'For each section, select the ONE statement that most closely describes your problem today.',
+    type:'radio6', sections:ODI_SECTIONS,
+    score: function(answers){
+      let sum=0, answered=0;
+      for (let i=0;i<ODI_SECTIONS.length;i++){
+        const a=answers[i];
+        if (a==null || a==='na') continue;
+        sum += Number(a); answered++;
+      }
+      const denom = answered*5;
+      const pct = denom===0?0:Math.round((sum/denom)*100);
+      let band = 'Mínima';
+      if (pct>80) band='Postrado en cama';
+      else if (pct>60) band='Incapacitante';
+      else if (pct>40) band='Severa';
+      else if (pct>20) band='Moderada';
+      return { raw:sum, denom, pct, band, answered, total:ODI_SECTIONS.length };
+    }
+  },
+  ndi: {
+    id:'ndi', short:'NDI', name:'Neck Disability Index',
+    intro:'For each section, select the ONE statement that most closely describes your problem today.',
+    type:'radio6', sections:NDI_SECTIONS,
+    score: function(answers){
+      let sum=0, answered=0;
+      for (let i=0;i<NDI_SECTIONS.length;i++){
+        const a=answers[i];
+        if (a==null) continue;
+        sum += Number(a); answered++;
+      }
+      const denom = answered*5;
+      const pct = denom===0?0:Math.round((sum/denom)*100);
+      let band = 'Sin discapacidad';
+      if (pct>=70) band='Completa';
+      else if (pct>=50) band='Severa';
+      else if (pct>=30) band='Moderada';
+      else if (pct>=10) band='Leve';
+      return { raw:sum, denom, pct, band, answered, total:NDI_SECTIONS.length };
+    }
+  },
+  pdi: {
+    id:'pdi', short:'PDI', name:'Índice de Discapacidad por Dolor',
+    intro:'Para cada categoría, califique qué tan discapacitado se siente actualmente por su dolor en una escala de 0 (sin discapacidad) a 10 (peor discapacidad).',
+    type:'nrs10', items:PDI_ITEMS,
+    score: function(answers){
+      let sum=0, answered=0;
+      for (let i=0;i<PDI_ITEMS.length;i++){
+        if (answers[i]==null) continue;
+        sum += Number(answers[i]); answered++;
+      }
+      let band = 'Leve';
+      if (sum>60) band='Extrema';
+      else if (sum>40) band='Severa';
+      else if (sum>20) band='Moderada';
+      return { raw:sum, denom:70, pct:Math.round((sum/70)*100), band, answered, total:PDI_ITEMS.length };
+    }
+  },
+  hdi: {
+    id:'hdi', short:'HDI', name:'Índice de Incapacidad por Dolor de Cabeza',
+    intro:'Responda cada pregunta tocando Sí, A Veces, o No.',
+    type:'ysn', items:HDI_ITEMS,
+    score: function(answers){
+      let sum=0, answered=0;
+      for (let i=0;i<HDI_ITEMS.length;i++){
+        if (answers[i]==null) continue;
+        sum += Number(answers[i]); answered++;
+      }
+      let band = 'Sin discapacidad';
+      if (sum>68) band='Completa';
+      else if (sum>=50) band='Severa';
+      else if (sum>=30) band='Moderada';
+      else if (sum>=10) band='Leve';
+      return { raw:sum, denom:100, pct:sum, band, answered, total:HDI_ITEMS.length };
+    }
+  },
+  uefi: {
+    id:'uefi', short:'UEFI', name:'Escala Funcional de la Extremidad Superior',
+    intro:'Estamos interesados en saber si el problema de su extremidad superior le está causando dificultades con las actividades listadas a continuación. Proporcione una respuesta para cada actividad.',
+    type:'lik5', items:UEFI_ITEMS,
+    score: function(answers){
+      let sum=0, answered=0;
+      for (let i=0;i<UEFI_ITEMS.length;i++){
+        if (answers[i]==null) continue;
+        sum += Number(answers[i]); answered++;
+      }
+      const pct = Math.round((sum/80)*100);
+      return { raw:sum, denom:80, pct, band:'Mayor = mejor función', answered, total:UEFI_ITEMS.length, higherBetter:true };
+    }
+  },
+  lefs: {
+    id:'lefs', short:'LEFS', name:'Escala Funcional de la Extremidad Inferior',
+    intro:'Estamos interesados en saber si tiene algún tipo de dificultad haciendo algunas de las actividades listadas a continuación debido al problema con sus extremidades inferiores. Proporcione una respuesta para cada actividad.',
+    type:'lik5', items:LEFS_ITEMS,
+    score: function(answers){
+      let sum=0, answered=0;
+      for (let i=0;i<LEFS_ITEMS.length;i++){
+        if (answers[i]==null) continue;
+        sum += Number(answers[i]); answered++;
+      }
+      const pct = Math.round((sum/80)*100);
+      return { raw:sum, denom:80, pct, band:'Mayor = mejor función', answered, total:LEFS_ITEMS.length, higherBetter:true };
+    }
+  },
+  spadi: {
+    id:'spadi', short:'SPADI', name:'Índice de Dolor y Discapacidad del Hombro',
+    intro:'Califique cada punto de 0 (sin dolor / sin dificultad) a 10 (peor dolor imaginable / tan difícil que requirió ayuda).',
+    type:'spadi',
+    pain:SPADI_PAIN, dis:SPADI_DIS,
+    score: function(answers){
+      const pAns = answers.pain || [];
+      const dAns = answers.dis  || [];
+      let pSum=0, pCt=0; for (let i=0;i<SPADI_PAIN.length;i++){ if (pAns[i]==null) continue; pSum+=Number(pAns[i]); pCt++; }
+      let dSum=0, dCt=0; for (let i=0;i<SPADI_DIS.length;i++){ if (dAns[i]==null) continue; dSum+=Number(dAns[i]); dCt++; }
+      const pPct = pCt===0?0:(pSum/(pCt*10))*100;
+      const dPct = dCt===0?0:(dSum/(dCt*10))*100;
+      const tot  = ((pPct+dPct)/2);
+      return {
+        raw:pSum+dSum, denom:130,
+        pain:Math.round(pPct), dis:Math.round(dPct), pct:Math.round(tot),
+        band:'Mayor = más dolor/discapacidad',
+        answered:pCt+dCt, total:SPADI_PAIN.length+SPADI_DIS.length
+      };
+    }
+  },
+  ace: {
+    id:'ace', short:'ACE', name:'Evaluación Aguda de Conmoción',
+    intro:'Desde su lesión, ¿ha experimentado alguno de estos síntomas más de lo habitual hoy o en el día anterior? Toque Sí o No para cada uno.',
+    type:'ace',
+    categories:[
+      {key:'phys', label:'Physical', items:ACE_PHYSICAL},
+      {key:'cog',  label:'Cognitive', items:ACE_COGNITIVE},
+      {key:'emo',  label:'Emotional', items:ACE_EMOTIONAL},
+      {key:'sleep',label:'Sleep', items:ACE_SLEEP}
+    ],
+    score: function(answers){
+      let sum=0, answered=0;
+      const bycat = { phys:0, cog:0, emo:0, sleep:0 };
+      ['phys','cog','emo','sleep'].forEach(function(k){
+        const arr = answers[k] || [];
+        arr.forEach(function(v){ if (v!=null){ answered++; sum+=Number(v); bycat[k]+=Number(v); } });
+      });
+      const overall = answers.overall;
+      let band = 'Sin síntomas';
+      if (sum>=15) band = 'Severa';
+      else if (sum>=9) band = 'Moderada';
+      else if (sum>=1) band = 'Leve';
+      const total = ACE_PHYSICAL.length + ACE_COGNITIVE.length + ACE_EMOTIONAL.length + ACE_SLEEP.length;
+      return { raw:sum, denom:22, pct:Math.round((sum/22)*100), band, answered, total, bycat, overall };
+    }
+  }
+};
+
+const ASSESSMENT_ORDER = ['odi','ndi','pdi','hdi','uefi','lefs','spadi','ace'];
+
+// ═══════════════════════════════════════════════════════════════════
+// BRAND
+// ═══════════════════════════════════════════════════════════════════
+const BRANDS = {
+  cig: {
+    id:'cig',
+    name:'Capital Injury Group',
+    subtitle:'Capital Injury Group · Evaluación de Resultados',
+    footer:'Capital Injury Group · Panama City · Tallahassee',
+    physicians:'Mohammad Eldeeb, MD — Médico de Manejo del Dolor',
+    logoUrl:'https://raw.githubusercontent.com/DrBerns/CIG/main/CIG_Logo_transparent.png',
+    primary:'#7b1a2e'
+  }
+};
+function getBrand(){ return BRANDS.cig; }
+function setBrand(){}
+function updateBrandUI(){}
+
+// ═══════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════
+let state = {
+  patient:'', date:'', selected:[], idx:0, answers:{}, screen:'setup'
+};
+
+// ═══════════════════════════════════════════════════════════════════
+// SETUP SCREEN
+// ═══════════════════════════════════════════════════════════════════
+function initSetup(){
+  // Date default = today
+  const now = new Date();
+  const iso = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+  document.getElementById('pt_date').value = iso;
+
+  // Build assessment checklist
+  const list = document.getElementById('assessmentList');
+  list.innerHTML = '';
+  ASSESSMENT_ORDER.forEach(function(id){
+    const a = ASSESSMENTS[id];
+    const row = document.createElement('label');
+    row.className = 'ck';
+    row.dataset.id = id;
+    row.innerHTML = '<input type="checkbox" data-id="'+id+'"><div class="ck-text"><b>'+a.name+'</b> <span class="ck-sub">'+a.short+'</span></div>';
+    row.querySelector('input').addEventListener('change', function(e){
+      row.classList.toggle('on', e.target.checked);
+      updateBeginButton();
+    });
+    list.appendChild(row);
+  });
+
+  document.getElementById('pt_name').addEventListener('input', updateBeginButton);
+
+  // Brand toggle
+  document.querySelectorAll('.brand-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){ setBrand(btn.dataset.brand); });
+  });
+  updateBrandUI();
+
+  updateBeginButton();
+}
+
+function updateBeginButton(){
+  const name = document.getElementById('pt_name').value.trim();
+  const checked = document.querySelectorAll('#assessmentList input[type=checkbox]:checked').length;
+  const btn = document.getElementById('btnNext');
+  const ready = name && checked>0;
+  btn.disabled = !ready;
+  document.getElementById('navStatus').textContent = ready
+    ? checked + ' evaluaci' + (checked===1?'ón':'ones') + ' seleccionada' + (checked===1?'':'s')
+    : 'Ingrese el nombre del paciente y seleccione al menos una evaluación';
+}
+
+function startAssessments(){
+  state.patient = document.getElementById('pt_name').value.trim();
+  state.date = document.getElementById('pt_date').value;
+  state.selected = Array.from(document.querySelectorAll('#assessmentList input[type=checkbox]:checked')).map(el=>el.dataset.id);
+  state.idx = 0;
+  state.answers = {};
+  state.selected.forEach(function(id){
+    const a = ASSESSMENTS[id];
+    if (a.type==='spadi') state.answers[id] = { pain:new Array(a.pain.length).fill(null), dis:new Array(a.dis.length).fill(null) };
+    else if (a.type==='ace') state.answers[id] = {
+      phys: new Array(ACE_PHYSICAL.length).fill(null),
+      cog:  new Array(ACE_COGNITIVE.length).fill(null),
+      emo:  new Array(ACE_EMOTIONAL.length).fill(null),
+      sleep:new Array(ACE_SLEEP.length).fill(null),
+      overall: null
+    };
+    else if (a.type==='radio6') state.answers[id] = new Array(a.sections.length).fill(null);
+    else state.answers[id] = new Array(a.items.length).fill(null);
+  });
+  state.screen = 'assess';
+  renderAssessment();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ASSESSMENT RENDERING
+// ═══════════════════════════════════════════════════════════════════
+function renderAssessment(){
+  document.getElementById('screenSetup').classList.add('hide');
+  document.getElementById('screenDone').classList.add('hide');
+  document.getElementById('screenAssessment').classList.remove('hide');
+
+  const id = state.selected[state.idx];
+  const a = ASSESSMENTS[id];
+
+  document.getElementById('hdrStepLbl').textContent = state.patient + ' · ' + (state.idx+1) + ' of ' + state.selected.length;
+  document.getElementById('hdrStepName').textContent = a.name;
+  document.getElementById('assessTitle').textContent = a.name + ' (' + a.short + ')';
+  document.getElementById('assessIntro').textContent = a.intro;
+  renderProgress();
+
+  const body = document.getElementById('assessBody');
+  body.innerHTML = '';
+  body.scrollTop = 0;
+  window.scrollTo(0,0);
+
+  if (a.type==='radio6') renderRadio6(body, a, id);
+  else if (a.type==='nrs10') renderNrs10(body, a, id);
+  else if (a.type==='ysn') renderYsn(body, a, id);
+  else if (a.type==='lik5') renderLik5(body, a, id);
+  else if (a.type==='spadi') renderSpadi(body, a, id);
+  else if (a.type==='ace') renderAce(body, a, id);
+
+  // Nav buttons
+  const btnBack = document.getElementById('btnBack');
+  const btnNext = document.getElementById('btnNext');
+  btnBack.classList.toggle('hide', state.idx===0);
+  const isLast = state.idx === state.selected.length-1;
+  btnNext.textContent = isLast ? 'Enviar Todo ✓' : 'Siguiente Evaluación →';
+  btnNext.className = 'btn ' + (isLast?'btn-green':'btn-navy');
+  btnNext.disabled = false;
+  updateNavStatus();
+}
+
+function renderProgress(){
+  const dots = document.getElementById('progDots');
+  dots.innerHTML = '';
+  state.selected.forEach(function(_,i){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i<state.idx?' done':'') + (i===state.idx?' active':'');
+    dots.appendChild(d);
+  });
+}
+
+function renderRadio6(body, a, id){
+  a.sections.forEach(function(sec, i){
+    const block = document.createElement('div');
+    block.className = 'q-block';
+    let html = '<div><span class="q-num">'+(i+1)+'</span><span class="q-title">'+sec.title+'</span></div>';
+    html += '<div class="opt-list">';
+    sec.opts.forEach(function(o){
+      const on = state.answers[id][i]===o.val;
+      html += '<div class="opt'+(on?' on':'')+'" data-i="'+i+'" data-v="'+o.val+'"><div class="opt-dot"></div><div class="opt-text"><b>'+o.val+'</b>'+o.text+'</div></div>';
+    });
+    if (sec.optional){
+      const on = state.answers[id][i]==='na';
+      html += '<div class="opt'+(on?' on':'')+'" data-i="'+i+'" data-v="na"><div class="opt-dot"></div><div class="opt-text"><b>N/A</b>No aplica</div></div>';
+    }
+    html += '</div>';
+    block.innerHTML = html;
+    block.querySelectorAll('.opt').forEach(function(el){
+      el.addEventListener('click', function(){
+        const ii = +el.dataset.i;
+        const v = el.dataset.v === 'na' ? 'na' : +el.dataset.v;
+        state.answers[id][ii] = v;
+        block.querySelectorAll('.opt').forEach(x=>x.classList.remove('on'));
+        el.classList.add('on');
+        updateNavStatus();
+      });
+    });
+    body.appendChild(block);
+  });
+}
+
+function renderNrs10(body, a, id){
+  a.items.forEach(function(item, i){
+    const block = document.createElement('div');
+    block.className = 'q-block';
+    let html = '<div><span class="q-num">'+(i+1)+'</span><span class="q-title">'+item+'</span></div>';
+    html += '<div class="nrs-wrap"><div class="nrs-row">';
+    for (let n=0;n<=10;n++){
+      const on = state.answers[id][i]===n;
+      html += '<button class="nrs-btn'+(on?' on':'')+'" data-i="'+i+'" data-v="'+n+'">'+n+'</button>';
+    }
+    html += '</div><div class="nrs-ends"><span>0 — Sin discapacidad</span><span>10 — Peor discapacidad</span></div></div>';
+    block.innerHTML = html;
+    block.querySelectorAll('.nrs-btn').forEach(function(el){
+      el.addEventListener('click', function(){
+        const ii = +el.dataset.i;
+        state.answers[id][ii] = +el.dataset.v;
+        block.querySelectorAll('.nrs-btn').forEach(x=>x.classList.remove('on'));
+        el.classList.add('on');
+        updateNavStatus();
+      });
+    });
+    body.appendChild(block);
+  });
+}
+
+function renderYsn(body, a, id){
+  a.items.forEach(function(item, i){
+    const block = document.createElement('div');
+    block.className = 'q-block';
+    const cur = state.answers[id][i];
+    let html = '<div><span class="q-num">'+(i+1)+'</span><span class="q-title">'+item+'</span></div>';
+    html += '<div class="ysn-row">'
+      +'<button class="ysn-btn'+(cur===4?' on':'')+'" data-v="4">Sí</button>'
+      +'<button class="ysn-btn'+(cur===2?' on':'')+'" data-v="2">A Veces</button>'
+      +'<button class="ysn-btn'+(cur===0?' on':'')+'" data-v="0">No</button>'
+      +'</div>';
+    block.innerHTML = html;
+    block.querySelectorAll('.ysn-btn').forEach(function(el){
+      el.addEventListener('click', function(){
+        state.answers[id][i] = +el.dataset.v;
+        block.querySelectorAll('.ysn-btn').forEach(x=>x.classList.remove('on'));
+        el.classList.add('on');
+        updateNavStatus();
+      });
+    });
+    body.appendChild(block);
+  });
+}
+
+function renderLik5(body, a, id){
+  a.items.forEach(function(item, i){
+    const block = document.createElement('div');
+    block.className = 'q-block';
+    let html = '<div><span class="q-num">'+(i+1)+'</span><span class="q-title">'+item+'</span></div>';
+    html += '<div class="lik-row">';
+    LIKERT5.forEach(function(o){
+      const on = state.answers[id][i]===o.val;
+      html += '<button class="lik-btn'+(on?' on':'')+'" data-v="'+o.val+'"><span class="lik-num">'+o.num+'</span><span>'+o.lbl+'</span></button>';
+    });
+    html += '</div>';
+    block.innerHTML = html;
+    block.querySelectorAll('.lik-btn').forEach(function(el){
+      el.addEventListener('click', function(){
+        state.answers[id][i] = +el.dataset.v;
+        block.querySelectorAll('.lik-btn').forEach(x=>x.classList.remove('on'));
+        el.classList.add('on');
+        updateNavStatus();
+      });
+    });
+    body.appendChild(block);
+  });
+}
+
+function renderSpadi(body, a, id){
+  // Pain subscale
+  const h1 = document.createElement('div');
+  h1.className = 'sub-head';
+  h1.innerHTML = 'Dolor — ¿Qué tan grave es el dolor?<div class="sub-head-intro">0 = sin dolor &nbsp;·&nbsp; 10 = peor dolor imaginable</div>';
+  body.appendChild(h1);
+  a.pain.forEach(function(item, i){
+    const block = document.createElement('div');
+    block.className = 'q-block';
+    let html = '<div><span class="q-num">'+(i+1)+'</span><span class="q-title">'+item+'</span></div>';
+    html += '<div class="nrs-wrap"><div class="nrs-row">';
+    for (let n=0;n<=10;n++){
+      const on = state.answers[id].pain[i]===n;
+      html += '<button class="nrs-btn'+(on?' on':'')+'" data-k="pain" data-i="'+i+'" data-v="'+n+'">'+n+'</button>';
+    }
+    html += '</div><div class="nrs-ends"><span>0 — Sin dolor</span><span>10 — Peor imaginable</span></div></div>';
+    block.innerHTML = html;
+    block.querySelectorAll('.nrs-btn').forEach(function(el){
+      el.addEventListener('click', function(){
+        state.answers[id].pain[+el.dataset.i] = +el.dataset.v;
+        block.querySelectorAll('.nrs-btn').forEach(x=>x.classList.remove('on'));
+        el.classList.add('on');
+        updateNavStatus();
+      });
+    });
+    body.appendChild(block);
+  });
+
+  // Disability subscale
+  const h2 = document.createElement('div');
+  h2.className = 'sub-head';
+  h2.innerHTML = 'Discapacidad — ¿Cuánta dificultad tiene usted?<div class="sub-head-intro">0 = sin dificultad &nbsp;·&nbsp; 10 = tan difícil que requirió ayuda</div>';
+  body.appendChild(h2);
+  a.dis.forEach(function(item, i){
+    const block = document.createElement('div');
+    block.className = 'q-block';
+    let html = '<div><span class="q-num">'+(i+1+a.pain.length)+'</span><span class="q-title">'+item+'</span></div>';
+    html += '<div class="nrs-wrap"><div class="nrs-row">';
+    for (let n=0;n<=10;n++){
+      const on = state.answers[id].dis[i]===n;
+      html += '<button class="nrs-btn'+(on?' on':'')+'" data-k="dis" data-i="'+i+'" data-v="'+n+'">'+n+'</button>';
+    }
+    html += '</div><div class="nrs-ends"><span>0 — Sin dificultad</span><span>10 — Requirió ayuda</span></div></div>';
+    block.innerHTML = html;
+    block.querySelectorAll('.nrs-btn').forEach(function(el){
+      el.addEventListener('click', function(){
+        state.answers[id].dis[+el.dataset.i] = +el.dataset.v;
+        block.querySelectorAll('.nrs-btn').forEach(x=>x.classList.remove('on'));
+        el.classList.add('on');
+        updateNavStatus();
+      });
+    });
+    body.appendChild(block);
+  });
+}
+
+function renderAce(body, a, id){
+  let qNum = 0;
+  a.categories.forEach(function(cat){
+    const h = document.createElement('div');
+    h.className = 'sub-head';
+    h.innerHTML = cat.label + ' — Síntomas <div class="sub-head-intro">Responda Sí o No para cada uno</div>';
+    body.appendChild(h);
+    cat.items.forEach(function(item, i){
+      qNum++;
+      const block = document.createElement('div');
+      block.className = 'q-block';
+      const cur = state.answers[id][cat.key][i];
+      let html = '<div><span class="q-num">'+qNum+'</span><span class="q-title">'+item+'</span></div>';
+      html += '<div class="ysn-row" style="grid-template-columns:repeat(2,1fr);">'
+        + '<button class="ysn-btn'+(cur===0?' on':'')+'" data-v="0">No</button>'
+        + '<button class="ysn-btn'+(cur===1?' on':'')+'" data-v="1">Sí</button>'
+        + '</div>';
+      block.innerHTML = html;
+      block.querySelectorAll('.ysn-btn').forEach(function(el){
+        el.addEventListener('click', function(){
+          state.answers[id][cat.key][i] = +el.dataset.v;
+          block.querySelectorAll('.ysn-btn').forEach(x=>x.classList.remove('on'));
+          el.classList.add('on');
+          updateNavStatus();
+        });
+      });
+      body.appendChild(block);
+    });
+  });
+  // Overall rating 0–6
+  const oh = document.createElement('div');
+  oh.className = 'sub-head';
+  oh.innerHTML = 'Calificación General <div class="sub-head-intro">¿Qué tan diferente actúa la persona comparado con su estado usual? (0 = Normal, 6 = Muy Diferente)</div>';
+  body.appendChild(oh);
+  const oblock = document.createElement('div');
+  oblock.className = 'q-block';
+  let oh2 = '<div class="nrs-wrap"><div class="nrs-row">';
+  for (let n=0;n<=6;n++){
+    const on = state.answers[id].overall===n;
+    oh2 += '<button class="nrs-btn'+(on?' on':'')+'" data-v="'+n+'">'+n+'</button>';
+  }
+  oh2 += '</div><div class="nrs-ends"><span>0 — Normal</span><span>6 — Muy Diferente</span></div></div>';
+  oblock.innerHTML = oh2;
+  oblock.querySelectorAll('.nrs-btn').forEach(function(el){
+    el.addEventListener('click', function(){
+      state.answers[id].overall = +el.dataset.v;
+      oblock.querySelectorAll('.nrs-btn').forEach(x=>x.classList.remove('on'));
+      el.classList.add('on');
+      updateNavStatus();
+    });
+  });
+  body.appendChild(oblock);
+}
+
+function updateNavStatus(){
+  if (state.screen!=='assess'){ return; }
+  const id = state.selected[state.idx];
+  const a = ASSESSMENTS[id];
+  const ans = state.answers[id];
+  let answered, total;
+  if (a.type==='spadi'){
+    total = a.pain.length + a.dis.length;
+    answered = ans.pain.filter(v=>v!=null).length + ans.dis.filter(v=>v!=null).length;
+  } else if (a.type==='ace'){
+    total = ACE_PHYSICAL.length + ACE_COGNITIVE.length + ACE_EMOTIONAL.length + ACE_SLEEP.length + 1; // +1 for overall
+    answered = ans.phys.filter(v=>v!=null).length + ans.cog.filter(v=>v!=null).length + ans.emo.filter(v=>v!=null).length + ans.sleep.filter(v=>v!=null).length + (ans.overall!=null?1:0);
+  } else if (a.type==='radio6'){
+    total = a.sections.length;
+    answered = ans.filter(v=>v!=null).length;
+  } else {
+    total = a.items.length;
+    answered = ans.filter(v=>v!=null).length;
+  }
+  document.getElementById('navStatus').innerHTML = 'Respondidas <b>'+answered+'</b> de <b>'+total+'</b>';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════════
+function goNext(){
+  if (state.screen==='setup'){ startAssessments(); return; }
+  if (state.screen!=='assess') return;
+  if (state.idx === state.selected.length-1){
+    finishAll();
+  } else {
+    state.idx++;
+    renderAssessment();
+  }
+}
+function goBack(){
+  if (state.screen!=='assess') return;
+  if (state.idx>0){ state.idx--; renderAssessment(); }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FINAL SCREEN
+// ═══════════════════════════════════════════════════════════════════
+function finishAll(){
+  state.screen='done';
+  document.getElementById('screenAssessment').classList.add('hide');
+  document.getElementById('screenDone').classList.remove('hide');
+  document.getElementById('navbar').classList.add('hide');
+  document.getElementById('hdrStepLbl').textContent = state.patient;
+  document.getElementById('hdrStepName').textContent = 'Complete';
+  // Mark all progress dots done
+  document.querySelectorAll('#progDots .dot').forEach(function(d){d.classList.remove('active');d.classList.add('done');});
+
+  const sum = document.getElementById('scoreSummary');
+  sum.innerHTML='';
+  const card = document.createElement('div');
+  card.className='score-card';
+  state.selected.forEach(function(id){
+    const a = ASSESSMENTS[id];
+    const s = a.score(state.answers[id]);
+    const row = document.createElement('div');
+    row.className='score-row';
+    let valText = '';
+    if (id==='spadi') valText = s.pct+'% (Pain '+s.pain+'% · Disability '+s.dis+'%)';
+    else if (id==='uefi'||id==='lefs') valText = s.raw+' / '+s.denom;
+    else if (id==='pdi') valText = s.raw+' / 70';
+    else if (id==='hdi') valText = s.raw+' / 100';
+    else if (id==='ace') valText = s.raw+' / 22 síntomas' + (s.overall!=null?' · General '+s.overall+'/6':'');
+    else valText = s.pct+'%';
+    row.innerHTML = '<div class="score-name">'+a.short+' — '+a.name+'</div>'
+      + '<div class="score-val">'+valText+' <span class="score-interp">· '+s.band+'</span></div>';
+    card.appendChild(row);
+  });
+  sum.appendChild(card);
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PDF GENERATION  (off-screen live div + html2canvas + jsPDF)
+// ═══════════════════════════════════════════════════════════════════
+function prettyDate(iso){
+  if (!iso) return '';
+  const [y,m,d] = iso.split('-');
+  return m+'/'+d+'/'+y;
+}
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function buildPdfHtml(id){
+  const a = ASSESSMENTS[id];
+  const s = a.score(state.answers[id]);
+  const brand = getBrand();
+  const head =
+    '<div style="padding:0.45in 0.45in 0.15in;border-bottom:3px solid '+brand.primary+';margin-bottom:14px;display:flex;align-items:center;gap:14px;">'
+    + '<img src="'+brand.logoUrl+'" crossorigin="anonymous" style="height:44px;width:auto;">'
+    + '<div>'
+    +   '<div style="font-family:\'Libre Baskerville\',serif;font-size:22pt;color:'+brand.primary+';font-weight:700;line-height:1;">'+esc(brand.name)+'</div>'
+    +   '<div style="font-size:9pt;color:#5a6a7d;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">'+brand.subtitle+'</div>'
+    + '</div>'
+    + '</div>';
+  const info =
+    '<div style="padding:0 0.45in;">'
+    + '<div style="font-family:\'Libre Baskerville\',serif;font-size:16pt;color:'+brand.primary+';font-weight:700;margin-bottom:4px;">'+esc(a.name)+' ('+esc(a.short)+')</div>'
+    + '<div style="font-size:10pt;color:#222;margin-bottom:2px;"><b>Paciente:</b> '+esc(state.patient)+' &nbsp;·&nbsp; <b>Fecha:</b> '+esc(prettyDate(state.date))+'</div>'
+    + '<div style="font-size:9.5pt;color:#555;margin-bottom:14px;"><b>Proveedor:</b> '+brand.physicians+'</div>';
+  let body = '';
+  const ans = state.answers[id];
+
+  function answerBox(text){
+    return '<div style="margin-top:4px;padding:6px 10px;background:#EAF0FB;border-left:3px solid #1a4fa0;font-size:10pt;color:#1a4fa0;font-weight:600;">'+esc(text)+'</div>';
+  }
+  function questionRow(num,q,ansText){
+    return '<div style="margin-bottom:10px;page-break-inside:avoid;">'
+      + '<div style="font-size:10pt;"><b style="color:#1a4fa0;">'+num+'.</b> '+esc(q)+'</div>'
+      + answerBox(ansText||'— sin respuesta —')
+      + '</div>';
+  }
+
+  if (a.type==='radio6'){
+    a.sections.forEach(function(sec,i){
+      const v = ans[i];
+      let txt;
+      if (v==='na') txt = 'No aplica';
+      else if (v==null) txt = null;
+      else { const opt = sec.opts.find(o=>o.val===v); txt = opt ? ('('+v+') '+opt.text) : null; }
+      body += questionRow(i+1, sec.title, txt);
+    });
+  } else if (a.type==='nrs10'){
+    a.items.forEach(function(it,i){
+      const v = ans[i];
+      body += questionRow(i+1, it, v==null?null:('Puntaje: '+v+' / 10'));
+    });
+  } else if (a.type==='ysn'){
+    a.items.forEach(function(it,i){
+      const v = ans[i];
+      const lbl = v===4?'Sí (4)':v===2?'A Veces (2)':v===0?'No (0)':null;
+      body += questionRow(i+1, it, lbl);
+    });
+  } else if (a.type==='lik5'){
+    a.items.forEach(function(it,i){
+      const v = ans[i];
+      const opt = LIKERT5.find(o=>o.val===v);
+      body += questionRow(i+1, it, opt?('('+opt.val+') '+opt.lbl):null);
+    });
+  } else if (a.type==='spadi'){
+    body += '<div style="font-weight:700;color:#1a4fa0;margin:8px 0 6px;font-size:11pt;">Escala de Dolor (0 = sin dolor, 10 = peor imaginable)</div>';
+    a.pain.forEach(function(it,i){
+      const v = ans.pain[i];
+      body += questionRow(i+1, it, v==null?null:('Puntaje: '+v+' / 10'));
+    });
+    body += '<div style="font-weight:700;color:#1a4fa0;margin:12px 0 6px;font-size:11pt;">Escala de Discapacidad (0 = sin dificultad, 10 = requirió ayuda)</div>';
+    a.dis.forEach(function(it,i){
+      const v = ans.dis[i];
+      body += questionRow(i+1+a.pain.length, it, v==null?null:('Puntaje: '+v+' / 10'));
+    });
+  } else if (a.type==='ace'){
+    let qn = 0;
+    a.categories.forEach(function(cat){
+      body += '<div style="font-weight:700;color:#1a4fa0;margin:10px 0 4px;font-size:11pt;">'+esc(cat.label)+' — Síntomas</div>';
+      cat.items.forEach(function(it,i){
+        qn++;
+        const v = ans[cat.key][i];
+        const lbl = v===1?'Sí (1)':v===0?'No (0)':null;
+        body += questionRow(qn, it, lbl);
+      });
+    });
+    body += questionRow(qn+1, 'Calificación General (0 Normal – 6 Muy Diferente)', ans.overall==null?null:('Puntaje: '+ans.overall+' / 6'));
+  }
+
+  // Score summary
+  let scoreHtml = '<div style="margin-top:18px;padding:14px 16px;background:#e8f5ee;border:1.5px solid #2e7d32;border-radius:6px;">'
+    + '<div style="font-size:11pt;font-weight:700;color:#2e7d32;margin-bottom:5px;">Resumen de Puntaje</div>';
+  if (id==='spadi'){
+    scoreHtml += '<div style="font-size:10pt;color:#222;line-height:1.55;">'
+      + '<b>Escala de dolor:</b> '+s.pain+'%<br>'
+      + '<b>Escala de discapacidad:</b> '+s.dis+'%<br>'
+      + '<b>SPADI total:</b> '+s.pct+'% &nbsp;·&nbsp; <i>'+esc(s.band)+'</i><br>'
+      + '<span style="color:#5a6a7d;font-size:9pt;">Respondidas: '+s.answered+' de '+s.total+'</span>'
+      + '</div>';
+  } else if (id==='uefi'||id==='lefs'){
+    scoreHtml += '<div style="font-size:10pt;color:#222;line-height:1.55;">'
+      + '<b>Puntaje bruto:</b> '+s.raw+' / '+s.denom+' ('+s.pct+'%)<br>'
+      + '<i>'+esc(s.band)+'</i><br>'
+      + '<span style="color:#5a6a7d;font-size:9pt;">Respondidas: '+s.answered+' de '+s.total+'. MCID = 9 puntos.</span>'
+      + '</div>';
+  } else if (id==='pdi'){
+    scoreHtml += '<div style="font-size:10pt;color:#222;line-height:1.55;">'
+      + '<b>PDI total:</b> '+s.raw+' / 70 &nbsp;·&nbsp; <i>Discapacidad '+esc(s.band)+'</i><br>'
+      + '<span style="color:#5a6a7d;font-size:9pt;">Respondidas: '+s.answered+' de '+s.total+'. Mayor = mayor discapacidad.</span>'
+      + '</div>';
+  } else if (id==='hdi'){
+    scoreHtml += '<div style="font-size:10pt;color:#222;line-height:1.55;">'
+      + '<b>HDI total:</b> '+s.raw+' / 100 &nbsp;·&nbsp; <i>Discapacidad '+esc(s.band)+'</i><br>'
+      + '<span style="color:#5a6a7d;font-size:9pt;">Respondidas: '+s.answered+' de '+s.total+'.</span>'
+      + '</div>';
+  } else if (id==='ace'){
+    scoreHtml += '<div style="font-size:10pt;color:#222;line-height:1.55;">'
+      + '<b>Puntaje total de síntomas:</b> '+s.raw+' / 22 &nbsp;·&nbsp; <i>'+esc(s.band)+'</i><br>'
+      + '<b>Físico:</b> '+s.bycat.phys+' / '+ACE_PHYSICAL.length+' &nbsp;·&nbsp; '
+      + '<b>Cognitivo:</b> '+s.bycat.cog+' / '+ACE_COGNITIVE.length+' &nbsp;·&nbsp; '
+      + '<b>Emocional:</b> '+s.bycat.emo+' / '+ACE_EMOTIONAL.length+' &nbsp;·&nbsp; '
+      + '<b>Sueño:</b> '+s.bycat.sleep+' / '+ACE_SLEEP.length+'<br>'
+      + (s.overall!=null?('<b>Calificación General:</b> '+s.overall+' / 6<br>'):'')
+      + '<span style="color:#5a6a7d;font-size:9pt;">Respondidas: '+s.answered+' de '+s.total+'.</span>'
+      + '</div>';
+  } else {
+    scoreHtml += '<div style="font-size:10pt;color:#222;line-height:1.55;">'
+      + '<b>Puntaje bruto:</b> '+s.raw+' / '+s.denom+' &nbsp;·&nbsp; <b>Porcentaje:</b> '+s.pct+'%<br>'
+      + '<i>Nivel de discapacidad: '+esc(s.band)+'</i><br>'
+      + '<span style="color:#5a6a7d;font-size:9pt;">Secciones respondidas: '+s.answered+' de '+s.total+'.</span>'
+      + '</div>';
+  }
+  scoreHtml += '</div>';
+
+  const footer = '<div style="margin-top:22px;padding:10px 0.45in 0;border-top:1px solid #cdd5e0;font-size:8.5pt;color:#5a6a7d;text-align:center;">'+brand.footer+'</div>';
+
+  return '<div style="width:816px;padding:0 0 0.4in;font-family:\'DM Sans\',Arial,sans-serif;color:#1a2535;background:#fff;">'
+    + head + info + body + scoreHtml + footer + '</div>';
+}
+
+async function buildPdfBlobFor(id){
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'position:fixed;left:-10000px;top:0;width:816px;background:#fff;z-index:-1;';
+  wrap.innerHTML = buildPdfHtml(id);
+  document.body.appendChild(wrap);
+  try {
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+    await new Promise(r=>setTimeout(r,200));
+    if (!(window.jspdf && window.jspdf.jsPDF)) throw new Error('jsPDF 2.x not loaded');
+    const JsPDF = window.jspdf.jsPDF;
+    const canvas = await html2canvas(wrap.firstElementChild, {scale:2, useCORS:true, logging:false, backgroundColor:'#ffffff'});
+    if (!canvas || !canvas.width || !canvas.height) throw new Error('empty canvas');
+    const pdf = new JsPDF({unit:'in',format:'letter',orientation:'portrait'});
+    const pageW = 8.5, pageH = 11;
+    const imgW = pageW;
+    const imgH = pageW * (canvas.height / canvas.width);
+    const imgData = canvas.toDataURL('image/jpeg', 0.92);
+    if (imgH <= pageH){
+      pdf.addImage(imgData, 'JPEG', 0, 0, imgW, imgH);
+    } else {
+      // Paginate tall content
+      let yOff = 0;
+      while (yOff < imgH){
+        pdf.addImage(imgData, 'JPEG', 0, -yOff, imgW, imgH);
+        yOff += pageH;
+        if (yOff < imgH) pdf.addPage('letter','portrait');
+      }
+    }
+    return pdf.output('blob');
+  } finally {
+    if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
+  }
+}
+
+function blobToBase64(blob){
+  return new Promise(function(resolve, reject){
+    const r = new FileReader();
+    r.onload = function(){ resolve(r.result.split(',')[1]); };
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+
+function slug(s){ return String(s||'').replace(/[^a-zA-Z0-9]/g,'_'); }
+function filenameFor(id){
+  return 'CIG_'+ASSESSMENTS[id].short+'_'+slug(state.patient)+'_'+slug(state.date)+'.pdf';
+}
+
+async function savePdfs(){
+  const btn = document.getElementById('savePdfBtn');
+  const status = document.getElementById('sendStatus');
+  btn.disabled = true; btn.textContent='Generando PDFs…';
+  status.className='send-status';
+  try {
+    for (const id of state.selected){
+      btn.textContent = 'Guardando '+ASSESSMENTS[id].short+'…';
+      const blob = await buildPdfBlobFor(id);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = filenameFor(id);
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 2000);
+    }
+    btn.textContent='✓ Guardado';
+    setTimeout(()=>{ btn.disabled=false; btn.textContent='⬇ Guardar PDFs'; }, 2500);
+  } catch (err) {
+    console.error('savePdfs:',err);
+    btn.disabled=false; btn.textContent='⬇ Guardar PDFs';
+    status.className='send-status show err'; status.textContent='Guardado fallido: '+(err.message||err);
+  }
+}
+
+const WORKER_URL = 'https://cig-intake.drberns.workers.dev/packet-submit';
+const WORKER_SECRET = '';
+
+async function sendToOffice(){
+  const btn = document.getElementById('sendBtn');
+  const status = document.getElementById('sendStatus');
+  btn.disabled = true; btn.textContent='Generando PDFs…';
+  status.className='send-status';
+  try {
+    const sent = [];
+    for (const id of state.selected){
+      const a = ASSESSMENTS[id];
+      btn.textContent='Enviando '+a.short+'…';
+      const blob = await buildPdfBlobFor(id);
+      const b64 = await blobToBase64(blob);
+      const fn = filenameFor(id);
+      const subject = getBrand().name+' Evaluación de Resultado — '+a.short+' — '+state.patient+' — '+prettyDate(state.date);
+      const resp = await fetch(WORKER_URL, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          patientName: state.patient,
+          dateOfLoss: state.date,
+          pdfBase64: b64,
+          pdfFilename: fn,
+          subject: subject
+        })
+      });
+      const text = await resp.text();
+      let result; try { result = JSON.parse(text); } catch(e){ throw new Error('HTTP '+resp.status+': '+text.slice(0,200)); }
+      if (!resp.ok || !result.success) throw new Error(a.short+' — HTTP '+resp.status+': '+(result.error||text.slice(0,200)||'unknown'));
+      sent.push(a.short);
+    }
+    btn.textContent='✓ Enviado';
+    status.className='send-status show ok';
+    status.textContent='Enviado a la recepción: '+sent.join(', ');
+  } catch (err) {
+    console.error('sendToOffice:',err);
+    btn.disabled=false; btn.textContent='✉ Enviar a la Oficina';
+    status.className='send-status show err'; status.textContent='Envío fallido — '+(err.message||err);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
+initSetup();
+</script>
+</body>
+</html>
