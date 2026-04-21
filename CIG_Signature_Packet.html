@@ -202,20 +202,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       </div>
       <div class="hdr-right">
         <div class="hdr-step-lbl" id="hdr-step-num">Step 6 of 9</div>
-        <div class="hdr-step-name" id="hdr-step-name">Records Release � Incoming</div>
+        <div class="hdr-step-name" id="hdr-step-name">Records Release — Incoming</div>
       </div>
     </div>
     <div class="prog-dots" id="prog-dots"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   </div>
 </div>
 
-<!-- STEP 1 � COVER SHEET -->
+<!-- STEP 1 — COVER SHEET -->
 <section class="step" data-step="1">
   <div class="card">
     <div class="card-hdr">
       <h2>Cover Sheet</h2>
       <p>Enter patient, attorney, and insurance information once. This information will populate all signature documents in the packet.</p>
-      <div class="ver">Signature Packet v_04.13.26 � Capital Injury Group</div>
+      <div class="ver">Signature Packet v_04.13.26 — Capital Injury Group</div>
     </div>
     <div class="card-body">
       <div class="sec-lbl">Patient Information</div>
@@ -232,11 +232,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <div class="office-grid">
         <div class="office-card" id="oc-pc" onclick="selectOffice(&#39;pc&#39;)">
           <div class="oc-name">Panama City</div>
-          <div class="oc-addr">2629 W 23rd Street, Unit H<br>Panama City, FL 32405<br>Ph: 850-766-7018 � Fax: 850-387-0590</div>
+          <div class="oc-addr">2629 W 23rd Street, Unit H<br>Panama City, FL 32405<br>Ph: 850-766-7018 • Fax: 850-387-0590</div>
         </div>
         <div class="office-card" id="oc-tal" onclick="selectOffice(&#39;tal&#39;)">
           <div class="oc-name">Tallahassee</div>
-          <div class="oc-addr">3375 Capital Cir NE, Bldg C100<br>Tallahassee, FL 32308<br>Ph: 850-766-7018 � Fax: 850-387-0590</div>
+          <div class="oc-addr">3375 Capital Cir NE, Bldg C100<br>Tallahassee, FL 32308<br>Ph: 850-766-7018 • Fax: 850-387-0590</div>
         </div>
       </div>
       <hr class="divider">
@@ -244,14 +244,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <div class="fg g2">
         <div class="f s2"><label>Provider Name</label>
           <select class="fsel" id="provider_sel" onchange="selectProvider(this.value)">
-            <option value="">� Select provider (optional) �</option>
+            <option value="">— Select provider (optional) —</option>
             <option value="eldeeb">Mohammad Eldeeb, M.D.</option>
           </select>
         </div>
       </div>
       <div id="provider-display" style="display:none;margin-top:10px;padding:10px 14px;background:var(--lgreen);border:1.5px solid var(--mgreen);border-radius:8px;font-size:12.5px;">
-        <div style="font-size:9.5px;font-weight:700;color:var(--dgreen);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px;">Selected Provider � will populate IOT form</div>
-        <div style="font-weight:600;color:#1a2535;" id="provider-name-display">�</div>
+        <div style="font-size:9.5px;font-weight:700;color:var(--dgreen);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px;">Selected Provider — will populate IOT form</div>
+        <div style="font-weight:600;color:#1a2535;" id="provider-name-display">—</div>
         <div style="font-size:11px;color:var(--gray);margin-top:3px;">Provider signature will appear in the PDF output.</div>
       </div>
       <hr class="divider">
@@ -289,9 +289,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </section>
 
-<!-- STEP 2 � HIPAA -->
+<!-- STEP 2 — HIPAA -->
 <section class="step" data-step="2">
-  <div id="pt-bar-2"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">� (none selected)</div></div></div></div>
+  <div id="pt-bar-2"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">— (none selected)</div></div></div></div>
   <div class="doc-card">
     <div class="doc-hdr">
       <div class="doc-tag">Document 1 of 7</div>
@@ -305,7 +305,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <h3>Our Pledge Regarding Your Health Information</h3>
       <p>We are required by federal and Florida law to maintain the privacy of your protected health information (PHI), to provide you with this Notice of our legal duties and privacy practices, and to follow the terms of the Notice currently in effect. We reserve the right to change this Notice and to make the revised Notice effective for all PHI we maintain. A current copy of this Notice will be posted in our offices and available on request.</p>
       <h3>How We May Use and Disclose Your Health Information Without Your Authorization</h3>
-      <p><strong>Treatment.</strong> We may use and disclose your PHI to provide, coordinate, or manage your healthcare � for example, sharing records with a referring physician, hospital, imaging center, or specialist involved in your care.</p>
+      <p><strong>Treatment.</strong> We may use and disclose your PHI to provide, coordinate, or manage your healthcare — for example, sharing records with a referring physician, hospital, imaging center, or specialist involved in your care.</p>
       <p><strong>Payment.</strong> We may use and disclose your PHI to bill and collect payment from you, your insurance company (including auto/PIP carriers), or other responsible third parties involved in payment for your care, including attorneys when applicable to your case.</p>
       <p><strong>Healthcare Operations.</strong> We may use and disclose your PHI for quality assessment, staff training, credentialing, licensing, audits, legal services, and other business activities necessary to run our practice.</p>
       <p><strong>Appointment Reminders &amp; Health-Related Communications.</strong> We may contact you by phone, text, email, or mail regarding appointments, treatment alternatives, or other health-related information. These communications may not be secure.</p>
@@ -317,13 +317,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <p>If you believe your privacy rights have been violated, you may file a complaint with our Privacy Officer or with the U.S. Department of Health and Human Services, Office for Civil Rights (www.hhs.gov/ocr).</p>
       <h3>Contact Information</h3>
       <p><strong>Privacy Officer</strong><br>Capital Injury Group, LLC<br>
-      <strong>Panama City:</strong> 2629 W 23rd Street, Unit H � Panama City, FL 32405 � Ph: 850-766-7018<br>
-      <strong>Tallahassee:</strong> 3375 Capital Cir NE, Bldg C100 � Tallahassee, FL 32308 � Ph: 850-766-7018<br>
+      <strong>Panama City:</strong> 2629 W 23rd Street, Unit H • Panama City, FL 32405 • Ph: 850-766-7018<br>
+      <strong>Tallahassee:</strong> 3375 Capital Cir NE, Bldg C100 • Tallahassee, FL 32308 • Ph: 850-766-7018<br>
       <strong>Email:</strong> info@capitalinjurygroup.com</p>
       <h3>Acknowledgment of Receipt</h3>
       <p>By signing below, I acknowledge that I have received a copy of the Capital Injury Group Notice of Privacy Practices (v_04.13.26).</p>
       <div class="sig-block">
-        <div class="sig-block-title">Patient Acknowledgment � HIPAA</div>
+        <div class="sig-block-title">Patient Acknowledgment — HIPAA</div>
         <div class="sig-pair">
           <div>
             <div class="sig-canvas-wrap" style="height:60px;"><canvas class="sig-canvas" id="sig_hipaa_sig" height="60" data-signed="0" width="436"></canvas><div class="sig-canvas-ph" id="sig_hipaa_sig_ph">Sign here</div><button class="sig-canvas-clear" onclick="clearSigPad(&#39;sig_hipaa_sig&#39;)">Clear</button></div>
@@ -337,26 +337,26 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
           <label for="attest_hipaa">I have read the HIPAA Privacy Notice and acknowledge receipt of a copy.</label>
         </div>
       </div>
-      <h3 style="margin-top:22px;">Optional Authorization � Medication History Access</h3>
+      <h3 style="margin-top:22px;">Optional Authorization — Medication History Access</h3>
       <div class="info-banner"><strong>This is a separate, optional authorization.</strong> Declining will not affect your care or billing.</div>
       <p>I authorize Capital Injury Group, LLC to download and access the prior <strong>thirteen (13) months</strong> of my medication history through my insurance company and authorized medication history databases for the purpose of reviewing medications relevant to my care.</p>
       <div class="yn-pair">
         <div class="yn-option" id="medhx-yes" onclick="setMedHx(&#39;yes&#39;)">
           <div class="yn-dot"></div>
-          <div><div class="yn-label">YES � I authorize access</div><div class="yn-sublabel">to my 13-month medication history</div></div>
+          <div><div class="yn-label">YES — I authorize access</div><div class="yn-sublabel">to my 13-month medication history</div></div>
         </div>
         <div class="yn-option no" id="medhx-no" onclick="setMedHx(&#39;no&#39;)">
           <div class="yn-dot"></div>
-          <div><div class="yn-label">NO � I do not authorize</div><div class="yn-sublabel">access to my medication history</div></div>
+          <div><div class="yn-label">NO — I do not authorize</div><div class="yn-sublabel">access to my medication history</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- STEP 3 � TOA -->
+<!-- STEP 3 — TOA -->
 <section class="step" data-step="3">
-  <div id="pt-bar-3"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">� (none selected)</div></div></div></div>
+  <div id="pt-bar-3"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">— (none selected)</div></div></div></div>
   <div class="doc-card">
     <div class="doc-hdr">
       <div class="doc-tag">Document 2 of 7</div>
@@ -371,7 +371,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <h3>Examination, Diagnostic Imaging, and Reassessment</h3>
       <p>Your care may include physical examination, orthopedic and neurological testing, range-of-motion assessment, and diagnostic imaging when clinically indicated. Reassessment and repeat imaging may be recommended based on clinical judgment.</p>
       <h3>Risks of Care</h3>
-      <p><strong>Injection &amp; interventional procedures:</strong> temporary soreness, bruising, bleeding, infection, allergic reaction, temporary increase in pain; rarely � nerve injury or adverse reaction to medication. <strong>Rehab &amp; modalities:</strong> soreness, temporary symptom increase, skin irritation, rare allergic reactions. No guarantees have been made regarding outcomes. <strong>X-ray / fluoroscopy:</strong> exposure to ionizing radiation. <em>If pregnant or possibly pregnant, inform clinical staff before any imaging or injection.</em></p>
+      <p><strong>Injection &amp; interventional procedures:</strong> temporary soreness, bruising, bleeding, infection, allergic reaction, temporary increase in pain; rarely — nerve injury or adverse reaction to medication. <strong>Rehab &amp; modalities:</strong> soreness, temporary symptom increase, skin irritation, rare allergic reactions. No guarantees have been made regarding outcomes. <strong>X-ray / fluoroscopy:</strong> exposure to ionizing radiation. <em>If pregnant or possibly pregnant, inform clinical staff before any imaging or injection.</em></p>
       <h3>Diagnostic Imaging Ownership</h3>
       <p>X-ray and other diagnostic images are the property of Capital Injury Group and are part of your medical record. Copies may be requested per Florida law and HIPAA (cost-based fee may apply).</p>
       <h3>Video Surveillance Notice</h3>
@@ -379,7 +379,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <h3>Consent to Evaluation and Treatment</h3>
       <p>I have read and understand the Terms of Acceptance above. I voluntarily consent to evaluation and treatment, may ask questions at any time, may refuse or discontinue treatment, and understand no outcome is guaranteed.</p>
       <div class="sig-block">
-        <div class="sig-block-title">Patient Consent � Terms of Acceptance</div>
+        <div class="sig-block-title">Patient Consent — Terms of Acceptance</div>
         <div class="sig-pair">
           <div>
             <div class="sig-canvas-wrap" style="height:60px;"><canvas class="sig-canvas" id="sig_toa_sig" height="60" data-signed="0" width="436"></canvas><div class="sig-canvas-ph" id="sig_toa_sig_ph">Sign here</div><button class="sig-canvas-clear" onclick="clearSigPad(&#39;sig_toa_sig&#39;)">Clear</button></div>
@@ -431,19 +431,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </section>
 
-<!-- STEP 4 � IOT -->
+<!-- STEP 4 — IOT -->
 <section class="step" data-step="4">
-  <div id="pt-bar-4"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">� (none selected)</div></div></div></div>
+  <div id="pt-bar-4"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">— (none selected)</div></div></div></div>
   <div class="doc-card">
     <div class="doc-hdr">
       <div class="doc-tag">Document 3 of 7</div>
       <div class="doc-eyebrow">Florida Office of Insurance Regulation</div>
       <h1>Standard Disclosure &amp; Acknowledgement Form</h1>
-      <div class="doc-sub">Personal Injury Protection � Initial Treatment or Service Provided � Form OIR-BJ-1571</div>
-      <div class="doc-ver">State-mandated form � content cannot be modified</div>
+      <div class="doc-sub">Personal Injury Protection — Initial Treatment or Service Provided — Form OIR-BJ-1571</div>
+      <div class="doc-ver">State-mandated form — content cannot be modified</div>
     </div>
     <div class="doc-body">
-      <div class="info-banner"><strong>Note:</strong> This is a state-mandated form required by Florida Statutes � 627.736(5)(e). The content below is standardized and cannot be altered.</div>
+      <div class="info-banner"><strong>Note:</strong> This is a state-mandated form required by Florida Statutes § 627.736(5)(e). The content below is standardized and cannot be altered.</div>
       <h3>Insured Person's Affirmation</h3>
       <p>The undersigned insured person (or guardian of such person) affirms:</p>
       <ol>
@@ -457,7 +457,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <p style="padding:10px 14px;background:var(--lgreen);border-radius:8px;border:1px solid var(--mgreen);font-weight:600;color:var(--dgreen);">examination and treatment</p>
       <div class="alert"><strong>Fraud Warning:</strong> Any person who knowingly and with intent to injure, defraud, or deceive any insurer files a statement of claim or an application containing any false, incomplete, or misleading information is guilty of a felony of the third degree per Section 817.234(1)(b), Florida Statutes.</div>
       <p style="font-size:12px;color:var(--gray);"><strong>Note:</strong> The original of this form must be furnished to the insurer pursuant to Section 627.736(4)(b), Florida Statutes and may not be electronically furnished.</p>
-      <p style="font-size:11px;color:var(--gray);margin-top:4px;">OIR-BJ-1571 � Pub. 1/2004</p>
+      <p style="font-size:11px;color:var(--gray);margin-top:4px;">OIR-BJ-1571 — Pub. 1/2004</p>
       <div class="sig-block">
         <div class="sig-block-title">Insured Person (Patient) / Guardian Signature</div>
         <div class="sig-pair">
@@ -486,29 +486,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </section>
 
-<!-- STEP 5 � AOB -->
+<!-- STEP 5 — AOB -->
 <section class="step" data-step="5">
-  <div id="pt-bar-5"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">� (none selected)</div></div></div></div>
+  <div id="pt-bar-5"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">— (none selected)</div></div></div></div>
   <div class="doc-card">
     <div class="doc-hdr">
       <div class="doc-tag">Document 4 of 7</div>
       <div class="doc-eyebrow">Assignment of PIP Benefits</div>
-      <h1>Assignment of Benefits � PIP</h1>
-      <div class="doc-sub">Assignment of Personal Injury Protection insurance benefits pursuant to Florida Statutes � 627.736.</div>
+      <h1>Assignment of Benefits — PIP</h1>
+      <div class="doc-sub">Assignment of Personal Injury Protection insurance benefits pursuant to Florida Statutes § 627.736.</div>
       <div class="doc-ver">Version v_04.13.26</div>
     </div>
     <div class="doc-body">
       <div class="fg g3" style="margin-bottom:14px;">
-        <div class="f"><label>Patient Name</label><div class="fi locked pt-name-mirror">�</div></div>
-        <div class="f"><label>Date of Loss</label><div class="fi locked pt-dol-mirror">�</div></div>
-        <div class="f"><label>Claim / Policy #</label><div class="fi locked ins-claim-mirror">�</div></div>
+        <div class="f"><label>Patient Name</label><div class="fi locked pt-name-mirror">—</div></div>
+        <div class="f"><label>Date of Loss</label><div class="fi locked pt-dol-mirror">—</div></div>
+        <div class="f"><label>Claim / Policy #</label><div class="fi locked ins-claim-mirror">—</div></div>
       </div>
       <div class="fg g2" style="margin-bottom:14px;">
-        <div class="f"><label>PIP Carrier</label><div class="fi locked ins-carrier-mirror">�</div></div>
-        <div class="f"><label>Attorney / Firm</label><div class="fi locked atty-combo-mirror">�</div></div>
+        <div class="f"><label>PIP Carrier</label><div class="fi locked ins-carrier-mirror">—</div></div>
+        <div class="f"><label>Attorney / Firm</label><div class="fi locked atty-combo-mirror">—</div></div>
       </div>
       <h3>Assignment of PIP Benefits</h3>
-      <p>I, <span class="pt-chip pt-name-mirror">�</span> ("Patient"), hereby <strong>irrevocably</strong> assign to <strong>Capital Injury Group, LLC</strong> ("Assignee") all rights and benefits under my Personal Injury Protection (PIP) insurance coverage arising from the motor vehicle accident on the Date of Loss above, to the extent of charges for services rendered. This assignment is made pursuant to � 627.736, Florida Statutes, and shall remain irrevocable until all outstanding charges are fully resolved.</p>
+      <p>I, <span class="pt-chip pt-name-mirror">—</span> ("Patient"), hereby <strong>irrevocably</strong> assign to <strong>Capital Injury Group, LLC</strong> ("Assignee") all rights and benefits under my Personal Injury Protection (PIP) insurance coverage arising from the motor vehicle accident on the Date of Loss above, to the extent of charges for services rendered. This assignment is made pursuant to § 627.736, Florida Statutes, and shall remain irrevocable until all outstanding charges are fully resolved.</p>
       <h3>Direction to Pay &amp; Authorization to Release Information</h3>
       <p>I direct my PIP carrier and, where applicable, my attorney to pay sums due directly to the Assignee, and to withhold from any settlement an amount sufficient to satisfy any outstanding balance. I further authorize the Assignee to release medical records and billing information to my PIP carrier and my attorney solely as necessary to facilitate payment.</p>
       <h3>Patient Acknowledgement</h3>
@@ -519,9 +519,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
         <li>I was not solicited by any person to seek services from this provider.</li>
         <li>I will notify the Assignee promptly of any changes to my insurance coverage, contact information, or legal representation.</li>
       </ol>
-      <div class="alert"><strong>Any person who knowingly and with intent to injure, defraud, or deceive any insurer files a statement of claim or application containing false, incomplete, or misleading information is guilty of a felony of the third degree pursuant to � 817.234(1)(b), Florida Statutes.</strong></div>
+      <div class="alert"><strong>Any person who knowingly and with intent to injure, defraud, or deceive any insurer files a statement of claim or application containing false, incomplete, or misleading information is guilty of a felony of the third degree pursuant to § 817.234(1)(b), Florida Statutes.</strong></div>
       <div class="sig-block">
-        <div class="sig-block-title">Patient / Guardian Signature � AOB</div>
+        <div class="sig-block-title">Patient / Guardian Signature — AOB</div>
         <div class="sig-pair">
           <div>
             <div class="sig-canvas-wrap" style="height:60px;"><canvas class="sig-canvas" id="sig_aob_sig" height="60" data-signed="0" width="436"></canvas><div class="sig-canvas-ph" id="sig_aob_sig_ph">Sign here</div><button class="sig-canvas-clear" onclick="clearSigPad(&#39;sig_aob_sig&#39;)">Clear</button></div>
@@ -534,33 +534,33 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
           <input type="checkbox" id="attest_aob" onchange="updateSigStatus(&#39;aob&#39;)">
           <label for="attest_aob">I have read and understand this Assignment of Benefits and acknowledge the fraud warning.</label>
         </div>
-        <div class="f" style="margin-top:12px;"><label>Relationship (if Guardian)</label><input class="fi" id="aob_rel" placeholder="e.g., Parent, Legal Guardian � leave blank if patient is signing"></div>
+        <div class="f" style="margin-top:12px;"><label>Relationship (if Guardian)</label><input class="fi" id="aob_rel" placeholder="e.g., Parent, Legal Guardian — leave blank if patient is signing"></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- STEP 6 � RR1 -->
+<!-- STEP 6 — RR1 -->
 <section class="step active" data-step="6">
-  <div id="pt-bar-6"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">� (none selected)</div></div></div></div>
+  <div id="pt-bar-6"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">—</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">— (none selected)</div></div></div></div>
   <div class="doc-card">
     <div class="doc-hdr">
       <div class="doc-tag">Document 5 of 7</div>
-      <div class="doc-eyebrow">Records Release � Incoming</div>
+      <div class="doc-eyebrow">Records Release — Incoming</div>
       <h1>Authorization to Release Records TO Capital Injury Group</h1>
       <div class="doc-sub">Authorizing third-party providers to release your records to us for continuity of care.</div>
-      <div class="doc-ver">Version v_04.13.26 � HIPAA-Compliant</div>
+      <div class="doc-ver">Version v_04.13.26 — HIPAA-Compliant</div>
     </div>
     <div class="doc-body">
       <div class="info-banner">This authorization allows other healthcare providers (hospitals, prior clinics, imaging centers) to release your existing records to the Capital Injury Group office selected on the cover sheet.</div>
       <div class="fg g3" style="margin-bottom:14px;">
-        <div class="f"><label>Patient Name</label><div class="fi locked pt-name-mirror">�</div></div>
-        <div class="f"><label>Date of Birth</label><div class="fi locked pt-dob-mirror">�</div></div>
-        <div class="f"><label>Date of Loss</label><div class="fi locked pt-dol-mirror">�</div></div>
+        <div class="f"><label>Patient Name</label><div class="fi locked pt-name-mirror">—</div></div>
+        <div class="f"><label>Date of Birth</label><div class="fi locked pt-dob-mirror">—</div></div>
+        <div class="f"><label>Date of Loss</label><div class="fi locked pt-dol-mirror">—</div></div>
       </div>
       <h3>Release Records To (Receiving Office)</h3>
       <div class="fg" style="padding:14px 16px;background:var(--lgreen);border:1.5px solid var(--mgreen);border-radius:10px;" id="rr1-receiving">
-        <div style="font-weight:700;color:var(--dgreen);font-size:14px;" class="office-name-mirror">� (select on Cover Sheet)</div>
+        <div style="font-weight:700;color:var(--dgreen);font-size:14px;" class="office-name-mirror">— (select on Cover Sheet)</div>
         <div style="font-size:12.5px;color:#3a4a3e;margin-top:4px;" class="office-addr-mirror"></div>
       </div>
       <h3>Records to be Released By</h3>
@@ -578,7 +578,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       </div>
       <p style="margin-top:14px;">I understand I may revoke this authorization at any time in writing. A photocopy or fax of this authorization shall be considered as valid as the original.</p>
       <div class="sig-block">
-        <div class="sig-block-title">Patient Authorization � Records Release (Incoming)</div>
+        <div class="sig-block-title">Patient Authorization — Records Release (Incoming)</div>
         <div class="sig-pair">
           <div>
             <div class="sig-canvas-wrap" style="height:60px;"><canvas class="sig-canvas" id="sig_rr1_sig" height="60" data-signed="0" width="436"></canvas><div class="sig-canvas-ph" id="sig_rr1_sig_ph">Sign here</div><button class="sig-canvas-clear" onclick="clearSigPad(&#39;sig_rr1_sig&#39;)">Clear</button></div>
@@ -600,46 +600,46 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </section>
 
-<!-- STEP 7 � RR2 -->
+<!-- STEP 7 — RR2 -->
 <section class="step" data-step="7">
   <div id="pt-bar-7"></div>
   <div class="doc-card">
     <div class="doc-hdr">
       <div class="doc-tag">Document 6 of 7</div>
-      <div class="doc-eyebrow">Records Release � Outgoing</div>
+      <div class="doc-eyebrow">Records Release — Outgoing</div>
       <h1>Authorization to Release Records TO Attorney</h1>
       <div class="doc-sub">Granting your attorney permission to request your records from Capital Injury Group.</div>
-      <div class="doc-ver">Version v_04.13.26 � HIPAA-Compliant</div>
+      <div class="doc-ver">Version v_04.13.26 — HIPAA-Compliant</div>
     </div>
     <div class="doc-body">
       <div id="rr2-noatty-warn" class="danger-banner" style="display: block;"><strong>No attorney on file at signing.</strong> Your signature will be captured and this release will be activated once attorney information is provided.</div>
       <div id="rr2-hasatty-info" class="info-banner" style="display:none;">This authorization allows the attorney named below to request your records directly from Capital Injury Group.</div>
       <div class="fg g3" style="margin-bottom:14px;">
-        <div class="f"><label>Patient Name</label><div class="fi locked pt-name-mirror">�</div></div>
-        <div class="f"><label>Date of Birth</label><div class="fi locked pt-dob-mirror">�</div></div>
-        <div class="f"><label>Date of Loss</label><div class="fi locked pt-dol-mirror">�</div></div>
+        <div class="f"><label>Patient Name</label><div class="fi locked pt-name-mirror">—</div></div>
+        <div class="f"><label>Date of Birth</label><div class="fi locked pt-dob-mirror">—</div></div>
+        <div class="f"><label>Date of Loss</label><div class="fi locked pt-dol-mirror">—</div></div>
       </div>
       <h3>Records Released By</h3>
       <div class="fg" style="padding:14px 16px;background:var(--lgreen);border:1.5px solid var(--mgreen);border-radius:10px;">
-        <div style="font-weight:700;color:var(--dgreen);font-size:14px;" class="office-name-mirror">� (select on Cover Sheet)</div>
+        <div style="font-weight:700;color:var(--dgreen);font-size:14px;" class="office-name-mirror">— (select on Cover Sheet)</div>
         <div style="font-size:12.5px;color:#3a4a3e;margin-top:4px;" class="office-addr-mirror"></div>
       </div>
       <h3>Records Released To (Attorney of Record)</h3>
       <div class="fg g2">
-        <div class="f"><label>Firm Name</label><div class="fi locked atty-firm-mirror">�</div></div>
-        <div class="f"><label>Attorney Name</label><div class="fi locked atty-name-mirror">�</div></div>
+        <div class="f"><label>Firm Name</label><div class="fi locked atty-firm-mirror">—</div></div>
+        <div class="f"><label>Attorney Name</label><div class="fi locked atty-name-mirror">—</div></div>
       </div>
       <div class="fg g3" style="margin-top:10px;">
-        <div class="f"><label>Phone</label><div class="fi locked atty-phone-mirror">�</div></div>
-        <div class="f"><label>Fax</label><div class="fi locked atty-fax-mirror">�</div></div>
-        <div class="f"><label>Email</label><div class="fi locked atty-email-mirror">�</div></div>
+        <div class="f"><label>Phone</label><div class="fi locked atty-phone-mirror">—</div></div>
+        <div class="f"><label>Fax</label><div class="fi locked atty-fax-mirror">—</div></div>
+        <div class="f"><label>Email</label><div class="fi locked atty-email-mirror">—</div></div>
       </div>
-      <div class="f" style="margin-top:10px;"><label>Firm Address</label><div class="fi locked atty-addr-mirror">�</div></div>
+      <div class="f" style="margin-top:10px;"><label>Firm Address</label><div class="fi locked atty-addr-mirror">—</div></div>
       <h3>Scope of Release</h3>
       <p>I hereby authorize Capital Injury Group, LLC to release the <strong>complete medical history, records, reports, imaging, billing records, and treatment notes</strong> related to my care to the attorney named above for purposes of representation in the matter arising from the Date of Loss listed above.</p>
       <p style="margin-top:12px;">I understand I may revoke this authorization at any time in writing. A photocopy or fax of this authorization shall be considered as valid as the original.</p>
       <div class="sig-block">
-        <div class="sig-block-title">Patient Authorization � Records Release (Outgoing)</div>
+        <div class="sig-block-title">Patient Authorization — Records Release (Outgoing)</div>
         <div class="sig-pair">
           <div>
             <div class="sig-canvas-wrap" style="height:60px;"><canvas class="sig-canvas" id="sig_rr2_sig" height="60" data-signed="0"></canvas><div class="sig-canvas-ph" id="sig_rr2_sig_ph">Sign here</div><button class="sig-canvas-clear" onclick="clearSigPad(&#39;sig_rr2_sig&#39;)">Clear</button></div>
@@ -661,7 +661,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </section>
 
-<!-- STEP 8 � FINANCIAL RESPONSIBILITY -->
+<!-- STEP 8 — FINANCIAL RESPONSIBILITY -->
 <section class="step" data-step="8">
   <div id="pt-bar-8"></div>
   <div class="doc-card">
@@ -707,7 +707,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </section>
 
-<!-- STEP 9 � REVIEW & SUBMIT -->
+<!-- STEP 9 — REVIEW & SUBMIT -->
 <section class="step" data-step="9">
   <div class="card">
     <div class="card-hdr">
@@ -718,13 +718,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <div id="review-patient-summary" style="padding:14px 18px;background:var(--lgreen);border:1.5px solid var(--mgreen);border-radius:10px;margin-bottom:16px;">
         <div style="font-size:11px;font-weight:700;color:var(--dgreen);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Packet Summary</div>
         <div class="fg g3">
-          <div><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val pt-name-mirror">�</div></div>
-          <div><div class="pt-bar-lbl">Date of Birth</div><div class="pt-bar-val pt-dob-mirror">�</div></div>
-          <div><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val pt-dol-mirror">�</div></div>
-          <div><div class="pt-bar-lbl">Office</div><div class="pt-bar-val office-name-mirror">� (select on Cover Sheet)</div></div>
-          <div><div class="pt-bar-lbl">Provider</div><div class="pt-bar-val provider-name-mirror">� (none selected)</div></div>
-          <div><div class="pt-bar-lbl">Attorney</div><div class="pt-bar-val atty-combo-mirror">�</div></div>
-          <div class="s3"><div class="pt-bar-lbl">PIP Carrier / Claim</div><div class="pt-bar-val ins-combo-mirror">�</div></div>
+          <div><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val pt-name-mirror">—</div></div>
+          <div><div class="pt-bar-lbl">Date of Birth</div><div class="pt-bar-val pt-dob-mirror">—</div></div>
+          <div><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val pt-dol-mirror">—</div></div>
+          <div><div class="pt-bar-lbl">Office</div><div class="pt-bar-val office-name-mirror">— (select on Cover Sheet)</div></div>
+          <div><div class="pt-bar-lbl">Provider</div><div class="pt-bar-val provider-name-mirror">— (none selected)</div></div>
+          <div><div class="pt-bar-lbl">Attorney</div><div class="pt-bar-val atty-combo-mirror">—</div></div>
+          <div class="s3"><div class="pt-bar-lbl">PIP Carrier / Claim</div><div class="pt-bar-val ins-combo-mirror">—</div></div>
         </div>
       </div>
       <div class="sec-lbl">Document Signature Status</div>
@@ -753,7 +753,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
 <!-- NAV BAR -->
 <div class="navbar">
   <div class="navbar-inner">
-    <div class="navbar-status" id="nav-status">Step 6 of 9 � Records Release � Incoming</div>
+    <div class="navbar-status" id="nav-status">Step 6 of 9 — Records Release — Incoming</div>
     <div class="navbar-btns">
       <button class="btn btn-back" id="btn-back" onclick="goBack()" style="">&#8592; Back</button>
       <button class="btn btn-next" id="btn-next" onclick="goNext()">Next &#8594;</button>
@@ -761,9 +761,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </div>
 <script>
-const STEPS=[{n:1,name:"Cover Sheet"},{n:2,name:"HIPAA Privacy Notice"},{n:3,name:"Terms of Acceptance"},{n:4,name:"PIP Disclosure (IOT)"},{n:5,name:"Assignment of Benefits"},{n:6,name:"Records Release � Incoming"},{n:7,name:"Records Release � Attorney"},{n:8,name:"Financial Responsibility"},{n:9,name:"Review & Submit"}];
-const DOCS=[{key:"hipaa",label:"HIPAA Privacy Notice",step:2},{key:"toa",label:"Terms of Acceptance",step:3},{key:"iot",label:"PIP Disclosure (OIR-BJ-1571)",step:4},{key:"aob",label:"Assignment of Benefits",step:5},{key:"rr1",label:"Records Release � Incoming",step:6},{key:"rr2",label:"Records Release � Attorney",step:7},{key:"fr",label:"Financial Responsibility",step:8}];
-const OFFICES={pc:{name:"Panama City",addr:"2629 W 23rd Street, Unit H, Panama City, FL 32405 � Ph: 850-766-7018 � Fax: 850-387-0590"},tal:{name:"Tallahassee",addr:"3375 Capital Cir NE, Bldg C100, Tallahassee, FL 32308 � Ph: 850-766-7018 � Fax: 850-387-0590"}};
+const STEPS=[{n:1,name:"Cover Sheet"},{n:2,name:"HIPAA Privacy Notice"},{n:3,name:"Terms of Acceptance"},{n:4,name:"PIP Disclosure (IOT)"},{n:5,name:"Assignment of Benefits"},{n:6,name:"Records Release — Incoming"},{n:7,name:"Records Release — Attorney"},{n:8,name:"Financial Responsibility"},{n:9,name:"Review & Submit"}];
+const DOCS=[{key:"hipaa",label:"HIPAA Privacy Notice",step:2},{key:"toa",label:"Terms of Acceptance",step:3},{key:"iot",label:"PIP Disclosure (OIR-BJ-1571)",step:4},{key:"aob",label:"Assignment of Benefits",step:5},{key:"rr1",label:"Records Release — Incoming",step:6},{key:"rr2",label:"Records Release — Attorney",step:7},{key:"fr",label:"Financial Responsibility",step:8}];
+const OFFICES={pc:{name:"Panama City",addr:"2629 W 23rd Street, Unit H, Panama City, FL 32405 • Ph: 850-766-7018 • Fax: 850-387-0590"},tal:{name:"Tallahassee",addr:"3375 Capital Cir NE, Bldg C100, Tallahassee, FL 32308 • Ph: 850-766-7018 • Fax: 850-387-0590"}};
 const PROVIDERS={eldeeb:{name:"Mohammad Eldeeb, M.D."}};
 let currentStep=1,selectedOffice=null,selectedProvider=null,noAtty=false,noIns=false;
 let sigStatus={hipaa:false,toa:false,iot:false,aob:false,rr1:false,rr2:false,fr:false};
