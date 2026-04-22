@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <!-- saved from url=(0020)https://example.com/ -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Capital Injury Group — Signature Packet</title>
-<script src="./signature_packet_v_04_13_26.12-FINAL_files/html2pdf.bundle.min.js.download"></script>
-<script src="./signature_packet_v_04_13_26.12-FINAL_files/html2canvas.min.js.download"></script>
-<script src="./signature_packet_v_04_13_26.12-FINAL_files/jspdf.umd.min.js.download"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./signature_packet_v_04_13_26.12-FINAL_files/css2" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --navy:#7b1a2e; --blue:#9e1b32; --lblue:#faeff1;
@@ -85,7 +84,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
 .toggle-btn:hover{border-color:var(--gray);color:#3a4a5a;}
 .toggle-btn.on{background:var(--lgreen);border-color:var(--green);color:var(--dgreen);}
 .toggle-btn.on::before{content:"&#10003;";font-weight:800;}
-.sig-block{margin-top:18px;padding:16px 18px;background:var(--lgreen);border:2px dashed var(--green);border-radius:10px;}
+.sig-block{margin-top:18px;padding:16px 18px;background:var(--lgreen);border:2px solid var(--green);border-radius:10px;}
 .sig-block-title{font-size:11px;font-weight:700;color:var(--dgreen);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
 .sig-pair{display:grid;grid-template-columns:1fr 180px 140px;gap:12px;align-items:end;}
 .sig-line{border-bottom:1.5px solid #1a2535;min-height:34px;padding:4px 6px;font-family:'Libre Baskerville',serif;font-style:italic;font-size:18px;color:#1a2535;}
@@ -96,7 +95,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
 .sig-attest{display:flex;align-items:flex-start;gap:10px;margin-top:12px;padding:10px 12px;background:var(--white);border-radius:8px;border:1px solid var(--mgreen);}
 .sig-attest input[type=checkbox]{width:18px;height:18px;accent-color:var(--green);cursor:pointer;flex-shrink:0;margin-top:1px;}
 .sig-attest label{font-size:12.5px;line-height:1.5;cursor:pointer;}
-.guardian-block{margin-top:14px;padding:12px 14px;background:var(--white);border:1px dashed var(--mgreen);border-radius:8px;}
+.guardian-block{margin-top:14px;padding:12px 14px;background:var(--white);border:1px solid var(--mgreen);border-radius:8px;}
 .guardian-toggle{font-size:11.5px;color:var(--dgreen);font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:0.6px;display:flex;align-items:center;gap:7px;}
 .guardian-toggle::before{content:"+";font-size:15px;line-height:1;}
 .guardian-toggle.open::before{content:"&#8722;";}
@@ -116,7 +115,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
 .btn-back:hover{background:var(--white);border-color:var(--gray);color:#3a4a5a;}
 .btn-next{background:linear-gradient(135deg,var(--green),var(--dgreen));color:var(--white);box-shadow:0 3px 12px rgba(123,26,46,0.30);}
 .btn-next:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(123,26,46,0.40);}
-.btn-pdf{background:linear-gradient(135deg,#7b1a2e,#5a1222);color:var(--white);}
+.btn-pdf{background:linear-gradient(135deg,#1a4fa0,#0d3a7d);color:var(--white);}
 .review-row{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-bottom:1px solid var(--border);}
 .review-row:last-child{border-bottom:none;}
 .review-doc{font-size:14px;font-weight:600;color:#1a2535;}
@@ -165,23 +164,26 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
 .pdf-mode .hdr{position:static;}
 .pdf-mode .step{display:block !important;page-break-after:always;}
 .pdf-mode .step:last-child{page-break-after:auto;}
+@media (max-width: 1024px) {
+  .btn-pdf-download { display: none !important; }
+}
 </style>
 <style id="claude-agent-animation-styles">
       @keyframes claude-pulse {
         0% {
-          box-shadow: 
+          box-shadow:
             inset 0 0 10px rgba(217, 119, 87, 0.5),
             inset 0 0 20px rgba(217, 119, 87, 0.3),
             inset 0 0 30px rgba(217, 119, 87, 0.1);
         }
         50% {
-          box-shadow: 
+          box-shadow:
             inset 0 0 15px rgba(217, 119, 87, 0.7),
             inset 0 0 25px rgba(217, 119, 87, 0.5),
             inset 0 0 35px rgba(217, 119, 87, 0.2);
         }
         100% {
-          box-shadow: 
+          box-shadow:
             inset 0 0 10px rgba(217, 119, 87, 0.5),
             inset 0 0 20px rgba(217, 119, 87, 0.3),
             inset 0 0 30px rgba(217, 119, 87, 0.1);
@@ -195,7 +197,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   <div class="hdr-inner">
     <div class="hdr-top">
       <div class="brand">
-        <img src="CIG_Logo_transparent.png" alt="Capital Injury Group" style="height:44px;width:auto;display:block;">
+        <div class="brand-mark">
+          <img src="https://raw.githubusercontent.com/DrBerns/CIG/main/CIG_Logo_transparent.png" alt="Capital Injury Group" style="height:44px;width:auto;display:block;">
+        </div>
         <div>
           <div class="brand-sub">Capital Injury Group, LLC</div>
           <span class="pkt-badge">Signature Packet</span>
@@ -203,41 +207,41 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       </div>
       <div class="hdr-right">
         <div class="hdr-step-lbl" id="hdr-step-num">Step 6 of 9</div>
-        <div class="hdr-step-name" id="hdr-step-name">Records Release � Incoming</div>
+        <div class="hdr-step-name" id="hdr-step-name">Records Release · Incoming</div>
       </div>
     </div>
     <div class="prog-dots" id="prog-dots"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   </div>
 </div>
 
-<!-- STEP 1 � COVER SHEET -->
+<!-- STEP 1 · COVER SHEET -->
 <section class="step" data-step="1">
   <div class="card">
     <div class="card-hdr">
       <h2>Cover Sheet</h2>
       <p>Enter patient, attorney, and insurance information once. This information will populate all signature documents in the packet.</p>
-      <div class="ver">Signature Packet v_04.13.26 � Capital Injury Group</div>
+      <div class="ver">Signature Packet v_04.13.26 · Capital Injury Group</div>
     </div>
     <div class="card-body">
       <div class="sec-lbl">Patient Information</div>
       <div class="fg g3">
         <div class="f s2"><label>Patient Full Legal Name <span class="req">*</span></label><input class="fi" id="pt_name" placeholder="First Middle Last" oninput="syncAll()"></div>
-        <div class="f"><label>Date of Birth <span class="req">*</span></label><input class="fi" id="pt_dob" placeholder="MM/DD/YYYY" oninput="fmtDate(this);syncAll()" maxlength="10"></div>
+        <div class="f"><label>Date of Birth <span class="req">*</span></label><input class="fi" id="pt_dob" placeholder="MM-DD-YYYY" oninput="fmtDate(this);syncAll()" maxlength="10"></div>
       </div>
       <div class="fg g2" style="margin-top:14px;">
-        <div class="f"><label>Date of Loss (Accident Date) <span class="req">*</span></label><input class="fi" id="pt_dol" placeholder="MM/DD/YYYY" oninput="fmtDate(this);syncAll()" maxlength="10"></div>
-        <div class="f"><label>Today's Date <span class="req">*</span></label><input class="fi" id="pt_today" placeholder="MM/DD/YYYY" oninput="fmtDate(this);syncAll()" maxlength="10"></div>
+        <div class="f"><label>Date of Loss (Accident Date) <span class="req">*</span></label><input class="fi" id="pt_dol" placeholder="MM-DD-YYYY" oninput="fmtDate(this);syncAll()" maxlength="10"></div>
+        <div class="f"><label>Today's Date <span class="req">*</span></label><input class="fi" id="pt_today" placeholder="MM-DD-YYYY" oninput="fmtDate(this);syncAll()" maxlength="10"></div>
       </div>
       <hr class="divider">
       <div class="sec-lbl">Receiving Office</div>
       <div class="office-grid">
         <div class="office-card" id="oc-pc" onclick="selectOffice(&#39;pc&#39;)">
-          <div class="oc-name">Panama City</div>
-          <div class="oc-addr">2629 W 23rd Street, Unit H<br>Panama City, FL 32405<br>Ph: 850-766-7018 � Fax: 850-387-0590</div>
+          <div class="oc-name">Capital Injury Group — Panama City</div>
+          <div class="oc-addr">2629 W 23rd Street, Unit H<br>Panama City, FL 32405<br>Ph: 850-766-7018 · Fax: 850-387-0590</div>
         </div>
         <div class="office-card" id="oc-tal" onclick="selectOffice(&#39;tal&#39;)">
-          <div class="oc-name">Tallahassee</div>
-          <div class="oc-addr">3375 Capital Cir NE, Bldg C100<br>Tallahassee, FL 32308<br>Ph: 850-766-7018 � Fax: 850-387-0590</div>
+          <div class="oc-name">Capital Injury Group — Tallahassee</div>
+          <div class="oc-addr">3375 Capital Cir NE, Bldg C100<br>Tallahassee, FL 32308<br>Ph: 850-766-7018 · Fax: 850-387-0590</div>
         </div>
       </div>
       <hr class="divider">
@@ -245,14 +249,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <div class="fg g2">
         <div class="f s2"><label>Provider Name</label>
           <select class="fsel" id="provider_sel" onchange="selectProvider(this.value)">
-            <option value="">� Select provider (optional) �</option>
+            <option value="">· Select provider (optional) ·</option>
             <option value="eldeeb">Mohammad Eldeeb, M.D.</option>
           </select>
         </div>
       </div>
       <div id="provider-display" style="display:none;margin-top:10px;padding:10px 14px;background:var(--lgreen);border:1.5px solid var(--mgreen);border-radius:8px;font-size:12.5px;">
-        <div style="font-size:9.5px;font-weight:700;color:var(--dgreen);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px;">Selected Provider � will populate IOT form</div>
-        <div style="font-weight:600;color:#1a2535;" id="provider-name-display">�</div>
+        <div style="font-size:9.5px;font-weight:700;color:var(--dgreen);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px;">Selected Provider · will populate IOT form</div>
+        <div style="font-weight:600;color:#1a2535;" id="provider-name-display">·</div>
         <div style="font-size:11px;color:var(--gray);margin-top:3px;">Provider signature will appear in the PDF output.</div>
       </div>
       <hr class="divider">
@@ -290,9 +294,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </section>
 
-<!-- STEP 2 � HIPAA -->
+<!-- STEP 2 · HIPAA -->
 <section class="step" data-step="2">
-  <div id="pt-bar-2"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">� (none selected)</div></div></div></div>
+  <div id="pt-bar-2"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">· (none selected)</div></div></div></div>
   <div class="doc-card">
     <div class="doc-hdr">
       <div class="doc-tag">Document 1 of 7</div>
@@ -306,7 +310,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <h3>Our Pledge Regarding Your Health Information</h3>
       <p>We are required by federal and Florida law to maintain the privacy of your protected health information (PHI), to provide you with this Notice of our legal duties and privacy practices, and to follow the terms of the Notice currently in effect. We reserve the right to change this Notice and to make the revised Notice effective for all PHI we maintain. A current copy of this Notice will be posted in our offices and available on request.</p>
       <h3>How We May Use and Disclose Your Health Information Without Your Authorization</h3>
-      <p><strong>Treatment.</strong> We may use and disclose your PHI to provide, coordinate, or manage your healthcare � for example, sharing records with a referring physician, hospital, imaging center, or specialist involved in your care.</p>
+      <p><strong>Treatment.</strong> We may use and disclose your PHI to provide, coordinate, or manage your healthcare · for example, sharing records with a referring physician, hospital, imaging center, or specialist involved in your care.</p>
       <p><strong>Payment.</strong> We may use and disclose your PHI to bill and collect payment from you, your insurance company (including auto/PIP carriers), or other responsible third parties involved in payment for your care, including attorneys when applicable to your case.</p>
       <p><strong>Healthcare Operations.</strong> We may use and disclose your PHI for quality assessment, staff training, credentialing, licensing, audits, legal services, and other business activities necessary to run our practice.</p>
       <p><strong>Appointment Reminders &amp; Health-Related Communications.</strong> We may contact you by phone, text, email, or mail regarding appointments, treatment alternatives, or other health-related information. These communications may not be secure.</p>
@@ -318,46 +322,46 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <p>If you believe your privacy rights have been violated, you may file a complaint with our Privacy Officer or with the U.S. Department of Health and Human Services, Office for Civil Rights (www.hhs.gov/ocr).</p>
       <h3>Contact Information</h3>
       <p><strong>Privacy Officer</strong><br>Capital Injury Group, LLC<br>
-      <strong>Panama City:</strong> 2629 W 23rd Street, Unit H � Panama City, FL 32405 � Ph: 850-766-7018<br>
-      <strong>Tallahassee:</strong> 3375 Capital Cir NE, Bldg C100 � Tallahassee, FL 32308 � Ph: 850-766-7018<br>
+      2629 W 23rd Street, Unit H, Panama City, FL 32405 · Ph: 850-766-7018<br>
+      3375 Capital Cir NE, Bldg C100, Tallahassee, FL 32308 · Ph: 850-766-7018<br>
       <strong>Email:</strong> info@capitalinjurygroup.com</p>
       <h3>Acknowledgment of Receipt</h3>
       <p>By signing below, I acknowledge that I have received a copy of the Capital Injury Group Notice of Privacy Practices (v_04.13.26).</p>
       <div class="sig-block">
-        <div class="sig-block-title">Patient Acknowledgment � HIPAA</div>
+        <div class="sig-block-title">Patient Acknowledgment · HIPAA</div>
         <div class="sig-pair">
           <div>
             <div class="sig-canvas-wrap" style="height:60px;"><canvas class="sig-canvas" id="sig_hipaa_sig" height="60" data-signed="0" width="436"></canvas><div class="sig-canvas-ph" id="sig_hipaa_sig_ph">Sign here</div><button class="sig-canvas-clear" onclick="clearSigPad(&#39;sig_hipaa_sig&#39;)">Clear</button></div>
             <div class="sig-line-lbl">Signature</div>
           </div>
           <div><input class="sig-input sig-input-print pt-name-pop" placeholder="Printed name"><div class="sig-line-lbl">Printed Name</div></div>
-          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM/DD/YYYY"><div class="sig-line-lbl">Date</div></div>
+          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM-DD-YYYY"><div class="sig-line-lbl">Date</div></div>
         </div>
         <div class="sig-attest">
           <input type="checkbox" id="attest_hipaa" onchange="updateSigStatus(&#39;hipaa&#39;)">
           <label for="attest_hipaa">I have read the HIPAA Privacy Notice and acknowledge receipt of a copy.</label>
         </div>
       </div>
-      <h3 style="margin-top:22px;">Optional Authorization � Medication History Access</h3>
+      <h3 style="margin-top:22px;">Optional Authorization · Medication History Access</h3>
       <div class="info-banner"><strong>This is a separate, optional authorization.</strong> Declining will not affect your care or billing.</div>
       <p>I authorize Capital Injury Group, LLC to download and access the prior <strong>thirteen (13) months</strong> of my medication history through my insurance company and authorized medication history databases for the purpose of reviewing medications relevant to my care.</p>
       <div class="yn-pair">
         <div class="yn-option" id="medhx-yes" onclick="setMedHx(&#39;yes&#39;)">
           <div class="yn-dot"></div>
-          <div><div class="yn-label">YES � I authorize access</div><div class="yn-sublabel">to my 13-month medication history</div></div>
+          <div><div class="yn-label">YES · I authorize access</div><div class="yn-sublabel">to my 13-month medication history</div></div>
         </div>
         <div class="yn-option no" id="medhx-no" onclick="setMedHx(&#39;no&#39;)">
           <div class="yn-dot"></div>
-          <div><div class="yn-label">NO � I do not authorize</div><div class="yn-sublabel">access to my medication history</div></div>
+          <div><div class="yn-label">NO · I do not authorize</div><div class="yn-sublabel">access to my medication history</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- STEP 3 � TOA -->
+<!-- STEP 3 · TOA -->
 <section class="step" data-step="3">
-  <div id="pt-bar-3"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">� (none selected)</div></div></div></div>
+  <div id="pt-bar-3"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">· (none selected)</div></div></div></div>
   <div class="doc-card">
     <div class="doc-hdr">
       <div class="doc-tag">Document 2 of 7</div>
@@ -372,7 +376,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <h3>Examination, Diagnostic Imaging, and Reassessment</h3>
       <p>Your care may include physical examination, orthopedic and neurological testing, range-of-motion assessment, and diagnostic imaging when clinically indicated. Reassessment and repeat imaging may be recommended based on clinical judgment.</p>
       <h3>Risks of Care</h3>
-      <p><strong>Injection &amp; interventional procedures:</strong> temporary soreness, bruising, bleeding, infection, allergic reaction, temporary increase in pain; rarely � nerve injury or adverse reaction to medication. <strong>Rehab &amp; modalities:</strong> soreness, temporary symptom increase, skin irritation, rare allergic reactions. No guarantees have been made regarding outcomes. <strong>X-ray / fluoroscopy:</strong> exposure to ionizing radiation. <em>If pregnant or possibly pregnant, inform clinical staff before any imaging or injection.</em></p>
+      <p><strong>Chiropractic / manual care:</strong> temporary soreness, stiffness, bruising, muscle strain, soft-tissue injury, aggravation of existing condition; rarely · disc injury, fracture, nerve irritation, or stroke from cervical manipulation (vertebrobasilar injury). <strong>Rehab &amp; modalities:</strong> soreness, temporary symptom increase, skin irritation, rare allergic reactions. No guarantees have been made regarding outcomes. <strong>X-ray:</strong> exposure to ionizing radiation. <em>If pregnant or possibly pregnant, inform clinical staff before any imaging.</em></p>
       <h3>Diagnostic Imaging Ownership</h3>
       <p>X-ray and other diagnostic images are the property of Capital Injury Group and are part of your medical record. Copies may be requested per Florida law and HIPAA (cost-based fee may apply).</p>
       <h3>Video Surveillance Notice</h3>
@@ -380,14 +384,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <h3>Consent to Evaluation and Treatment</h3>
       <p>I have read and understand the Terms of Acceptance above. I voluntarily consent to evaluation and treatment, may ask questions at any time, may refuse or discontinue treatment, and understand no outcome is guaranteed.</p>
       <div class="sig-block">
-        <div class="sig-block-title">Patient Consent � Terms of Acceptance</div>
+        <div class="sig-block-title">Patient Consent · Terms of Acceptance</div>
         <div class="sig-pair">
           <div>
             <div class="sig-canvas-wrap" style="height:60px;"><canvas class="sig-canvas" id="sig_toa_sig" height="60" data-signed="0" width="436"></canvas><div class="sig-canvas-ph" id="sig_toa_sig_ph">Sign here</div><button class="sig-canvas-clear" onclick="clearSigPad(&#39;sig_toa_sig&#39;)">Clear</button></div>
             <div class="sig-line-lbl">Signature</div>
           </div>
           <div><input class="sig-input sig-input-print pt-name-pop" placeholder="Printed name"><div class="sig-line-lbl">Printed Name</div></div>
-          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM/DD/YYYY"><div class="sig-line-lbl">Date</div></div>
+          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM-DD-YYYY"><div class="sig-line-lbl">Date</div></div>
         </div>
         <div class="sig-attest">
           <input type="checkbox" id="attest_toa" onchange="updateSigStatus(&#39;toa&#39;)">
@@ -405,7 +409,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
               <div class="f"><label>Minor's Full Name</label><input class="fi" id="toa_minor_name" placeholder="Minor printed name"></div>
             </div>
             <div class="fg g2" style="margin-top:10px;">
-              <div class="f"><label>Minor's Date of Birth</label><input class="fi" id="toa_minor_dob" placeholder="MM/DD/YYYY" oninput="fmtDate(this)" maxlength="10"></div>
+              <div class="f"><label>Minor's Date of Birth</label><input class="fi" id="toa_minor_dob" placeholder="MM-DD-YYYY" oninput="fmtDate(this)" maxlength="10"></div>
               <div class="f"><label>Guardian Phone</label><input class="fi" id="toa_guard_phone" placeholder="(XXX) XXX-XXXX" oninput="fmtPhone(this)" maxlength="14"></div>
             </div>
             <div class="f" style="margin-top:10px;"><label>Relationship to Minor</label>
@@ -422,7 +426,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
                 <div class="sig-canvas-wrap" style="height:50px;"><canvas class="sig-canvas" id="sig_toa_guard" height="50" data-signed="0"></canvas><div class="sig-canvas-ph" id="sig_toa_guard_ph">Sign here</div><button class="sig-canvas-clear" onclick="clearSigPad(&#39;sig_toa_guard&#39;)">Clear</button></div>
                 <div class="sig-line-lbl">Guardian Signature</div>
               </div>
-              <div><input class="sig-input sig-input-print" id="toa_guard_date" placeholder="MM/DD/YYYY" oninput="fmtDate(this)" maxlength="10"><div class="sig-line-lbl">Date</div></div>
+              <div><input class="sig-input sig-input-print" id="toa_guard_date" placeholder="MM-DD-YYYY" oninput="fmtDate(this)" maxlength="10"><div class="sig-line-lbl">Date</div></div>
               <div><input class="sig-input sig-input-print sw-pop" id="toa_guard_witness" placeholder="Staff witness (optional)"><div class="sig-line-lbl">Witness</div></div>
             </div>
           </div>
@@ -432,19 +436,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </section>
 
-<!-- STEP 4 � IOT -->
+<!-- STEP 4 · IOT -->
 <section class="step" data-step="4">
-  <div id="pt-bar-4"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">� (none selected)</div></div></div></div>
+  <div id="pt-bar-4"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">· (none selected)</div></div></div></div>
   <div class="doc-card">
     <div class="doc-hdr">
       <div class="doc-tag">Document 3 of 7</div>
       <div class="doc-eyebrow">Florida Office of Insurance Regulation</div>
       <h1>Standard Disclosure &amp; Acknowledgement Form</h1>
-      <div class="doc-sub">Personal Injury Protection � Initial Treatment or Service Provided � Form OIR-BJ-1571</div>
-      <div class="doc-ver">State-mandated form � content cannot be modified</div>
+      <div class="doc-sub">Personal Injury Protection · Initial Treatment or Service Provided · Form OIR-BJ-1571</div>
+      <div class="doc-ver">State-mandated form · content cannot be modified</div>
     </div>
     <div class="doc-body">
-      <div class="info-banner"><strong>Note:</strong> This is a state-mandated form required by Florida Statutes � 627.736(5)(e). The content below is standardized and cannot be altered.</div>
+      <div class="info-banner"><strong>Note:</strong> This is a state-mandated form required by Florida Statutes · 627.736(5)(e). The content below is standardized and cannot be altered.</div>
       <h3>Insured Person's Affirmation</h3>
       <p>The undersigned insured person (or guardian of such person) affirms:</p>
       <ol>
@@ -458,7 +462,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <p style="padding:10px 14px;background:var(--lgreen);border-radius:8px;border:1px solid var(--mgreen);font-weight:600;color:var(--dgreen);">examination and treatment</p>
       <div class="alert"><strong>Fraud Warning:</strong> Any person who knowingly and with intent to injure, defraud, or deceive any insurer files a statement of claim or an application containing any false, incomplete, or misleading information is guilty of a felony of the third degree per Section 817.234(1)(b), Florida Statutes.</div>
       <p style="font-size:12px;color:var(--gray);"><strong>Note:</strong> The original of this form must be furnished to the insurer pursuant to Section 627.736(4)(b), Florida Statutes and may not be electronically furnished.</p>
-      <p style="font-size:11px;color:var(--gray);margin-top:4px;">OIR-BJ-1571 � Pub. 1/2004</p>
+      <p style="font-size:11px;color:var(--gray);margin-top:4px;">OIR-BJ-1571 · Pub. 1/2004</p>
       <div class="sig-block">
         <div class="sig-block-title">Insured Person (Patient) / Guardian Signature</div>
         <div class="sig-pair">
@@ -467,7 +471,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
             <div class="sig-line-lbl">Signature</div>
           </div>
           <div><input class="sig-input sig-input-print pt-name-pop" placeholder="Printed name"><div class="sig-line-lbl">Name (PRINT or TYPE)</div></div>
-          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM/DD/YYYY"><div class="sig-line-lbl">Date</div></div>
+          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM-DD-YYYY"><div class="sig-line-lbl">Date</div></div>
         </div>
         <div class="sig-attest">
           <input type="checkbox" id="attest_iot" onchange="updateSigStatus(&#39;iot&#39;)">
@@ -487,29 +491,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </section>
 
-<!-- STEP 5 � AOB -->
+<!-- STEP 5 · AOB -->
 <section class="step" data-step="5">
-  <div id="pt-bar-5"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">� (none selected)</div></div></div></div>
+  <div id="pt-bar-5"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">· (none selected)</div></div></div></div>
   <div class="doc-card">
     <div class="doc-hdr">
       <div class="doc-tag">Document 4 of 7</div>
       <div class="doc-eyebrow">Assignment of PIP Benefits</div>
-      <h1>Assignment of Benefits � PIP</h1>
-      <div class="doc-sub">Assignment of Personal Injury Protection insurance benefits pursuant to Florida Statutes � 627.736.</div>
+      <h1>Assignment of Benefits · PIP</h1>
+      <div class="doc-sub">Assignment of Personal Injury Protection insurance benefits pursuant to Florida Statutes · 627.736.</div>
       <div class="doc-ver">Version v_04.13.26</div>
     </div>
     <div class="doc-body">
       <div class="fg g3" style="margin-bottom:14px;">
-        <div class="f"><label>Patient Name</label><div class="fi locked pt-name-mirror">�</div></div>
-        <div class="f"><label>Date of Loss</label><div class="fi locked pt-dol-mirror">�</div></div>
-        <div class="f"><label>Claim / Policy #</label><div class="fi locked ins-claim-mirror">�</div></div>
+        <div class="f"><label>Patient Name</label><div class="fi locked pt-name-mirror">·</div></div>
+        <div class="f"><label>Date of Loss</label><div class="fi locked pt-dol-mirror">·</div></div>
+        <div class="f"><label>Claim / Policy #</label><div class="fi locked ins-claim-mirror">·</div></div>
       </div>
       <div class="fg g2" style="margin-bottom:14px;">
-        <div class="f"><label>PIP Carrier</label><div class="fi locked ins-carrier-mirror">�</div></div>
-        <div class="f"><label>Attorney / Firm</label><div class="fi locked atty-combo-mirror">�</div></div>
+        <div class="f"><label>PIP Carrier</label><div class="fi locked ins-carrier-mirror">·</div></div>
+        <div class="f"><label>Attorney / Firm</label><div class="fi locked atty-combo-mirror">·</div></div>
       </div>
       <h3>Assignment of PIP Benefits</h3>
-      <p>I, <span class="pt-chip pt-name-mirror">�</span> ("Patient"), hereby <strong>irrevocably</strong> assign to <strong>Capital Injury Group, LLC</strong> ("Assignee") all rights and benefits under my Personal Injury Protection (PIP) insurance coverage arising from the motor vehicle accident on the Date of Loss above, to the extent of charges for services rendered. This assignment is made pursuant to � 627.736, Florida Statutes, and shall remain irrevocable until all outstanding charges are fully resolved.</p>
+      <p>I, <span class="pt-chip pt-name-mirror">·</span> ("Patient"), hereby <strong>irrevocably</strong> assign to <strong>Capital Injury Group, LLC</strong> ("Assignee") all rights and benefits under my Personal Injury Protection (PIP) insurance coverage arising from the motor vehicle accident on the Date of Loss above, to the extent of charges for services rendered. This assignment is made pursuant to · 627.736, Florida Statutes, and shall remain irrevocable until all outstanding charges are fully resolved.</p>
       <h3>Direction to Pay &amp; Authorization to Release Information</h3>
       <p>I direct my PIP carrier and, where applicable, my attorney to pay sums due directly to the Assignee, and to withhold from any settlement an amount sufficient to satisfy any outstanding balance. I further authorize the Assignee to release medical records and billing information to my PIP carrier and my attorney solely as necessary to facilitate payment.</p>
       <h3>Patient Acknowledgement</h3>
@@ -520,48 +524,48 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
         <li>I was not solicited by any person to seek services from this provider.</li>
         <li>I will notify the Assignee promptly of any changes to my insurance coverage, contact information, or legal representation.</li>
       </ol>
-      <div class="alert"><strong>Any person who knowingly and with intent to injure, defraud, or deceive any insurer files a statement of claim or application containing false, incomplete, or misleading information is guilty of a felony of the third degree pursuant to � 817.234(1)(b), Florida Statutes.</strong></div>
+      <div class="alert"><strong>Any person who knowingly and with intent to injure, defraud, or deceive any insurer files a statement of claim or application containing false, incomplete, or misleading information is guilty of a felony of the third degree pursuant to · 817.234(1)(b), Florida Statutes.</strong></div>
       <div class="sig-block">
-        <div class="sig-block-title">Patient / Guardian Signature � AOB</div>
+        <div class="sig-block-title">Patient / Guardian Signature · AOB</div>
         <div class="sig-pair">
           <div>
             <div class="sig-canvas-wrap" style="height:60px;"><canvas class="sig-canvas" id="sig_aob_sig" height="60" data-signed="0" width="436"></canvas><div class="sig-canvas-ph" id="sig_aob_sig_ph">Sign here</div><button class="sig-canvas-clear" onclick="clearSigPad(&#39;sig_aob_sig&#39;)">Clear</button></div>
             <div class="sig-line-lbl">Signature</div>
           </div>
           <div><input class="sig-input sig-input-print pt-name-pop" placeholder="Printed name"><div class="sig-line-lbl">Printed Name</div></div>
-          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM/DD/YYYY"><div class="sig-line-lbl">Date</div></div>
+          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM-DD-YYYY"><div class="sig-line-lbl">Date</div></div>
         </div>
         <div class="sig-attest">
           <input type="checkbox" id="attest_aob" onchange="updateSigStatus(&#39;aob&#39;)">
           <label for="attest_aob">I have read and understand this Assignment of Benefits and acknowledge the fraud warning.</label>
         </div>
-        <div class="f" style="margin-top:12px;"><label>Relationship (if Guardian)</label><input class="fi" id="aob_rel" placeholder="e.g., Parent, Legal Guardian � leave blank if patient is signing"></div>
+        <div class="f" style="margin-top:12px;"><label>Relationship (if Guardian)</label><input class="fi" id="aob_rel" placeholder="e.g., Parent, Legal Guardian · leave blank if patient is signing"></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- STEP 6 � RR1 -->
+<!-- STEP 6 · RR1 -->
 <section class="step active" data-step="6">
-  <div id="pt-bar-6"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">�</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">� (none selected)</div></div></div></div>
+  <div id="pt-bar-6"><div class="pt-bar"><div class="pt-bar-item"><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">DOB</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val">·</div></div><div class="pt-bar-item"><div class="pt-bar-lbl">Office</div><div class="pt-bar-val">· (none selected)</div></div></div></div>
   <div class="doc-card">
     <div class="doc-hdr">
       <div class="doc-tag">Document 5 of 7</div>
-      <div class="doc-eyebrow">Records Release � Incoming</div>
+      <div class="doc-eyebrow">Records Release · Incoming</div>
       <h1>Authorization to Release Records TO Capital Injury Group</h1>
       <div class="doc-sub">Authorizing third-party providers to release your records to us for continuity of care.</div>
-      <div class="doc-ver">Version v_04.13.26 � HIPAA-Compliant</div>
+      <div class="doc-ver">Version v_04.13.26 · HIPAA-Compliant</div>
     </div>
     <div class="doc-body">
       <div class="info-banner">This authorization allows other healthcare providers (hospitals, prior clinics, imaging centers) to release your existing records to the Capital Injury Group office selected on the cover sheet.</div>
       <div class="fg g3" style="margin-bottom:14px;">
-        <div class="f"><label>Patient Name</label><div class="fi locked pt-name-mirror">�</div></div>
-        <div class="f"><label>Date of Birth</label><div class="fi locked pt-dob-mirror">�</div></div>
-        <div class="f"><label>Date of Loss</label><div class="fi locked pt-dol-mirror">�</div></div>
+        <div class="f"><label>Patient Name</label><div class="fi locked pt-name-mirror">·</div></div>
+        <div class="f"><label>Date of Birth</label><div class="fi locked pt-dob-mirror">·</div></div>
+        <div class="f"><label>Date of Loss</label><div class="fi locked pt-dol-mirror">·</div></div>
       </div>
       <h3>Release Records To (Receiving Office)</h3>
       <div class="fg" style="padding:14px 16px;background:var(--lgreen);border:1.5px solid var(--mgreen);border-radius:10px;" id="rr1-receiving">
-        <div style="font-weight:700;color:var(--dgreen);font-size:14px;" class="office-name-mirror">� (select on Cover Sheet)</div>
+        <div style="font-weight:700;color:var(--dgreen);font-size:14px;" class="office-name-mirror">· (select on Cover Sheet)</div>
         <div style="font-size:12.5px;color:#3a4a3e;margin-top:4px;" class="office-addr-mirror"></div>
       </div>
       <h3>Records to be Released By</h3>
@@ -574,19 +578,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <h3>Records Requested</h3>
       <p>I hereby authorize and request the release of the <strong>complete medical history, records, reports, imaging, and treatment notes</strong> in your possession concerning my illness and/or treatment during the period below:</p>
       <div class="fg g2" style="margin-top:10px;">
-        <div class="f"><label>From</label><input class="fi" id="rr1_period_from" placeholder="MM/DD/YYYY" oninput="fmtDate(this)" maxlength="10"></div>
+        <div class="f"><label>From</label><input class="fi" id="rr1_period_from" placeholder="MM-DD-YYYY" oninput="fmtDate(this)" maxlength="10"></div>
         <div class="f"><label>To</label><input class="fi" id="rr1_period_to" placeholder="MM/DD/YYYY or &#39;Present&#39;"></div>
       </div>
       <p style="margin-top:14px;">I understand I may revoke this authorization at any time in writing. A photocopy or fax of this authorization shall be considered as valid as the original.</p>
       <div class="sig-block">
-        <div class="sig-block-title">Patient Authorization � Records Release (Incoming)</div>
+        <div class="sig-block-title">Patient Authorization · Records Release (Incoming)</div>
         <div class="sig-pair">
           <div>
             <div class="sig-canvas-wrap" style="height:60px;"><canvas class="sig-canvas" id="sig_rr1_sig" height="60" data-signed="0" width="436"></canvas><div class="sig-canvas-ph" id="sig_rr1_sig_ph">Sign here</div><button class="sig-canvas-clear" onclick="clearSigPad(&#39;sig_rr1_sig&#39;)">Clear</button></div>
             <div class="sig-line-lbl">Patient Signature</div>
           </div>
           <div><input class="sig-input sig-input-print pt-name-pop" placeholder="Printed name"><div class="sig-line-lbl">Printed Name</div></div>
-          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM/DD/YYYY"><div class="sig-line-lbl">Date</div></div>
+          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM-DD-YYYY"><div class="sig-line-lbl">Date</div></div>
         </div>
         <div class="sig-attest">
           <input type="checkbox" id="attest_rr1" onchange="updateSigStatus(&#39;rr1&#39;)">
@@ -601,53 +605,53 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </section>
 
-<!-- STEP 7 � RR2 -->
+<!-- STEP 7 · RR2 -->
 <section class="step" data-step="7">
   <div id="pt-bar-7"></div>
   <div class="doc-card">
     <div class="doc-hdr">
       <div class="doc-tag">Document 6 of 7</div>
-      <div class="doc-eyebrow">Records Release � Outgoing</div>
+      <div class="doc-eyebrow">Records Release · Outgoing</div>
       <h1>Authorization to Release Records TO Attorney</h1>
       <div class="doc-sub">Granting your attorney permission to request your records from Capital Injury Group.</div>
-      <div class="doc-ver">Version v_04.13.26 � HIPAA-Compliant</div>
+      <div class="doc-ver">Version v_04.13.26 · HIPAA-Compliant</div>
     </div>
     <div class="doc-body">
       <div id="rr2-noatty-warn" class="danger-banner" style="display: block;"><strong>No attorney on file at signing.</strong> Your signature will be captured and this release will be activated once attorney information is provided.</div>
       <div id="rr2-hasatty-info" class="info-banner" style="display:none;">This authorization allows the attorney named below to request your records directly from Capital Injury Group.</div>
       <div class="fg g3" style="margin-bottom:14px;">
-        <div class="f"><label>Patient Name</label><div class="fi locked pt-name-mirror">�</div></div>
-        <div class="f"><label>Date of Birth</label><div class="fi locked pt-dob-mirror">�</div></div>
-        <div class="f"><label>Date of Loss</label><div class="fi locked pt-dol-mirror">�</div></div>
+        <div class="f"><label>Patient Name</label><div class="fi locked pt-name-mirror">·</div></div>
+        <div class="f"><label>Date of Birth</label><div class="fi locked pt-dob-mirror">·</div></div>
+        <div class="f"><label>Date of Loss</label><div class="fi locked pt-dol-mirror">·</div></div>
       </div>
       <h3>Records Released By</h3>
       <div class="fg" style="padding:14px 16px;background:var(--lgreen);border:1.5px solid var(--mgreen);border-radius:10px;">
-        <div style="font-weight:700;color:var(--dgreen);font-size:14px;" class="office-name-mirror">� (select on Cover Sheet)</div>
+        <div style="font-weight:700;color:var(--dgreen);font-size:14px;" class="office-name-mirror">· (select on Cover Sheet)</div>
         <div style="font-size:12.5px;color:#3a4a3e;margin-top:4px;" class="office-addr-mirror"></div>
       </div>
       <h3>Records Released To (Attorney of Record)</h3>
       <div class="fg g2">
-        <div class="f"><label>Firm Name</label><div class="fi locked atty-firm-mirror">�</div></div>
-        <div class="f"><label>Attorney Name</label><div class="fi locked atty-name-mirror">�</div></div>
+        <div class="f"><label>Firm Name</label><div class="fi locked atty-firm-mirror">·</div></div>
+        <div class="f"><label>Attorney Name</label><div class="fi locked atty-name-mirror">·</div></div>
       </div>
       <div class="fg g3" style="margin-top:10px;">
-        <div class="f"><label>Phone</label><div class="fi locked atty-phone-mirror">�</div></div>
-        <div class="f"><label>Fax</label><div class="fi locked atty-fax-mirror">�</div></div>
-        <div class="f"><label>Email</label><div class="fi locked atty-email-mirror">�</div></div>
+        <div class="f"><label>Phone</label><div class="fi locked atty-phone-mirror">·</div></div>
+        <div class="f"><label>Fax</label><div class="fi locked atty-fax-mirror">·</div></div>
+        <div class="f"><label>Email</label><div class="fi locked atty-email-mirror">·</div></div>
       </div>
-      <div class="f" style="margin-top:10px;"><label>Firm Address</label><div class="fi locked atty-addr-mirror">�</div></div>
+      <div class="f" style="margin-top:10px;"><label>Firm Address</label><div class="fi locked atty-addr-mirror">·</div></div>
       <h3>Scope of Release</h3>
       <p>I hereby authorize Capital Injury Group, LLC to release the <strong>complete medical history, records, reports, imaging, billing records, and treatment notes</strong> related to my care to the attorney named above for purposes of representation in the matter arising from the Date of Loss listed above.</p>
       <p style="margin-top:12px;">I understand I may revoke this authorization at any time in writing. A photocopy or fax of this authorization shall be considered as valid as the original.</p>
       <div class="sig-block">
-        <div class="sig-block-title">Patient Authorization � Records Release (Outgoing)</div>
+        <div class="sig-block-title">Patient Authorization · Records Release (Outgoing)</div>
         <div class="sig-pair">
           <div>
             <div class="sig-canvas-wrap" style="height:60px;"><canvas class="sig-canvas" id="sig_rr2_sig" height="60" data-signed="0"></canvas><div class="sig-canvas-ph" id="sig_rr2_sig_ph">Sign here</div><button class="sig-canvas-clear" onclick="clearSigPad(&#39;sig_rr2_sig&#39;)">Clear</button></div>
             <div class="sig-line-lbl">Patient Signature</div>
           </div>
           <div><input class="sig-input sig-input-print pt-name-pop" placeholder="Printed name"><div class="sig-line-lbl">Printed Name</div></div>
-          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM/DD/YYYY"><div class="sig-line-lbl">Date</div></div>
+          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM-DD-YYYY"><div class="sig-line-lbl">Date</div></div>
         </div>
         <div class="sig-attest">
           <input type="checkbox" id="attest_rr2" onchange="updateSigStatus(&#39;rr2&#39;)">
@@ -662,7 +666,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </section>
 
-<!-- STEP 8 � FINANCIAL RESPONSIBILITY -->
+<!-- STEP 8 · FINANCIAL RESPONSIBILITY -->
 <section class="step" data-step="8">
   <div id="pt-bar-8"></div>
   <div class="doc-card">
@@ -674,7 +678,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <div class="doc-ver">Version v_04.13.26</div>
     </div>
     <div class="doc-body">
-      <p>I, the undersigned patient/parent/guardian ("<strong>Responsible Party</strong>"), understand it is my responsibility to provide <strong>Capital Injury Group, LLC</strong> with all necessary information so that Capital Injury Group may submit charges for my care through insurance that may help satisfy my charges. I understand that I will be responsible for any charges not covered by personal injury protection or medical payments coverage insurance benefits, including co-payments and any applicable deductibles.</p>
+      <p>I, the undersigned patient/parent/guardian ("<strong>Responsible Party</strong>"), understand it is my responsibility to provide Suncoast Physical Medicine, LLC (d/b/a <strong>Capital Injury Group</strong>) with all necessary information so that Capital Injury Group may submit charges for my care through insurance that may help satisfy my charges. I understand that I will be responsible for any charges not covered by personal injury protection or medical payments coverage insurance benefits, including co-payments and any applicable deductibles.</p>
       <p>As the Responsible Party, I will receive copies of billing and medical records upon request or as periodically submitted by Capital Injury Group.</p>
       <div class="sig-block">
         <div class="sig-block-title">Patient / Responsible Party Signature</div>
@@ -684,7 +688,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
             <div class="sig-line-lbl">Patient / Responsible Party Signature</div>
           </div>
           <div><input class="sig-input sig-input-print pt-name-pop" placeholder="Printed name"><div class="sig-line-lbl">Print Patient Name</div></div>
-          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM/DD/YYYY"><div class="sig-line-lbl">Date</div></div>
+          <div><input class="sig-input sig-input-print pt-today-pop" placeholder="MM-DD-YYYY"><div class="sig-line-lbl">Date</div></div>
         </div>
         <div class="sig-attest">
           <input type="checkbox" id="attest_fr" onchange="updateSigStatus(&#39;fr&#39;)">
@@ -708,7 +712,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </section>
 
-<!-- STEP 9 � REVIEW & SUBMIT -->
+<!-- STEP 9 · REVIEW & SUBMIT -->
 <section class="step" data-step="9">
   <div class="card">
     <div class="card-hdr">
@@ -719,13 +723,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
       <div id="review-patient-summary" style="padding:14px 18px;background:var(--lgreen);border:1.5px solid var(--mgreen);border-radius:10px;margin-bottom:16px;">
         <div style="font-size:11px;font-weight:700;color:var(--dgreen);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Packet Summary</div>
         <div class="fg g3">
-          <div><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val pt-name-mirror">�</div></div>
-          <div><div class="pt-bar-lbl">Date of Birth</div><div class="pt-bar-val pt-dob-mirror">�</div></div>
-          <div><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val pt-dol-mirror">�</div></div>
-          <div><div class="pt-bar-lbl">Office</div><div class="pt-bar-val office-name-mirror">� (select on Cover Sheet)</div></div>
-          <div><div class="pt-bar-lbl">Provider</div><div class="pt-bar-val provider-name-mirror">� (none selected)</div></div>
-          <div><div class="pt-bar-lbl">Attorney</div><div class="pt-bar-val atty-combo-mirror">�</div></div>
-          <div class="s3"><div class="pt-bar-lbl">PIP Carrier / Claim</div><div class="pt-bar-val ins-combo-mirror">�</div></div>
+          <div><div class="pt-bar-lbl">Patient</div><div class="pt-bar-val pt-name-mirror">·</div></div>
+          <div><div class="pt-bar-lbl">Date of Birth</div><div class="pt-bar-val pt-dob-mirror">·</div></div>
+          <div><div class="pt-bar-lbl">Date of Loss</div><div class="pt-bar-val pt-dol-mirror">·</div></div>
+          <div><div class="pt-bar-lbl">Office</div><div class="pt-bar-val office-name-mirror">· (select on Cover Sheet)</div></div>
+          <div><div class="pt-bar-lbl">Provider</div><div class="pt-bar-val provider-name-mirror">· (none selected)</div></div>
+          <div><div class="pt-bar-lbl">Attorney</div><div class="pt-bar-val atty-combo-mirror">·</div></div>
+          <div class="s3"><div class="pt-bar-lbl">PIP Carrier / Claim</div><div class="pt-bar-val ins-combo-mirror">·</div></div>
         </div>
       </div>
       <div class="sec-lbl">Document Signature Status</div>
@@ -739,10 +743,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
         </button>
         <div id="submit-status" style="font-size:13px;font-weight:600;min-height:20px;text-align:center;margin-bottom:12px;"></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          <button class="btn btn-back" onclick="exportPacketPdf(&#39;mono&#39;)" style="padding:12px 16px;font-size:13px;background:#1a2535;color:#fff;border:none;">
+          <button class="btn btn-back btn-pdf-download" onclick="exportPacketPdf(&#39;mono&#39;)" style="padding:12px 16px;font-size:13px;background:#1a2535;color:#fff;border:none;">
             &#128438; Print Version (B&amp;W)
           </button>
-          <button class="btn btn-pdf" onclick="exportPacketPdf(&#39;color&#39;)" style="padding:12px 16px;font-size:13px;">
+          <button class="btn btn-pdf btn-pdf-download" onclick="exportPacketPdf(&#39;color&#39;)" style="padding:12px 16px;font-size:13px;">
             &#128196; Color Version (for File)
           </button>
         </div>
@@ -754,7 +758,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
 <!-- NAV BAR -->
 <div class="navbar">
   <div class="navbar-inner">
-    <div class="navbar-status" id="nav-status">Step 6 of 9 � Records Release � Incoming</div>
+    <div class="navbar-status" id="nav-status">Step 6 of 9 · Records Release · Incoming</div>
     <div class="navbar-btns">
       <button class="btn btn-back" id="btn-back" onclick="goBack()" style="">&#8592; Back</button>
       <button class="btn btn-next" id="btn-next" onclick="goNext()">Next &#8594;</button>
@@ -762,10 +766,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-
   </div>
 </div>
 <script>
-const STEPS=[{n:1,name:"Cover Sheet"},{n:2,name:"HIPAA Privacy Notice"},{n:3,name:"Terms of Acceptance"},{n:4,name:"PIP Disclosure (IOT)"},{n:5,name:"Assignment of Benefits"},{n:6,name:"Records Release � Incoming"},{n:7,name:"Records Release � Attorney"},{n:8,name:"Financial Responsibility"},{n:9,name:"Review & Submit"}];
-const DOCS=[{key:"hipaa",label:"HIPAA Privacy Notice",step:2},{key:"toa",label:"Terms of Acceptance",step:3},{key:"iot",label:"PIP Disclosure (OIR-BJ-1571)",step:4},{key:"aob",label:"Assignment of Benefits",step:5},{key:"rr1",label:"Records Release � Incoming",step:6},{key:"rr2",label:"Records Release � Attorney",step:7},{key:"fr",label:"Financial Responsibility",step:8}];
-const OFFICES={pc:{name:"Panama City",addr:"2629 W 23rd Street, Unit H, Panama City, FL 32405 � Ph: 850-766-7018 � Fax: 850-387-0590"},tal:{name:"Tallahassee",addr:"3375 Capital Cir NE, Bldg C100, Tallahassee, FL 32308 � Ph: 850-766-7018 � Fax: 850-387-0590"}};
-const PROVIDERS={eldeeb:{name:"Mohammad Eldeeb, M.D."}};
+const STEPS=[{n:1,name:"Cover Sheet"},{n:2,name:"HIPAA Privacy Notice"},{n:3,name:"Terms of Acceptance"},{n:4,name:"PIP Disclosure (IOT)"},{n:5,name:"Assignment of Benefits"},{n:6,name:"Records Release · Incoming"},{n:7,name:"Records Release · Attorney"},{n:8,name:"Financial Responsibility"},{n:9,name:"Review & Submit"}];
+const DOCS=[{key:"hipaa",label:"HIPAA Privacy Notice",step:2},{key:"toa",label:"Terms of Acceptance",step:3},{key:"iot",label:"PIP Disclosure (OIR-BJ-1571)",step:4},{key:"aob",label:"Assignment of Benefits",step:5},{key:"rr1",label:"Records Release · Incoming",step:6},{key:"rr2",label:"Records Release · Attorney",step:7},{key:"fr",label:"Financial Responsibility",step:8}];
+const OFFICES={pc:{name:"Capital Injury Group — Panama City",addr:"2629 W 23rd Street, Unit H, Panama City, FL 32405 · Ph: 850-766-7018 · Fax: 850-387-0590"},tal:{name:"Capital Injury Group — Tallahassee",addr:"3375 Capital Cir NE, Bldg C100, Tallahassee, FL 32308 · Ph: 850-766-7018 · Fax: 850-387-0590"}};
+const PROVIDERS={eldeeb:{name:"Mohammad Eldeeb, M.D.",sig:"https://raw.githubusercontent.com/DrBerns/CIG/main/Eldeeb_Signature_Navy.png"}};
 let currentStep=1,selectedOffice=null,selectedProvider=null,noAtty=false,noIns=false;
 let sigStatus={hipaa:false,toa:false,iot:false,aob:false,rr1:false,rr2:false,fr:false};
 
@@ -826,8 +830,8 @@ function fmtPhone(el){
 
 function fmtDate(el){
   var x=el.value.replace(/\D/g,'').slice(0,8);
-  if(x.length>4) el.value=x.slice(0,2)+'/'+x.slice(2,4)+'/'+x.slice(4);
-  else if(x.length>2) el.value=x.slice(0,2)+'/'+x.slice(2);
+  if(x.length>4) el.value=x.slice(0,2)+'-'+x.slice(2,4)+'-'+x.slice(4);
+  else if(x.length>2) el.value=x.slice(0,2)+'-'+x.slice(2);
   else el.value=x;
 }
 
@@ -868,7 +872,7 @@ function syncAll(){
   document.querySelectorAll('.sw-pop').forEach(function(el){if(!el.dataset.userEdited)el.value=sw;});
 }
 
-function selectOffice(key){selectedOffice=key;document.getElementById('oc-usf').classList.toggle('selected',key==='usf');document.getElementById('oc-138').classList.toggle('selected',key==='138');syncAll();}
+function selectOffice(key){selectedOffice=key;document.getElementById('oc-pc').classList.toggle('selected',key==='pc');document.getElementById('oc-tal').classList.toggle('selected',key==='tal');syncAll();}
 
 function selectProvider(key){selectedProvider=key||null;var d=document.getElementById('provider-display'),n=document.getElementById('provider-name-display');if(selectedProvider&&PROVIDERS[selectedProvider]){d.style.display='block';n.textContent=PROVIDERS[selectedProvider].name;}else d.style.display='none';}
 
@@ -933,12 +937,12 @@ function _sig(val,color){
 function _chk(on){return on?'<span style="display:inline-block;width:12pt;height:12pt;border:1.5pt solid #000;background:#000;color:#fff;text-align:center;font-size:10pt;font-weight:900;line-height:12pt;">\u2713</span>':'<span style="display:inline-block;width:12pt;height:12pt;border:1.5pt solid #000;"></span>';}
 
 function buildPdfCss(mono){
-  var gH=mono?'#000000':'#5a1222',gA=mono?'#000000':'#7b1a2e',gL=mono?'#ffffff':'#faeff1',bd=mono?'#000000':'#5a1222',bc=mono?'#000000':'#1a2535',gG=mono?'#000000':'#7b1a2e',gN=mono?'#000000':'#7b1a2e';
-  return '@page{size:letter;margin:0;}*{box-sizing:border-box;margin:0;padding:0;}html,body{width:816px;}body{font-family:\'DM Sans\',Arial,sans-serif;color:'+bc+';background:#fff;}.pdf-page{width:816px;height:1056px;padding:43px 53px;page-break-after:always;position:relative;overflow:hidden;background:#fff;}.pdf-page:last-child{page-break-after:auto;}.pg-hdr{border-bottom:2pt solid '+bd+';padding-bottom:6pt;margin-bottom:10pt;display:flex;justify-content:space-between;align-items:flex-end;}.pg-hdr-brand{font-family:\'Libre Baskerville\',Georgia,serif;font-size:14pt;font-weight:700;color:'+gH+';}.pg-hdr-brand .g{color:'+gG+';}.pg-hdr-brand .n{color:'+gN+';}.pg-hdr-locs{font-size:7.5pt;color:#555;text-align:right;line-height:1.35;}.pg-title{font-family:\'Libre Baskerville\',Georgia,serif;font-size:15pt;font-weight:700;color:'+gH+';margin-bottom:2pt;}.pg-sub{font-size:8pt;color:#555;margin-bottom:8pt;}.pg-body{font-size:9pt;line-height:1.4;color:'+bc+';}.pg-body p{margin-bottom:4pt;}.pg-body h3{font-family:\'Libre Baskerville\',Georgia,serif;font-size:10pt;font-weight:700;color:'+gH+';margin-top:6pt;margin-bottom:3pt;padding-bottom:2pt;border-bottom:0.75pt solid '+gA+';}.pg-body ul,.pg-body ol{margin-left:14pt;margin-bottom:4pt;}.pg-body li{margin-bottom:1.5pt;}.pg-body strong{font-weight:700;color:'+bc+';}.pt-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:6pt;background:'+gL+';border:0.75pt solid '+bd+';padding:5pt 8pt;border-radius:3pt;margin-bottom:6pt;font-size:8.5pt;}.pt-strip .lbl{font-size:6.5pt;text-transform:uppercase;color:#555;font-weight:700;}.pt-strip .val{font-weight:600;}.sig-area{margin-top:8pt;padding:6pt 8pt;border:1pt dashed '+gA+';background:'+gL+';}.sig-row{display:grid;grid-template-columns:2fr 1.3fr 1fr;gap:10pt;margin-top:3pt;}.sig-cell{border-bottom:0.75pt solid #000;padding:2pt;min-height:18pt;font-family:\'Libre Baskerville\',Georgia,serif;font-style:italic;font-size:13pt;}.sig-cell.print{font-family:\'DM Sans\',Arial,sans-serif;font-style:normal;font-size:10pt;font-weight:500;}.sig-lbl{font-size:6.5pt;color:#555;text-transform:uppercase;margin-top:2pt;font-weight:700;}.attest{font-size:8pt;margin-top:5pt;display:flex;gap:5pt;}.alert{border:1pt solid #000;padding:4pt 6pt;font-size:8pt;margin:4pt 0;background:'+(mono?'#fff':'#fffbe6')+';}.ver-stamp{position:absolute;bottom:24px;left:53px;right:53px;border-top:0.5pt solid #999;padding-top:3pt;display:flex;justify-content:space-between;font-size:6.5pt;color:#999;}.iot-page{font-family:\'Times New Roman\',serif;color:#000;padding:48px 58px;}.iot-page .pg-hdr-brand,.iot-page .pg-hdr-brand .g,.iot-page .pg-hdr-brand .n{color:#000;}.state-seal{text-align:center;font-size:10pt;font-weight:700;margin-bottom:1pt;}.state-bureau{text-align:center;font-size:9pt;margin-bottom:6pt;}.state-title{text-align:center;font-weight:700;font-size:12pt;margin-bottom:2pt;}.state-sub{text-align:center;font-size:10pt;font-style:italic;margin-bottom:10pt;}.iot-box{border:1pt solid #000;padding:6pt 8pt;margin-bottom:6pt;font-size:10pt;line-height:1.35;}.iot-box ol{margin-left:18pt;margin-top:3pt;}.iot-box li{margin-bottom:2pt;}.iot-sig-box{border:1pt solid #000;padding:6pt 8pt;margin-bottom:5pt;}.iot-sig-row{display:grid;grid-template-columns:2fr 1.5fr 1fr;gap:10pt;}.iot-sig-line{border-bottom:0.75pt solid #000;min-height:20pt;padding:2pt 3pt;font-style:italic;font-size:12pt;}.iot-sig-line.print{font-style:normal;font-weight:500;}.iot-sig-lbl{font-size:8pt;margin-top:2pt;}.iot-services{border:1pt solid #000;padding:4pt 8pt;margin:5pt 0;font-size:10pt;font-weight:700;}.fraud-warn{border:1.5pt solid #000;padding:5pt 7pt;font-size:9pt;font-weight:700;margin:5pt 0;}.form-id{font-size:9pt;margin-top:8pt;}';
+  var gH=mono?'#000000':'#5a1222',gA=mono?'#000000':'#7b1a2e',gL=mono?'#ffffff':'#faeff1',bd=mono?'#000000':'#5a1222',bc=mono?'#000000':'#1a2535',gG=mono?'#000000':'#7b1a2e',gN=mono?'#000000':'#1a4fa0';
+  return '@page{size:letter;margin:0;}*{box-sizing:border-box;margin:0;padding:0;}html,body{width:816px;}body{font-family:\'DM Sans\',Arial,sans-serif;color:'+bc+';background:#fff;}.pdf-page{width:816px;height:1056px;padding:40px 52px 80px 52px;page-break-after:always;position:relative;overflow:hidden;background:#fff;}.pdf-page:last-child{page-break-after:auto;}.pg-hdr{border-bottom:2pt solid '+bd+';padding-bottom:6pt;margin-bottom:10pt;display:flex;justify-content:space-between;align-items:flex-end;}.pg-hdr-brand{font-family:\'Libre Baskerville\',Georgia,serif;font-size:14pt;font-weight:700;color:'+gH+';}.pg-hdr-brand .g{color:'+gG+';}.pg-hdr-brand .n{color:'+gN+';}.pg-hdr-locs{font-size:8pt;color:#222;text-align:right;line-height:1.4;}.pg-title{font-family:\'Libre Baskerville\',Georgia,serif;font-size:15pt;font-weight:700;color:'+gH+';margin-bottom:2pt;}.pg-sub{font-size:9pt;color:#333;margin-bottom:8pt;}.pg-body{font-size:12pt;line-height:1.5;color:'+bc+';}.pg-body p{margin-bottom:6pt;}.pg-body h3{font-family:\'Libre Baskerville\',Georgia,serif;font-size:12pt;font-weight:700;color:'+gH+';margin-top:8pt;margin-bottom:4pt;padding-bottom:2pt;border-bottom:0.75pt solid '+gA+';}.pg-body ul,.pg-body ol{margin-left:16pt;margin-bottom:6pt;}.pg-body li{margin-bottom:2pt;}.pg-body strong{font-weight:700;color:'+bc+';}.pt-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:6pt;background:'+gL+';border:0.75pt solid '+bd+';padding:5pt 8pt;border-radius:3pt;margin-bottom:8pt;font-size:10pt;}.pt-strip .lbl{font-size:8pt;text-transform:uppercase;color:#333;font-weight:700;}.pt-strip .val{font-weight:600;font-size:11.5pt;color:#1a4fa0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.sig-area{margin-top:8pt;padding:6pt 8pt;border:1pt solid '+gA+';background:'+gL+';}.sig-row{display:grid;grid-template-columns:2fr 1.3fr 1fr;gap:10pt;margin-top:4pt;align-items:end;}.sig-cell{border-bottom:1pt solid #000;padding:2pt;min-height:32pt;font-family:\'Libre Baskerville\',Georgia,serif;font-style:italic;font-size:15.5pt;color:#1a4fa0;-webkit-print-color-adjust:exact;print-color-adjust:exact;display:flex;align-items:flex-end;}.sig-cell.print{font-family:\'DM Sans\',Arial,sans-serif;font-style:normal;font-size:13.5pt;font-weight:500;color:#1a4fa0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.sig-lbl{font-size:8pt;color:#333;text-transform:uppercase;margin-top:3pt;font-weight:700;}.attest{font-size:10pt;margin-top:6pt;display:flex;gap:5pt;}.alert{border:1.5pt solid #000;padding:5pt 8pt;font-size:10pt;margin:6pt 0;background:'+(mono?'#fff':'#fffbe6')+';}.ver-stamp{position:absolute;bottom:20px;left:52px;right:52px;border-top:0.75pt solid #555;padding-top:3pt;display:flex;justify-content:space-between;font-size:8pt;color:#333;font-weight:500;}.iot-page{font-family:\'Times New Roman\',serif;color:#000;padding:24px 36px;}.oir-header{display:flex;align-items:center;gap:10pt;margin-bottom:6pt;}.oir-seal{font-size:27pt;line-height:1;}.oir-header-text{flex:1;}.oir-agency-name{font-size:14pt;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;}.oir-divider{border-top:1pt solid #000;width:80%;margin:2pt 0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.oir-bureau{font-size:14pt;font-style:italic;font-weight:700;}.oir-title{text-align:center;margin-bottom:12pt;}.oir-title-main{font-size:12pt;font-weight:700;margin-bottom:2pt;}.oir-title-sub{font-size:12pt;font-weight:700;}.oir-body{font-size:11.5pt;line-height:1.15;}.oir-affirm-intro{margin-bottom:3pt;font-size:11.5pt;}.oir-item{margin-bottom:6pt;font-size:11.5pt;line-height:1.15;}.oir-item-num{margin-right:6pt;}.oir-services-box{padding:1pt 0;margin:2pt 0;}.oir-service-line{border-bottom:0.5pt solid #000;min-height:13pt;padding:0 0;font-size:12pt;}.oir-service-line:last-child{border-bottom:none;}.oir-sig-intro{font-size:11pt;margin:3pt 0 1pt;}.oir-sig-row{display:grid;grid-template-columns:2fr 2fr 1fr;gap:10pt;align-items:end;margin-bottom:2pt;}.oir-sig-line{border-bottom:1pt solid #000;min-height:18pt;padding:2pt 0 0;font-size:12.5pt;color:#1a4fa0;-webkit-print-color-adjust:exact;print-color-adjust:exact;display:flex;align-items:flex-end;padding-bottom:0;position:relative;}.oir-sig-lbl{font-size:11pt;margin-top:2pt;}.oir-sig-lbl em{font-size:9pt;font-style:italic;}.oir-provider-intro{font-size:11pt;margin:4pt 0 1pt;}.oir-fraud{border:1pt solid #000;background:'+(mono?'#fff':'#D9D9D9')+';-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:2pt 6pt;margin-top:13pt;font-size:11pt;line-height:1.2;}.oir-note{border:1pt solid #000;background:'+(mono?'#fff':'#D9D9D9')+';-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:2pt 6pt;margin-top:13pt;font-size:10.75pt;line-height:1.2;}.oir-form-id{font-size:10pt;margin-top:3pt;font-weight:700;text-align:left;}';
 }
 
 function renderHeader(d){
-  return '<div class="pg-hdr"><div class="pg-hdr-brand"><img src="https://raw.githubusercontent.com/DrBerns/CIG/main/CIG_Logo_transparent.png" crossorigin="anonymous" style="height:32pt;width:auto;"></div><div class="pg-hdr-locs"><strong>'+esc(d.office.name)+'</strong><br>'+esc(d.office.addr)+'</div></div>';
+  return '<div class="pg-hdr"><div class="pg-hdr-brand"><img src="https://raw.githubusercontent.com/DrBerns/CIG/main/CIG_Logo_transparent.png" alt="Capital Injury Group" style="height:36pt;width:auto;display:block;"></div><div class="pg-hdr-locs"><strong>'+esc(d.office.name)+'</strong><br>'+esc(d.office.addr)+'</div></div>';
 }
 
 function renderPatientStrip(d){
@@ -946,64 +950,65 @@ function renderPatientStrip(d){
 }
 
 function renderVerStamp(docName){
-  return '<div class="ver-stamp"><span>'+esc(docName)+' \u00b7 v_04.13.26</span><span>Capital Injury Group, LLC</span></div>';
+  return '<div class="ver-stamp"><span>'+esc(docName)+' · v_04.13.26</span><span>Capital Injury Group, LLC</span></div>';
 }
 
 function renderSigBlock(title,sig,ptName,ptDate,attested,extras){
   extras=extras||'';
-  return '<div class="sig-area"><div style="font-size:7.5pt;font-weight:700;text-transform:uppercase;margin-bottom:4pt;">'+esc(title)+'</div><div class="sig-row"><div><div class="sig-cell">'+_sig(sig)+'</div><div class="sig-lbl">Signature</div></div><div><div class="sig-cell print">'+_f(ptName)+'</div><div class="sig-lbl">Printed Name</div></div><div><div class="sig-cell print">'+_f(ptDate)+'</div><div class="sig-lbl">Date</div></div></div><div class="attest">'+_chk(attested)+' <span>Patient attestation checkbox</span></div>'+extras+'</div>';
+  return '<div class="sig-area"><div style="font-size:9pt;font-weight:700;text-transform:uppercase;margin-bottom:4pt;">'+esc(title)+'</div><div class="sig-row"><div><div class="sig-cell">'+_sig(sig)+'</div><div class="sig-lbl">Signature</div></div><div><div class="sig-cell print">'+_f(ptName)+'</div><div class="sig-lbl">Printed Name</div></div><div><div class="sig-cell print">'+_f(ptDate)+'</div><div class="sig-lbl">Date</div></div></div><div class="attest">'+_chk(attested)+' <span>Patient attestation confirmed</span></div>'+extras+'</div>';
 }
 
 function renderHIPAA(d){
-  return '<div class="pdf-page">'+renderHeader(d)+'<div class="pg-title">HIPAA Privacy Notice \u2014 Acknowledgment of Receipt</div><div class="pg-sub">Notice of Privacy Practices \u00b7 Capital Injury Group, LLC</div>'+renderPatientStrip(d)+'<div class="pg-body"><p>I acknowledge that I have received a copy of the Capital Injury Group <strong>Notice of Privacy Practices</strong> (v_04.13.26), which describes how my protected health information may be used and disclosed and how I can access it.</p><h3>Optional Authorization \u2014 Medication History Access</h3><p>I authorize Capital Injury Group to access the prior <strong>thirteen (13) months</strong> of my medication history through my insurance company and authorized databases for the purpose of reviewing medications relevant to my care.</p><p style="margin-top:4pt;"><strong>My election:</strong> &nbsp;'+_chk(d.medhx==='YES')+' <strong>YES</strong> \u2014 I authorize access. &nbsp;&nbsp;'+_chk(d.medhx==='NO')+' <strong>NO</strong> \u2014 I do not authorize access.</p></div>'+renderSigBlock('Patient Acknowledgment \u2014 HIPAA',d.sigs.hipaa.sig,d.pt_name,d.pt_today,d.sigs.hipaa.attested)+renderVerStamp('HIPAA Privacy Notice Acknowledgment')+'</div>';
+  return '<div class="pdf-page">'+renderHeader(d)+'<div class="pg-title">HIPAA Privacy Notice — Acknowledgment of Receipt</div><div class="pg-sub">Notice of Privacy Practices · Capital Injury Group, LLC</div>'+renderPatientStrip(d)+'<div class="pg-body"><p>I acknowledge that I have received a copy of the Capital Injury Group <strong>Notice of Privacy Practices</strong>, which describes how my protected health information may be used and disclosed and how I can access it.</p><p>The full text of the Capital Injury Group HIPAA Notice of Privacy Practices is available upon request at the front desk and will be provided to you electronically following completion of this packet.</p><h3>Optional Authorization — Medication History Access</h3><p>I authorize Capital Injury Group, LLC to download and access the prior <strong>thirteen (13) months</strong> of my medication history through my insurance company and authorized medication history databases for the purpose of reviewing medications relevant to my care.</p><p><strong>My election:</strong> &nbsp;'+_chk(d.medhx==='YES')+' <strong>YES</strong> — I authorize access &nbsp;&nbsp;'+_chk(d.medhx==='NO')+' <strong>NO</strong> — I do not authorize access</p></div>'+renderSigBlock('Patient Acknowledgment — HIPAA',d.sigs.hipaa.sig,d.pt_name,d.pt_today,d.sigs.hipaa.attested)+renderVerStamp('HIPAA Privacy Notice Acknowledgment')+'</div>';
 }
 
 function renderTOA(d){
   var s=d.sigs.toa;
   var hasGuardian=s.guardName||s.minorName;
-  var guardianExtras=hasGuardian?'<div style="margin-top:5pt;padding-top:4pt;border-top:0.5pt solid #999;"><div style="font-size:7pt;font-weight:700;text-transform:uppercase;margin-bottom:3pt;">Minor / Guardian Signature</div><div style="font-size:8pt;">Guardian: <strong>'+_f(s.guardName)+'</strong> \u00b7 Relationship: <strong>'+_f(s.relation)+'</strong> \u00b7 Phone: <strong>'+_f(s.guardPhone)+'</strong></div><div style="font-size:8pt;">Minor: <strong>'+_f(s.minorName)+'</strong> \u00b7 DOB: <strong>'+_f(s.minorDob)+'</strong></div><div class="sig-row" style="margin-top:4pt;"><div><div class="sig-cell">'+_sig(s.guardSig)+'</div><div class="sig-lbl">Guardian Signature</div></div><div><div class="sig-cell print">'+_f(s.guardDate)+'</div><div class="sig-lbl">Date</div></div><div><div class="sig-cell print">'+_f(s.guardWitness)+'</div><div class="sig-lbl">Witness</div></div></div></div>':'';
-  var witnessExtra=s.witness?'<div style="font-size:8pt;margin-top:4pt;"><strong>Staff Witness:</strong> '+_f(s.witness)+'</div>':'';
-  return '<div class="pdf-page">'+renderHeader(d)+'<div class="pg-title">Terms of Acceptance &amp; Consent for Care</div><div class="pg-sub">Scope of care, imaging, risks, and consent to treatment.</div>'+renderPatientStrip(d)+'<div class="pg-body"><h3>Scope of Care</h3><p>Capital Injury Group provides evaluation and treatment of pain and neuromusculoskeletal conditions through interventional pain management, physical medicine, injection procedures, and rehabilitation. If a condition falls outside our scope, we may recommend referral.</p><h3>Risks of Care</h3><p><strong>Injection / interventional procedures:</strong> soreness, bruising, bleeding, infection, temporary increase in pain; rarely \u2014 nerve injury or adverse medication reaction. <strong>Rehab:</strong> soreness, skin irritation, rare allergic reactions. No outcome guarantees. <strong>X-ray / fluoroscopy:</strong> ionizing radiation. <em>Inform staff if pregnant.</em></p><h3>Consent</h3><p>I voluntarily consent to evaluation and treatment, may refuse/discontinue at any time, and understand no outcome is guaranteed.</p></div>'+renderSigBlock('Patient Consent \u2014 Terms of Acceptance',s.sig,d.pt_name,d.pt_today,s.attested,witnessExtra+guardianExtras)+renderVerStamp('Terms of Acceptance & Consent for Care')+'</div>';
+  var guardianExtras=hasGuardian?'<div style="margin-top:5pt;padding-top:4pt;border-top:0.5pt solid #999;"><div style="font-size:8pt;font-weight:700;text-transform:uppercase;margin-bottom:3pt;">Minor / Guardian Signature</div><div style="font-size:10pt;">Guardian: <strong>'+_f(s.guardName)+'</strong> · Relationship: <strong>'+_f(s.relation)+'</strong> · Phone: <strong>'+_f(s.guardPhone)+'</strong></div><div style="font-size:10pt;">Minor: <strong>'+_f(s.minorName)+'</strong> · DOB: <strong>'+_f(s.minorDob)+'</strong></div><div class="sig-row" style="margin-top:4pt;"><div><div class="sig-cell">'+_sig(s.guardSig)+'</div><div class="sig-lbl">Guardian Signature</div></div><div><div class="sig-cell print">'+_f(s.guardDate)+'</div><div class="sig-lbl">Date</div></div><div><div class="sig-cell print">'+_f(s.guardWitness)+'</div><div class="sig-lbl">Witness</div></div></div></div>':'';
+  var witnessExtra=s.witness?'<div style="font-size:10pt;margin-top:4pt;"><strong>Staff Witness:</strong> '+_f(s.witness)+'</div>':'';
+  return '<div class="pdf-page">'+renderHeader(d)+'<div class="pg-title">Terms of Acceptance &amp; Consent for Care</div><div class="pg-sub">Scope of care, examination, imaging, risks, consent to treatment, and patient rights.</div>'+renderPatientStrip(d)+'<div class="pg-body" style="font-size:10.5pt;line-height:1.45;"><h3 style="font-size:11pt;">Scope of Care</h3><p>Capital Injury Group provides evaluation and treatment of pain and neuromusculoskeletal conditions through interventional pain management, physical medicine, injection procedures, and rehabilitation. If during your evaluation we identify a condition outside our scope of practice, we may recommend referral to an appropriate provider.</p><h3 style="font-size:11pt;">Examination, Diagnostic Imaging, and Reassessment</h3><p>Your care may include physical examination, orthopedic and neurological testing, range-of-motion assessment, and diagnostic imaging when clinically indicated. Reassessment and repeat imaging may be recommended based on clinical judgment.</p><h3 style="font-size:11pt;">Risks of Care</h3><p><strong>Chiropractic / manual care:</strong> temporary soreness, stiffness, bruising, muscle strain, soft-tissue injury, aggravation of existing condition; rarely — disc injury, fracture, nerve irritation, or stroke from cervical manipulation (vertebrobasilar injury). <strong>Rehab &amp; modalities:</strong> soreness, temporary symptom increase, skin irritation, rare allergic reactions. No guarantees have been made regarding outcomes. <strong>X-ray:</strong> exposure to ionizing radiation. <em>If pregnant or possibly pregnant, inform clinical staff before any imaging.</em></p><h3 style="font-size:11pt;">Diagnostic Imaging Ownership</h3><p>X-ray and other diagnostic images are the property of Capital Injury Group and are part of your medical record. Copies may be requested per Florida law and HIPAA (cost-based fee may apply).</p><h3 style="font-size:11pt;">Video Surveillance Notice</h3><p>Non-disrobing areas are under video surveillance for safety. <strong>No surveillance in exam rooms, treatment bays where patients disrobe, or restrooms.</strong></p><h3 style="font-size:11pt;">Consent to Evaluation and Treatment</h3><p>I have read and understand the Terms of Acceptance above. I voluntarily consent to evaluation and treatment, may ask questions at any time, may refuse or discontinue treatment, and understand no outcome is guaranteed.</p></div>'+renderSigBlock('Patient Consent — Terms of Acceptance',s.sig,d.pt_name,d.pt_today,s.attested,witnessExtra+guardianExtras)+renderVerStamp('Terms of Acceptance & Consent for Care')+'</div>';
 }
 
 function renderIOT(d){
   var s=d.sigs.iot;
-  var provSig=d.provider?'<span style="font-family:\'Libre Baskerville\',Georgia,serif;font-style:italic;font-size:13pt;color:#000;">'+esc(d.provider.name)+'</span>':'';
+  var provSig=d.provider&&d.provider.sig?'<img src="'+d.provider.sig+'" crossorigin="anonymous" style="width:'+(d.provider.widthPct||100)+'%;height:auto;display:block;position:absolute;left:0;bottom:-'+(d.provider.descenderPt||0)+'pt;" alt="Provider Signature">':'';
   var provName=d.provider?esc(d.provider.name):'';
   var provDate=d.provider?_f(d.pt_today):'';
-  return '<div class="pdf-page iot-page"><div class="state-seal">OFFICE OF INSURANCE REGULATION</div><div class="state-bureau">Bureau of Property &amp; Casualty Forms and Rates</div><div class="state-title">Standard Disclosure and Acknowledgement Form</div><div class="state-sub">Personal Injury Protection \u2014 Initial Treatment or Service Provided</div><div class="iot-box"><strong>The undersigned insured person (or guardian of such person) affirms:</strong><ol><li>The services or treatment set forth below were actually rendered.</li><li>I have the right and the duty to confirm that the services have already been provided.</li><li>I was not solicited by any person to seek any services from the medical provider.</li><li>The medical provider has explained the services to me for which payment is being claimed.</li><li>If I notify the insurer in writing of a billing error, I may be entitled to at least 20% of the reduction, up to $500.</li></ol></div><div class="iot-services"><strong>Services Rendered:</strong> examination and treatment</div><div class="iot-sig-box"><div style="font-size:9pt;font-weight:700;margin-bottom:4pt;">Insured Person or Guardian:</div><div class="iot-sig-row"><div><div class="iot-sig-line">'+_sig(s.sig,'#000')+'</div><div class="iot-sig-lbl">Signature</div></div><div><div class="iot-sig-line print">'+_f(d.pt_name)+'</div><div class="iot-sig-lbl">Name (PRINT or TYPE)</div></div><div><div class="iot-sig-line print">'+_f(d.pt_today)+'</div><div class="iot-sig-lbl">Date</div></div></div></div><div class="fraud-warn">Any person who knowingly and with intent to injure, defraud, or deceive any insurer files a statement of claim or application containing false, incomplete, or misleading information is guilty of a felony of the third degree per Section 817.234(1)(b), Florida Statutes.</div><div style="font-size:8.5pt;margin:5pt 0;"><strong>Note:</strong> The original of this form must be furnished to the insurer per \u00a7 627.736(4)(b), Florida Statutes and may not be electronically furnished.</div><div class="iot-sig-box"><div style="font-size:8.5pt;margin-bottom:3pt;">Licensed Medical Professional affirms: (A) no solicitation; (B) treatment explained for informed consent; (C) bill properly completed; (D) procedure coding proper per \u00a7\u00a7 627.732(14)\u2013(15) and 627.736(5)(b)6, Florida Statutes.</div><div class="iot-sig-row" style="margin-top:4pt;"><div><div class="iot-sig-line">'+provSig+'</div><div class="iot-sig-lbl">Signature</div></div><div><div class="iot-sig-line print">'+provName+'</div><div class="iot-sig-lbl">Name (PRINT or TYPE)</div></div><div><div class="iot-sig-line print">'+provDate+'</div><div class="iot-sig-lbl">Date</div></div></div></div><div class="form-id">OIR-BJ-1571 &nbsp;\u00b7&nbsp; Pub. 1/2004</div></div>';
+  return '<div class="pdf-page iot-page"><div class="oir-header"><div class="oir-seal"><img src="https://raw.githubusercontent.com/DrBerns/SpineMed/main/Florida_State_Seal.png" crossorigin="anonymous" style="height:56pt;width:auto;"></div><div class="oir-header-text"><div class="oir-agency-name">Office of Insurance Regulation</div><div class="oir-divider"></div><div class="oir-bureau"><em>Bureau of Property &amp; Casualty Forms and Rates</em></div></div></div><div class="oir-title"><div class="oir-title-main">Standard Disclosure and Acknowledgement Form</div><div class="oir-title-sub">Personal Injury Protection — Initial Treatment or Service Provided</div></div><div class="oir-body"><div class="oir-affirm-intro">The undersigned insured person (or guardian of such person) affirms:</div><div class="oir-item" style="margin-top:7pt;"><span class="oir-item-num">1.</span>The services or treatment set forth below were <strong>actually rendered.</strong> This means that those services have <strong>already been provided.</strong></div><div class="oir-services-box"><div class="oir-service-line"><strong style="text-align:center;display:block;">Examination and Treatment</strong></div><div class="oir-service-line">&nbsp;</div><div class="oir-service-line">&nbsp;</div></div><div class="oir-item"><span class="oir-item-num">2.</span>I have the right and the <strong>duty to confirm</strong> that the services have already been provided.</div><div class="oir-item"><span class="oir-item-num">3.</span>I was <strong>not solicited</strong> by any person to seek any services from the medical provider of the services described above.</div><div class="oir-item"><span class="oir-item-num">4.</span>The medical provider has <strong>explained</strong> the services to me for which payment is being claimed.</div><div class="oir-item"><span class="oir-item-num">5.</span>If I notify the insurer in writing of a billing error, I may be entitled to a portion of any reduction in the amounts paid by my motor vehicle insurer. If entitled, my share would be at least 20% of the amount of the reduction, up to $500.</div><div class="oir-sig-intro" style="margin-top:20pt;">Insured Person (patient receiving treatment or services) or Guardian of Insured Person:</div><div class="oir-sig-row" style="margin-top:20pt;"><div><div class="oir-sig-line">'+_f(d.pt_name)+'</div><div class="oir-sig-lbl">Name <em>(PRINT or TYPE)</em></div></div><div><div class="oir-sig-line">'+_sig(s.sig,'#000')+'</div><div class="oir-sig-lbl">Signature</div></div><div><div class="oir-sig-line">'+_f(d.pt_today)+'</div><div class="oir-sig-lbl">Date</div></div></div><div class="oir-provider-intro" style="margin-top:20pt;">The undersigned licensed medical professional or medical director, if applicable, affirms the statement numbered 1 above and also:</div><div class="oir-item"><span class="oir-item-num">A.</span>I have <strong>not solicited</strong> or caused the insured person, who was involved in a motor vehicle accident, to be solicited to make a claim for Personal Injury Protection benefits.</div><div class="oir-item"><span class="oir-item-num">B.</span>The treatment or services rendered were explained to the insured person, or his or her guardian, <strong>sufficiently</strong> for that person to sign this form with informed consent.</div><div class="oir-item"><span class="oir-item-num">C.</span>The accompanying statement or bill is <strong>properly completed</strong> in all material provisions and all relevant information has been provided therein. This means that each request for information has been responded to <strong>truthfully, accurately</strong>, and in a <strong>substantially complete</strong> manner.</div><div class="oir-item"><span class="oir-item-num">D.</span>The coding of procedures on the accompanying statement or bill is proper. This means that <strong>no service has been upcoded, unbundled</strong>, or constitutes an invalid <strong>or not medically necessary diagnostic test</strong> as defined by Section 627.732(14) and (15), Florida Statutes or Section 627.736(5)(b)6, Florida Statutes.</div><div class="oir-sig-intro" style="margin-top:14pt;">Licensed Medical Professional Rendering Treatment/Services or Medical Director, if applicable <em>(Signature by his/her <strong>own hand</strong>):</em></div><div class="oir-sig-row"><div><div class="oir-sig-line">'+provName+'</div><div class="oir-sig-lbl">Name <em>(PRINT or TYPE)</em></div></div><div><div class="oir-sig-line">'+provSig+'</div><div class="oir-sig-lbl">Signature</div></div><div><div class="oir-sig-line">'+provDate+'</div><div class="oir-sig-lbl">Date</div></div></div><div class="oir-fraud">Any person who knowingly and with intent to injure, defraud, or deceive any insurer files a statement of Claim or an application containing any false, incomplete, or misleading information is guilty of a felony of the third degree per Section 817.234(1)(b), Florida Statutes.</div><div class="oir-note"><strong>Note:</strong> The <strong>original</strong> of this form must be furnished to the insurer pursuant to Section 627.736(4)(b), Florida Statutes and may <strong>not</strong> be electronically furnished. Failure to furnish this form may result in non-payment of the claim.</div><div class="oir-form-id">OIR-B1-1571 · Pub. 1/2004</div></div></div>';
 }
 
 function renderAOB(d){
   var s=d.sigs.aob;
-  var attyCombo=d.atty.none?'No attorney on file':([d.atty.firm,d.atty.name].filter(Boolean).join(' \u2014 ')||'\u2014');
-  var relExtra=s.rel?'<div style="font-size:8pt;margin-top:4pt;"><strong>Relationship (if Guardian):</strong> '+_f(s.rel)+'</div>':'';
-  return '<div class="pdf-page">'+renderHeader(d)+'<div class="pg-title">Assignment of Benefits \u2014 PIP</div><div class="pg-sub">Assignment of PIP insurance benefits pursuant to \u00a7 627.736, Florida Statutes.</div>'+renderPatientStrip(d)+'<div class="pt-strip" style="margin-top:4pt;"><div><div class="lbl">PIP Carrier</div><div class="val">'+(d.ins.none?'No insurance on file':_f(d.ins.carrier))+'</div></div><div><div class="lbl">Claim #</div><div class="val">'+(d.ins.none?'\u2014':_f(d.ins.claim))+'</div></div><div><div class="lbl">Attorney / Firm</div><div class="val">'+_f(attyCombo)+'</div></div></div><div class="pg-body"><h3>Assignment</h3><p>I, <strong>'+_f(d.pt_name)+'</strong>, hereby <strong>irrevocably</strong> assign to <strong>Capital Injury Group, LLC</strong> all rights and benefits under my PIP coverage arising from the motor vehicle accident on the Date of Loss above. This assignment is made pursuant to \u00a7 627.736, Florida Statutes.</p><h3>Direction to Pay</h3><p>I direct my PIP carrier and attorney to pay sums due directly to the Assignee and to withhold from any settlement an amount sufficient to satisfy any outstanding balance.</p><h3>Patient Acknowledgement</h3><ol style="font-size:8.5pt;"><li>I have read and understand this Assignment of Benefits.</li><li>I am the named insured or authorized representative under the applicable PIP policy.</li><li>This assignment does not relieve me of personal financial responsibility for uncovered charges.</li><li>I was not solicited by any person to seek services from this provider.</li><li>I will notify the Assignee of any changes to insurance, contact info, or legal representation.</li></ol><div class="alert"><strong>Any person who knowingly and with intent to injure, defraud, or deceive any insurer files a false claim is guilty of a felony of the third degree pursuant to \u00a7 817.234(1)(b), Florida Statutes.</strong></div></div>'+renderSigBlock('Patient / Guardian Signature \u2014 AOB',s.sig,d.pt_name,d.pt_today,s.attested,relExtra)+renderVerStamp('Assignment of Benefits \u2014 PIP')+'</div>';
+  var attyCombo=d.atty.none?'No attorney on file':([d.atty.firm,d.atty.name].filter(Boolean).join(' — ')||'—');
+  var relExtra=s.rel?'<div style="font-size:10pt;margin-top:4pt;"><strong>Relationship (if Guardian):</strong> '+_f(s.rel)+'</div>':'';
+  return '<div class="pdf-page">'+renderHeader(d)+'<div class="pg-title">Assignment of Benefits — PIP</div><div class="pg-sub">Assignment of Personal Injury Protection insurance benefits pursuant to § 627.736, Florida Statutes.</div>'+renderPatientStrip(d)+'<div class="pt-strip" style="margin-top:4pt;"><div><div class="lbl">PIP Carrier</div><div class="val">'+(d.ins.none?'No insurance on file':_f(d.ins.carrier))+'</div></div><div><div class="lbl">Claim #</div><div class="val">'+(d.ins.none?'—':_f(d.ins.claim))+'</div></div><div><div class="lbl">Attorney / Firm</div><div class="val">'+_f(attyCombo)+'</div></div></div><div class="pg-body" style="font-size:11pt;"><h3>Assignment</h3><p>I, <strong>'+_f(d.pt_name)+'</strong>, hereby <strong>irrevocably</strong> assign to <strong>Capital Injury Group, LLC</strong> all rights and benefits under my PIP coverage arising from the motor vehicle accident on the Date of Loss above, to the extent of charges for services rendered. This assignment is made pursuant to § 627.736, Florida Statutes, and shall remain irrevocable until all outstanding charges are fully resolved.</p><h3>Direction to Pay &amp; Authorization to Release Information</h3><p>I direct my PIP carrier and, where applicable, my attorney to pay sums due directly to the Assignee, and to withhold from any settlement an amount sufficient to satisfy any outstanding balance. I further authorize the Assignee to release medical records and billing information to my PIP carrier and my attorney solely as necessary to facilitate payment.</p><h3>Patient Acknowledgement</h3><ol><li>I have read and understand this Assignment of Benefits.</li><li>I am the named insured or an authorized representative under the applicable PIP policy.</li><li>This assignment does not relieve me of personal financial responsibility for charges not covered by my PIP insurer.</li><li>I was not solicited by any person to seek services from this provider.</li><li>I will notify the Assignee promptly of any changes to my insurance coverage, contact information, or legal representation.</li></ol></div>'+renderSigBlock('Patient / Guardian Signature — AOB',s.sig,d.pt_name,d.pt_today,s.attested,relExtra)+renderVerStamp('Assignment of Benefits — PIP')+'</div>';
 }
 
-function renderRR1(d){
+function renderRR1(d,mono){
   var s=d.sigs.rr1;
-  var witnessExtra=s.witness?'<div style="font-size:8pt;margin-top:4pt;"><strong>Witness:</strong> '+_f(s.witness)+'</div>':'';
-  return '<div class="pdf-page">'+renderHeader(d)+'<div class="pg-title">Authorization to Release Records TO Capital Injury Group</div><div class="pg-sub">HIPAA-Compliant \u00b7 Incoming records request.</div>'+renderPatientStrip(d)+'<div class="pg-body"><h3>Release Records To</h3><p><strong>'+esc(d.office.name)+'</strong> \u2014 '+esc(d.office.addr)+'</p><h3>Records to be Released By</h3><div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:6pt;font-size:8.5pt;margin-bottom:3pt;"><div><div style="font-size:6.5pt;color:#555;font-weight:700;text-transform:uppercase;">Provider / Facility</div>'+_f(s.fromName)+'</div><div><div style="font-size:6.5pt;color:#555;font-weight:700;text-transform:uppercase;">Phone</div>'+_f(s.fromPhone)+'</div><div><div style="font-size:6.5pt;color:#555;font-weight:700;text-transform:uppercase;">Fax</div>'+_f(s.fromFax)+'</div></div><div style="font-size:8.5pt;"><strong>Address:</strong> '+_f(s.fromAddr)+'</div><h3>Records Requested</h3><p>I authorize the release of the <strong>complete medical history, records, reports, imaging, and treatment notes</strong> during the period:</p><div style="font-size:8.5pt;margin-top:3pt;"><strong>From:</strong> '+_f(s.periodFrom)+'&nbsp;&nbsp; <strong>To:</strong> '+_f(s.periodTo)+'</div><p style="margin-top:4pt;">I may revoke this authorization at any time in writing. A photocopy or fax shall be considered valid as the original.</p></div>'+renderSigBlock('Patient Authorization \u2014 Records Release (Incoming)',s.sig,d.pt_name,d.pt_today,s.attested,witnessExtra)+renderVerStamp('Records Release (Incoming)')+'</div>';
+  var witnessExtra=s.witness?'<div style="font-size:10pt;margin-top:4pt;"><strong>Witness:</strong> '+_f(s.witness)+'</div>':'';
+  return '<div class="pdf-page">'+renderHeader(d)+'<div class="pg-title">Authorization to Release Medical Records</div><div class="pg-sub">Authorization for Third-Party Providers to Release Records to Capital Injury Group · HIPAA-Compliant</div>'+renderPatientStrip(d)+'<div class="pg-body"><h3>Patient Information</h3><div style="display:grid;grid-template-columns:2fr 1fr;gap:10pt;margin-bottom:10pt;"><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Patient Name</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(d.pt_name)+'</div></div><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Date of Birth</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(d.pt_dob)+'</div></div></div><h3>Please Release Records To</h3><div style="background:'+(mono?'#fff':'#faeff1')+';border:1pt solid '+(mono?'#000':'#7b1a2e')+';border-radius:4pt;padding:8pt 10pt;margin-bottom:10pt;font-size:12pt;"><strong>'+esc(d.office.name)+'</strong><br>'+esc(d.office.addr).replace(' \u00b7 Ph:','<br>Ph:')+'</div><h3>Release Records From</h3><div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:10pt;margin-bottom:8pt;"><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Provider / Hospital / Facility Name</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(s.fromName)+'</div></div><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Phone</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(s.fromPhone)+'</div></div><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Fax</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(s.fromFax)+'</div></div></div><div style="margin-bottom:10pt;"><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Address</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(s.fromAddr)+'</div></div><h3>Records Requested</h3><p>I hereby authorize and request the release of the <strong>complete medical history, records, reports, imaging, and treatment notes</strong> in your possession concerning my care during the period below:</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:10pt;margin:8pt 0;"><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">From Date</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(s.periodFrom)+'</div></div><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">To Date (or “Present”)</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(s.periodTo)+'</div></div></div><p>I understand I may revoke this authorization at any time in writing. A photocopy or fax of this authorization shall be considered as valid as the original.</p></div>'+renderSigBlock('Patient Authorization — Records Release (Incoming)',s.sig,d.pt_name,d.pt_today,s.attested,witnessExtra)+renderVerStamp('Authorization to Release Records — Incoming')+'</div>';
 }
 
-function renderRR2(d){
+function renderRR2(d,mono){
   var s=d.sigs.rr2;
-  var witnessExtra=s.witness?'<div style="font-size:8pt;margin-top:4pt;"><strong>Witness:</strong> '+_f(s.witness)+'</div>':'';
-  var noAttyBanner=d.atty.none?'<div class="alert" style="background:#fffbe6;">No attorney on file at signing. Signature captured; release activated once attorney information is provided.</div>':'';
-  return '<div class="pdf-page">'+renderHeader(d)+'<div class="pg-title">Authorization to Release Records TO Attorney</div><div class="pg-sub">HIPAA-Compliant \u00b7 Outgoing records release to attorney of record.</div>'+renderPatientStrip(d)+'<div class="pg-body">'+noAttyBanner+'<h3>Records Released By</h3><p><strong>'+esc(d.office.name)+'</strong> \u2014 '+esc(d.office.addr)+'</p><h3>Records Released To (Attorney)</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:6pt;font-size:8.5pt;"><div><div style="font-size:6.5pt;color:#555;font-weight:700;text-transform:uppercase;">Firm</div>'+_f(d.atty.firm)+'</div><div><div style="font-size:6.5pt;color:#555;font-weight:700;text-transform:uppercase;">Attorney</div>'+_f(d.atty.name)+'</div></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6pt;font-size:8.5pt;margin-top:3pt;"><div><div style="font-size:6.5pt;color:#555;font-weight:700;text-transform:uppercase;">Phone</div>'+_f(d.atty.phone)+'</div><div><div style="font-size:6.5pt;color:#555;font-weight:700;text-transform:uppercase;">Fax</div>'+_f(d.atty.fax)+'</div><div><div style="font-size:6.5pt;color:#555;font-weight:700;text-transform:uppercase;">Email</div>'+_f(d.atty.email)+'</div></div><div style="font-size:8.5pt;margin-top:3pt;"><strong>Address:</strong> '+_f(d.atty.addr)+'</div><h3>Scope of Release</h3><p>I authorize Capital Injury Group to release the <strong>complete medical history, records, reports, imaging, billing records, and treatment notes</strong> to the attorney named above for representation in the matter arising from the Date of Loss.</p><p>I may revoke this authorization at any time in writing.</p></div>'+renderSigBlock('Patient Authorization \u2014 Records Release (Outgoing)',s.sig,d.pt_name,d.pt_today,s.attested,witnessExtra)+renderVerStamp('Records Release (Outgoing \u2014 Attorney)')+'</div>';
+  var witnessExtra=s.witness?'<div style="font-size:10pt;margin-top:4pt;"><strong>Witness:</strong> '+_f(s.witness)+'</div>':'';
+  var noAttyBanner=d.atty.none?'<div class="alert" style="background:#fffbe6;margin-bottom:10pt;">No attorney on file at signing. Signature captured; release will be activated once attorney information is provided.</div>':'';
+  return '<div class="pdf-page">'+renderHeader(d)+'<div class="pg-title">Authorization to Release Medical Records to Attorney</div><div class="pg-sub">Authorization for Capital Injury Group to Release Records to Attorney of Record · HIPAA-Compliant</div>'+renderPatientStrip(d)+'<div class="pg-body">'+noAttyBanner+'<h3>Patient Information</h3><div style="display:grid;grid-template-columns:2fr 1fr;gap:10pt;margin-bottom:10pt;"><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Patient Name</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(d.pt_name)+'</div></div><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Date of Birth</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(d.pt_dob)+'</div></div></div><h3>Records Released By</h3><div style="background:'+(mono?'#fff':'#faeff1')+';border:1pt solid '+(mono?'#000':'#7b1a2e')+';border-radius:4pt;padding:8pt 10pt;margin-bottom:10pt;font-size:12pt;"><strong>'+esc(d.office.name)+'</strong><br>'+esc(d.office.addr).replace(' \u00b7 Ph:','<br>Ph:')+'</div><h3>Records Released To (Attorney of Record)</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:10pt;margin-bottom:8pt;"><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Firm Name</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(d.atty.firm)+'</div></div><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Attorney Name</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(d.atty.name)+'</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10pt;margin-bottom:8pt;"><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Phone</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(d.atty.phone)+'</div></div><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Fax</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(d.atty.fax)+'</div></div><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Email</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(d.atty.email)+'</div></div></div><div style="margin-bottom:10pt;"><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;margin-bottom:3pt;">Firm Address</div><div style="border-bottom:1pt solid #000;min-height:22pt;padding:2pt 0;font-size:12pt;">'+_f(d.atty.addr)+'</div></div><h3>Scope of Release</h3><p>I hereby authorize Capital Injury Group, LLC to release the <strong>complete medical history, records, reports, imaging, billing records, and treatment notes</strong> related to my care to the attorney named above for purposes of representation in the matter arising from the Date of Loss listed above.</p><p>I understand I may revoke this authorization at any time in writing. A photocopy or fax of this authorization shall be considered as valid as the original.</p></div>'+renderSigBlock('Patient Authorization — Records Release (Outgoing)',s.sig,d.pt_name,d.pt_today,s.attested,witnessExtra)+renderVerStamp('Authorization to Release Records — Outgoing (Attorney)')+'</div>';
 }
 
-function renderFR(d){
+function renderFR(d,mono){
   var s=d.sigs.fr;
-  var rpExtra=(s.rpName||s.rpRel)?'<div style="margin-top:5pt;padding:5pt 7pt;border:0.75pt solid #000;"><div style="font-size:7.5pt;font-weight:700;text-transform:uppercase;margin-bottom:3pt;">If Patient is Not the Responsible Party</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10pt;"><div><div class="sig-cell print">'+_f(s.rpName)+'</div><div class="sig-lbl">Print Responsible Party\'s Name</div></div><div><div class="sig-cell print">'+_f(s.rpRel)+'</div><div class="sig-lbl">Relationship to Patient</div></div></div></div>':'';
-  var witnessExtra=s.witness?'<div style="font-size:8pt;margin-top:4pt;"><strong>Staff Witness:</strong> '+_f(s.witness)+'</div>':'';
-  return '<div class="pdf-page">'+renderHeader(d)+'<div class="pg-title">Financial Responsibility Consent &amp; Authorization</div><div class="pg-sub">Acknowledgment of financial responsibility for charges not covered by insurance.</div>'+renderPatientStrip(d)+'<div class="pg-body" style="font-size:10pt;line-height:1.55;margin-top:10pt;"><p>I, the undersigned patient/parent/guardian ("<strong>Responsible Party</strong>"), understand it is my responsibility to provide <strong>Capital Injury Group, LLC</strong> with all necessary information so that charges for my care may be submitted through insurance. I will be responsible for any charges not covered by PIP or medical payments coverage, including co-payments and applicable deductibles.</p><p style="margin-top:6pt;">As the Responsible Party, I will receive copies of billing and medical records upon request or as periodically submitted by Capital Injury Group.</p></div>'+renderSigBlock('Patient / Responsible Party Signature',s.sig,d.pt_name,d.pt_today,s.attested,witnessExtra+rpExtra)+renderVerStamp('Financial Responsibility Consent & Authorization')+'</div>';
+  var rpExtra=(s.rpName||s.rpRel)?'<div style="margin-top:5pt;padding:5pt 7pt;border:0.75pt solid #000;"><div style="font-size:9pt;font-weight:700;text-transform:uppercase;margin-bottom:3pt;">If Patient is Not the Responsible Party</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10pt;"><div><div class="sig-cell print">'+_f(s.rpName)+'</div><div class="sig-lbl">Print Responsible Party\'s Name</div></div><div><div class="sig-cell print">'+_f(s.rpRel)+'</div><div class="sig-lbl">Relationship to Patient</div></div></div></div>':'';
+  var witnessExtra=s.witness?'<div style="font-size:10pt;margin-top:4pt;"><strong>Staff Witness:</strong> '+_f(s.witness)+'</div>':'';
+  var attyBlock=(!d.atty.none&&(d.atty.firm||d.atty.name))?'<div style="margin-bottom:12pt;padding:8pt 10pt;border:1pt solid '+(mono?'#000':'#5a1222')+';border-radius:4pt;background:'+(mono?'#fff':'#faeff1')+';"><div style="font-size:9pt;font-weight:700;text-transform:uppercase;color:'+(mono?'#000':'#5a1222')+';margin-bottom:6pt;">Attorney / Firm of Record</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8pt;font-size:11pt;margin-bottom:6pt;"><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;">Firm</div>'+_f(d.atty.firm)+'</div><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;">Attorney</div>'+_f(d.atty.name)+'</div></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8pt;font-size:11pt;margin-bottom:6pt;"><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;">Phone</div>'+_f(d.atty.phone)+'</div><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;">Fax</div>'+_f(d.atty.fax)+'</div><div><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;">Email</div>'+_f(d.atty.email)+'</div></div><div style="font-size:11pt;"><div style="font-size:8pt;font-weight:700;text-transform:uppercase;color:#333;">Address</div>'+_f(d.atty.addr)+'</div></div>':'';
+  return '<div class="pdf-page">'+renderHeader(d)+'<div class="pg-title">Financial Responsibility Consent &amp; Authorization</div><div class="pg-sub">Acknowledgment of financial responsibility for charges not covered by insurance.</div>'+renderPatientStrip(d)+attyBlock+'<div class="pg-body"><p>I, the undersigned patient/parent/guardian ("<strong>Responsible Party</strong>"), understand it is my responsibility to provide Suncoast Physical Medicine, LLC (d/b/a <strong>Capital Injury Group</strong>) with all necessary information so that Capital Injury Group may submit charges for my care through insurance that may help satisfy my charges. I understand that I will be responsible for any charges not covered by personal injury protection or medical payments coverage insurance benefits, including co-payments and any applicable deductibles.</p><p>As the Responsible Party, I will receive copies of billing and medical records upon request or as periodically submitted by Capital Injury Group.</p></div>'+renderSigBlock('Patient / Responsible Party Signature',s.sig,d.pt_name,d.pt_today,s.attested,witnessExtra+rpExtra)+renderVerStamp('Financial Responsibility Consent & Authorization')+'</div>';
 }
 
 function buildPacketHtml(mono){
   var d=capturePacketData();
-  var docs=[renderHIPAA(d),renderTOA(d),renderIOT(d),renderAOB(d),renderRR1(d),renderRR2(d),renderFR(d)].join('\n');
+  var docs=[renderHIPAA(d),renderTOA(d),renderIOT(d),renderAOB(d),renderRR1(d,mono),renderRR2(d,mono),renderFR(d,mono)].join('\n');
   return '<!DOCTYPE html><html><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><style>'+buildPdfCss(mono)+'</style></head><body>'+docs+'</body></html>';
 }
 
@@ -1033,7 +1038,7 @@ async function exportPacketPdf(variant){
   catch(e){document.body.removeChild(iframe);alert('jsPDF unavailable: '+e.message);return;}
   for(var i=0;i<pages.length;i++){
     var pageEl=pages[i];pageEl.style.width='816px';pageEl.style.height='1056px';
-    var canvas=await html2canvas(pageEl,{scale:2,useCORS:true,logging:false,backgroundColor:'#ffffff',width:816,height:1056,windowWidth:816,windowHeight:1056});
+    var canvas=await html2canvas(pageEl,{scale:2,useCORS:true,allowTaint:true,logging:false,backgroundColor:'#ffffff',width:816,height:1056,windowWidth:816,windowHeight:1056});
     var imgData=canvas.toDataURL('image/jpeg',0.95);
     if(i>0)pdf.addPage('letter','portrait');
     pdf.addImage(imgData,'JPEG',0,0,8.5,11,undefined,'FAST');
@@ -1083,28 +1088,36 @@ window.addEventListener('resize',function(){document.querySelectorAll('.sig-canv
 
 async function buildPdfBlob(){
   syncAll();
-  var iframe=document.createElement('iframe');
-  iframe.style.cssText='position:fixed;left:-10000px;top:0;width:816px;height:1056px;border:0;visibility:hidden;';
-  document.body.appendChild(iframe);
+  var wrap=document.createElement('div');
+  wrap.style.cssText='position:fixed;left:-10000px;top:0;width:816px;background:#fff;z-index:-1;';
   var html=buildPacketHtml(false);
-  var doc=iframe.contentDocument||iframe.contentWindow.document;
-  doc.open();doc.write(html);doc.close();
-  await new Promise(function(resolve){if(iframe.contentDocument.readyState==='complete')return resolve();iframe.onload=function(){resolve();};setTimeout(resolve,1500);});
-  await new Promise(function(r){setTimeout(r,400);});
-  try{if(iframe.contentDocument.fonts)await iframe.contentDocument.fonts.ready;}catch(e){}
-  var pages=iframe.contentDocument.querySelectorAll('.pdf-page');
-  var pdf;
-  try{pdf=new(window.jspdf?window.jspdf.jsPDF:window.jsPDF)({unit:'in',format:'letter',orientation:'portrait'});}
-  catch(e){document.body.removeChild(iframe);throw new Error('jsPDF unavailable: '+e.message);}
-  for(var i=0;i<pages.length;i++){
-    var p=pages[i];p.style.width='816px';p.style.height='1056px';
-    var cv=await html2canvas(p,{scale:2,useCORS:true,logging:false,backgroundColor:'#ffffff',width:816,height:1056,windowWidth:816,windowHeight:1056});
-    var img=cv.toDataURL('image/jpeg',0.95);
-    if(i>0)pdf.addPage('letter','portrait');
-    pdf.addImage(img,'JPEG',0,0,8.5,11,undefined,'FAST');
+  var bodyMatch=html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+  var styleMatch=html.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+  if(styleMatch){var st=document.createElement('style');st.textContent=styleMatch[1];wrap.appendChild(st);}
+  var inner=document.createElement('div');
+  inner.innerHTML=bodyMatch?bodyMatch[1]:html;
+  wrap.appendChild(inner);
+  document.body.appendChild(wrap);
+  try{
+    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+    await new Promise(function(r){setTimeout(r,200);});
+    var pages=wrap.querySelectorAll('.pdf-page');
+    if(!pages.length)throw new Error('buildPdfBlob: no .pdf-page elements rendered');
+    if(!(window.jspdf&&window.jspdf.jsPDF))throw new Error('buildPdfBlob: jsPDF 2.x not loaded');
+    var JsPDF=window.jspdf.jsPDF;
+    var pdf=new JsPDF({unit:'in',format:'letter',orientation:'portrait'});
+    for(var i=0;i<pages.length;i++){
+      var p=pages[i];p.style.width='816px';p.style.height='1056px';
+      var cv=await html2canvas(p,{scale:2,useCORS:true,allowTaint:true,logging:false,backgroundColor:'#ffffff'});
+      if(!cv||!cv.width||!cv.height)throw new Error('buildPdfBlob: empty canvas for page '+(i+1));
+      var img=cv.toDataURL('image/jpeg',0.92);
+      if(i>0)pdf.addPage('letter','portrait');
+      pdf.addImage(img,'JPEG',0,0,8.5,11,undefined,'FAST');
+    }
+    return pdf.output('blob');
+  }finally{
+    if(wrap.parentNode)wrap.parentNode.removeChild(wrap);
   }
-  document.body.removeChild(iframe);
-  return pdf.output('blob');
 }
 
 async function submitPacket(){
@@ -1123,16 +1136,19 @@ async function submitPacket(){
     var dateSlug=String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0')+'-'+today.getFullYear();
     var pdfFilename='CIG_SignaturePacket_'+nameSlug+'_'+dateSlug+'.pdf';
     if(btn)btn.textContent='Sending\u2026';
-    var response=await fetch(PACKET_WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({patientName:data.pt_name||'Patient',dateOfLoss:data.pt_dol||'',pdfBase64:pdfBase64,pdfFilename:pdfFilename})});
-    var result=await response.json();
-    if(result.success){
-      if(btn){btn.textContent='\u2713 Submitted';btn.style.background='var(--green)';}
-      if(statusEl){statusEl.textContent='\u2713 Signature packet sent to front desk.';statusEl.style.color='var(--dgreen)';}
-    }else{throw new Error(result.error||'Worker returned failure');}
+    var response=await fetch(PACKET_WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-secret':'SpineMed2026'},body:JSON.stringify({patientName:data.pt_name||'Patient',dateOfInjury:data.pt_dol||'',pdfBase64:pdfBase64,pdfFilename:pdfFilename})});
+    var rawText=await response.text();
+    var result;
+    try{result=JSON.parse(rawText);}catch(e){throw new Error('HTTP '+response.status+': '+rawText.slice(0,200));}
+    if(!response.ok||!result.success){
+      throw new Error('HTTP '+response.status+': '+(result.error||rawText.slice(0,200)||'unknown'));
+    }
+    if(btn){btn.textContent='\u2713 Submitted';btn.style.background='var(--green)';}
+    if(statusEl){statusEl.textContent='\u2713 Signature packet sent to front desk.';statusEl.style.color='var(--dgreen)';}
   }catch(err){
     console.error('submitPacket:',err);
     if(btn){btn.disabled=false;btn.textContent='\u2713 Submit Signature Packet';}
-    if(statusEl){statusEl.textContent='Submission failed \u2014 please try again.';statusEl.style.color='#c0392b';}
+    if(statusEl){statusEl.textContent='Submission failed \u2014 '+(err&&err.message?err.message:String(err));statusEl.style.color='#c0392b';}
   }
 }
 
