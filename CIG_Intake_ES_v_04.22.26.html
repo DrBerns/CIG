@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Capital Injury Group — Formulario de Admisión de Nuevo Paciente</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a4fa0; --blue:#1E5FA8; --lblue:#EAF0FB;
+  --green:#2e7d32; --lgreen:#e8f5ee;
+  --red:#c0392b; --lred:#fdf3f3;
+  --gray:#5a6a7d; --lgray:#f4f6f9; --border:#cdd5e0;
+  --white:#fff; --radius:14px; --shadow:0 4px 24px rgba(26,79,160,0.09);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:#1a2535;min-height:100vh;}
+
+/* ── HEADER ── */
+.hdr{background:var(--white);border-bottom:3px solid var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 18px rgba(26,79,160,0.09);}
+.hdr-inner{max-width:860px;margin:0 auto;padding:0 20px;}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;padding:12px 0 8px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-mark{line-height:1;}
+.brand-mark .sp{font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-0.5px;}
+.brand-mark .me{font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;color:var(--green);letter-spacing:-0.5px;}
+.brand-mark .d{font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-0.5px;}
+.brand-sub{font-size:10.5px;color:var(--gray);margin-top:2px;letter-spacing:0.1px;}
+.hdr-right{text-align:right;}
+.hdr-step-lbl{font-size:10.5px;color:var(--gray);}
+.hdr-step-name{font-size:13.5px;font-weight:700;color:var(--navy);margin-top:1px;}
+.prog-dots{display:flex;gap:5px;padding-bottom:11px;}
+.dot{height:5px;border-radius:3px;background:var(--border);transition:all 0.35s;flex:1;}
+.dot.done{background:var(--blue);}
+.dot.active{background:var(--navy);}
+
+/* ── STEP ── */
+.step{display:none;max-width:860px;margin:24px auto;padding:0 20px 90px;}
+.step.active{display:block;animation:fadeUp 0.28s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── CARD ── */
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}
+.card-hdr{background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);padding:18px 24px 14px;color:var(--white);}
+.card-hdr h2{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:400;margin-bottom:3px;}
+.card-hdr p{font-size:12px;opacity:0.75;line-height:1.5;}
+.card-body{padding:20px 24px;}
+
+/* ── GRID ── */
+.fg{display:grid;gap:15px;}
+.g2{grid-template-columns:1fr 1fr;}
+.g3{grid-template-columns:1fr 1fr 1fr;}
+.g13{grid-template-columns:1fr 3fr;}
+.s2{grid-column:span 2;}
+.s3{grid-column:span 3;}
+
+/* ── FIELDS ── */
+.f{display:flex;flex-direction:column;gap:5px;}
+.f label{font-size:10px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.8px;}
+.f label .req{color:var(--red);margin-left:2px;}
+.fi,.fsel,.fta{
+  border:1.5px solid var(--border);border-radius:9px;
+  padding:11px 14px;font-size:15px;font-family:'DM Sans',sans-serif;
+  color:#1a2535;background:var(--lgray);outline:none;
+  transition:border-color 0.2s,background 0.2s,box-shadow 0.2s;width:100%;
+}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--navy);background:var(--white);box-shadow:0 0 0 3px rgba(26,79,160,0.10);}
+.fta{min-height:74px;resize:vertical;}
+.fsel{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235a6a7d' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+
+/* ── DIVIDER ── */
+.divider{border:none;border-top:1.5px solid var(--border);margin:18px 0;}
+.sec-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--navy);margin-bottom:11px;padding-bottom:5px;border-bottom:2px solid var(--lblue);}
+
+/* ── CHOICE BUTTONS ── */
+.choices{display:flex;gap:8px;flex-wrap:wrap;}
+.choice{
+  padding:10px 18px;border:2px solid var(--border);border-radius:50px;
+  font-size:13.5px;font-weight:600;cursor:pointer;background:var(--lgray);
+  color:var(--gray);transition:all 0.15s;user-select:none;
+  font-family:'DM Sans',sans-serif;
+}
+.choice:hover{border-color:var(--navy);color:var(--navy);background:var(--lblue);}
+.choice.on{background:var(--navy);color:var(--white);border-color:var(--navy);}
+.choice.on-green{background:var(--green);color:var(--white);border-color:var(--green);}
+.choice.on-red{background:var(--red);color:var(--white);border-color:var(--red);}
+.choices.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.choices.grid2 .choice{border-radius:10px;text-align:center;padding:12px 10px;}
+
+/* ── CHECKBOX ITEMS ── */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.cg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;}
+.ck{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;cursor:pointer;transition:background 0.12s;user-select:none;}
+.ck:hover{background:var(--lblue);}
+.ck input[type=checkbox]{width:16px;height:16px;accent-color:var(--navy);cursor:pointer;flex-shrink:0;}
+.ck label{cursor:pointer;font-size:13.5px;line-height:1.35;}
+
+/* ── NONE BUTTON ── */
+.none-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 16px;border:2px solid var(--border);border-radius:9px;
+  font-size:13px;font-weight:600;cursor:pointer;background:var(--lgray);
+  color:var(--gray);transition:all 0.15s;margin-bottom:12px;
+  font-family:'DM Sans',sans-serif;
+}
+.none-btn:hover{border-color:var(--green);color:var(--green);}
+.none-btn.on{background:var(--lgreen);border-color:var(--green);color:var(--green);}
+
+/* ── PAIN SCALE ── */
+.pain-row{display:flex;gap:4px;align-items:center;flex-wrap:wrap;}
+.pain-lbl{font-size:10px;color:var(--gray);font-weight:700;margin:0 4px;}
+.pb{
+  width:42px;height:42px;border:1.5px solid var(--border);border-radius:8px;
+  font-size:14px;font-weight:700;cursor:pointer;background:var(--lgray);
+  transition:all 0.15s;display:flex;align-items:center;justify-content:center;
+  font-family:'DM Sans',sans-serif;
+}
+.pb:hover,.pb.on{background:var(--navy);color:var(--white);border-color:var(--navy);}
+
+/* ── BODY DIAGRAM ── */
+.body-wrap{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;}
+.body-diagram{flex:0 0 auto;position:relative;}
+.body-diagram svg{display:block;}
+.body-region{cursor:pointer;transition:all 0.15s;fill:transparent;stroke:var(--border);stroke-width:1.5;}
+.body-region:hover{fill:rgba(26,79,160,0.15);stroke:var(--navy);}
+.body-region.selected{fill:rgba(26,79,160,0.35);stroke:var(--navy);stroke-width:2.5;}
+.body-region.primary{fill:rgba(192,57,43,0.35);stroke:var(--red);stroke-width:2.5;}
+.body-label{pointer-events:none;font-size:8px;fill:var(--gray);font-family:'DM Sans',sans-serif;text-anchor:middle;}
+.body-info{flex:1;min-width:200px;}
+.body-info-title{font-size:13px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;}
+.body-tags{display:flex;flex-wrap:wrap;gap:6px;min-height:32px;}
+.body-tag{
+  background:var(--lblue);border:1.5px solid var(--navy);color:var(--navy);
+  font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:20px;
+  cursor:pointer;transition:all 0.12px;
+}
+.body-tag:hover{background:var(--lred);border-color:var(--red);color:var(--red);}
+.body-tag.primary-tag{background:#fdf3f3;border-color:var(--red);color:var(--red);}
+.body-hint{font-size:13px;font-weight:600;color:var(--navy);margin-top:8px;}
+
+/* ── INFO / WARN BOXES ── */
+.ibox{background:var(--lblue);border:1.5px solid var(--blue);border-radius:9px;padding:10px 14px;font-size:12.5px;color:var(--navy);line-height:1.6;margin-bottom:14px;}
+.gbox{background:var(--lgreen);border:1.5px solid #81c784;border-radius:9px;padding:10px 14px;font-size:12.5px;color:var(--green);line-height:1.6;margin-bottom:14px;}
+
+/* ── REVIEW ── */
+.rv-sec{margin-bottom:16px;}
+.rv-hdr{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.7px;padding:6px 12px;background:var(--lblue);border-radius:7px;margin-bottom:9px;}
+.rv-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px 20px;}
+.rv-lbl{font-size:9.5px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:1px;}
+.rv-val{font-size:13px;border-bottom:0.5px solid var(--border);padding-bottom:3px;min-height:19px;}
+
+/* ── SUCCESS ── */
+.ok-wrap{text-align:center;padding:48px 24px;}
+.ok-icon{width:68px;height:68px;background:var(--lgreen);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.ok-title{font-family:'Libre Baskerville',serif;font-size:22px;color:var(--navy);margin-bottom:10px;}
+.ok-sub{color:var(--gray);font-size:13.5px;line-height:1.75;max-width:400px;margin:0 auto;}
+
+/* ── NAV ── */
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:12px 20px;z-index:99;box-shadow:0 -3px 16px rgba(26,79,160,0.07);}
+.nav-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.btn{padding:12px 26px;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:7px;line-height:1;}
+.btn-navy{background:var(--navy);color:var(--white);}
+.btn-navy:hover{background:#153e82;}
+.btn-ghost{background:transparent;color:var(--gray);border:1.5px solid var(--border);}
+.btn-ghost:hover{background:var(--lgray);}
+.btn-green{background:var(--green);color:var(--white);}
+.btn-green:hover{background:#245f27;}
+
+/* ── XRAY conditional ── */
+.xray-section{display:none;}
+.xray-section.show{display:block;}
+
+/* ── PHOTO ATTACHMENTS ── */
+.photo-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.photo-btns .btn{min-height:48px;font-size:14px;}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+.photo-thumb{position:relative;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;aspect-ratio:1;background:var(--lgray);}
+.photo-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.photo-thumb .photo-badge{position:absolute;top:6px;left:6px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1;}
+.photo-thumb .photo-del{position:absolute;top:5px;right:5px;background:rgba(255,255,255,0.85);border:none;width:28px;height:28px;border-radius:50%;font-size:16px;font-weight:700;color:var(--gray);cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.15s;}
+.photo-thumb .photo-del:hover{background:#c0392b;color:#fff;}
+.photo-empty{color:var(--gray);font-size:13px;padding:14px 0;text-align:center;}
+.photo-cap{font-size:12px;color:var(--gray);margin-top:6px;text-align:center;}
+
+@media(max-width:600px){
+  .g2,.g3{grid-template-columns:1fr;}
+  .s2,.s3{grid-column:span 1;}
+  .cg,.cg3{grid-template-columns:1fr;}
+  .rv-grid{grid-template-columns:1fr;}
+  .choices.grid2{grid-template-columns:1fr;}
+  .pb{width:36px;height:36px;font-size:12px;}
+  .body-wrap{flex-direction:column;}
+  .photo-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<div class="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-top">
+      <div class="brand">
+        <div>
+          <div class="brand-mark">
+            <span class="sp">SPINE</span><span class="me">M</span><span class="d">ED</span>
+          </div>
+          <div class="brand-sub">Formulario de Admisión de Nuevo Paciente</div>
+        </div>
+      </div>
+      <div class="hdr-right">
+        <div class="hdr-step-lbl">Paso <span id="scur">1</span> de 5</div>
+        <div class="hdr-step-name" id="sname">Información del Paciente</div>
+      </div>
+    </div>
+    <div class="prog-dots" id="pdots">
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PASO 1 — INFORMACIÓN DEL PACIENTE
+════════════════════════════════ -->
+<div class="step active" id="s1">
+  <div class="card">
+    <div class="card-hdr"><h2>Información del Paciente</h2><p>Por favor complete todos los campos. Los números de teléfono y las fechas se formatearán automáticamente.</p></div>
+    <div class="card-body">
+      <div class="fg g2">
+        <div class="f s2"><label>Nombre Legal Completo <span class="req">*</span></label><input class="fi" id="pt_name" placeholder="Nombre(s) Apellidos" oninput="syncName()"></div>
+        <div class="f"><label>Fecha de Nacimiento <span class="req">*</span></label><input class="fi" id="pt_dob" placeholder="MM/DD/AAAA" oninput="fmtDate(this)" maxlength="10"></div>
+        <div class="f"><label>Sexo <span class="req">*</span></label>
+          <select class="fsel" id="pt_sex" onchange="toggleXray();updateBodyDiagram()">
+            <option value="">Seleccionar...</option><option>Masculino</option><option>Femenino</option><option>Prefiero no indicar</option>
+          </select>
+        </div>
+        <div class="f s2"><label>Dirección de Casa <span class="req">*</span></label><input class="fi" id="pt_addr" placeholder="Dirección de calle"></div>
+        <div class="f"><label>Ciudad <span class="req">*</span></label><input class="fi" id="pt_city" placeholder="Ciudad"></div>
+        <div class="f g2 fg" style="grid-column:auto;">
+          <div class="f"><label>Estado</label><input class="fi" id="pt_state" placeholder="FL" maxlength="2" oninput="this.value=this.value.toUpperCase()"></div>
+          <div class="f"><label>Código Postal</label><input class="fi" id="pt_zip" placeholder="XXXXX" maxlength="5" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+        </div>
+        <div class="f"><label>Teléfono Celular <span class="req">*</span></label><input class="fi" id="pt_phone" placeholder="(XXX) XXX-XXXX" oninput="fmtPhone(this)" maxlength="14"></div>
+        <div class="f"><label>Teléfono de Casa</label><input class="fi" id="pt_phone_h" placeholder="(XXX) XXX-XXXX" oninput="fmtPhone(this)" maxlength="14"></div>
+        <div class="f s2"><label>Correo Electrónico <span class="req">*</span></label><input class="fi" id="pt_email" type="email" placeholder="usted@correo.com"></div>
+        <div class="f"><label>Estado Civil</label>
+          <select class="fsel" id="pt_marital">
+            <option value="">Seleccionar...</option><option>Soltero/a</option><option>Casado/a</option><option>Divorciado/a</option><option>Separado/a</option><option>Pareja</option><option>Menor de edad</option>
+          </select>
+        </div>
+        <div class="f"><label>Nombre del Cónyuge / Pareja</label><input class="fi" id="pt_spouse" placeholder="Si aplica"></div>
+      </div>
+
+      <hr class="divider">
+      <div class="sec-lbl">Empleo</div>
+      <div class="fg g2">
+        <div class="f"><label>Ocupación</label><input class="fi" id="pt_occ" placeholder="Su ocupación"></div>
+        <div class="f"><label>Empleador</label><input class="fi" id="pt_emp" placeholder="Nombre del empleador"></div>
+        <div class="f"><label>Teléfono del Trabajo</label><input class="fi" id="pt_work_ph" placeholder="(XXX) XXX-XXXX" oninput="fmtPhone(this)" maxlength="14"></div>
+        <div class="f"><label>Tipo de Actividad Laboral</label>
+          <select class="fsel" id="pt_work_type">
+            <option value="">Seleccionar...</option><option>Sentado (escritorio/oficina)</option><option>De pie (prolongado)</option><option>Trabajo liviano</option><option>Trabajo pesado</option>
+          </select>
+        </div>
+      </div>
+
+      <hr class="divider">
+      <div class="sec-lbl">Contacto de Emergencia</div>
+      <div class="fg g2">
+        <div class="f"><label>Nombre <span class="req">*</span></label><input class="fi" id="ec_name" placeholder="Nombre completo"></div>
+        <div class="f"><label>Teléfono <span class="req">*</span></label><input class="fi" id="ec_ph" placeholder="(XXX) XXX-XXXX" oninput="fmtPhone(this)" maxlength="14"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PASO 2 — LESIÓN Y SEGURO
+════════════════════════════════ -->
+<div class="step" id="s2">
+  <div class="card">
+    <div class="card-hdr"><h2>Información de Lesión y Seguro</h2><p>Cuéntenos sobre su lesión y cobertura de seguro.</p></div>
+    <div class="card-body">
+      <div class="sec-lbl">Detalles de la Lesión</div>
+      <div class="fg g2" style="margin-bottom:16px;">
+        <div class="f"><label>Fecha de la Lesión <span class="req">*</span></label><input class="fi" id="acc_date" placeholder="MM/DD/AAAA" oninput="fmtDate(this)" maxlength="10"></div>
+        <div class="f"><label>Lugar / Intersección</label><input class="fi" id="acc_loc" placeholder="Dónde ocurrió la lesión"></div>
+      </div>
+
+      <div class="f" style="margin-bottom:4px;"><label>Tipo de Lesión <span class="req">*</span></label></div>
+      <div class="choices grid2" id="injury_type_group" style="margin-bottom:6px;">
+        <div class="choice" onclick="pickOne(this,'injury_type_group')" data-val="Accidente de Tránsito">🚗 &nbsp;Accidente de Tránsito<br><span style="font-size:11px;font-weight:400;opacity:0.75;">Conductor o pasajero de un vehículo</span></div>
+        <div class="choice" onclick="pickOne(this,'injury_type_group')" data-val="Accidente Peatonal / Bicicleta">🚶 &nbsp;Accidente Peatonal / Bicicleta<br><span style="font-size:11px;font-weight:400;opacity:0.75;">A pie, bicicleta o transporte público</span></div>
+        <div class="choice" onclick="pickOne(this,'injury_type_group')" data-val="Caída / Resbalón">⚠️ &nbsp;Caída / Resbalón<br><span style="font-size:11px;font-weight:400;opacity:0.75;">Caída en propiedad o instalaciones</span></div>
+        <div class="choice" onclick="pickOne(this,'injury_type_group')" data-val="Lesión Laboral">🏗️ &nbsp;Lesión Laboral<br><span style="font-size:11px;font-weight:400;opacity:0.75;">Lesión ocurrida en el trabajo</span></div>
+      </div>
+      <input type="hidden" id="injury_type">
+
+      <hr class="divider">
+      <div class="sec-lbl">Cobertura de Seguro</div>
+      <div class="fg g2" style="margin-bottom:10px;">
+        <div class="f"><label>Seguro de Auto / Primario</label><input class="fi" id="auto_ins" placeholder="Nombre de la aseguradora"></div>
+        <div class="f"><label>Número de Reclamo / Póliza</label><input class="fi" id="ins_claim" placeholder="Número de reclamo o póliza"></div>
+        <div class="f s2"><label>Seguro de Salud</label><input class="fi" id="hlth_ins" placeholder="Nombre de la aseguradora"></div>
+      </div>
+      <div class="none-btn" id="no_ins_btn" onclick="toggleNoInsurance()" style="margin-bottom:10px;">✓ &nbsp;No tengo seguro</div>
+      <div class="ibox" style="margin-top:6px;">📌 Por favor traiga copias de todas sus tarjetas de seguro a su cita.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PASO 3 — SÍNTOMAS DESDE LA LESIÓN
+════════════════════════════════ -->
+<div class="step" id="s3">
+  <div class="card">
+    <div class="card-hdr"><h2>Síntomas Desde su Lesión</h2><p>Seleccione su área principal de molestia, luego las áreas adicionales a continuación.</p></div>
+    <div class="card-body">
+
+      <!-- ── QUEJA PRINCIPAL ── -->
+      <div class="sec-lbl">Queja Principal — Seleccione Un Área Principal</div>
+      <div class="ibox" style="margin-bottom:12px;">Toque el <strong>área que más le molesta</strong>. Use la sección de abajo para áreas adicionales.</div>
+      <div class="body-wrap">
+        <div class="body-diagram" id="body-diagram-wrap">
+          <!-- SVG inyectado por updateBodyDiagram() al cargar y al cambiar sexo -->
+        </div>
+        <div class="body-info">
+          <div class="body-info-title">Área Principal</div>
+          <div class="body-tags" id="body-tags-display"><span style="font-size:14px;font-weight:600;color:var(--navy);">Toque una región</span></div>
+          <div class="body-hint" style="margin-top:8px;">Toque para seleccionar. Toque de nuevo para deseleccionar.</div>
+        </div>
+      </div>
+      <input type="hidden" id="body_regions">
+
+      <hr class="divider">
+      <div class="f" style="margin-bottom:14px;">
+        <label>Estos síntomas son...</label>
+        <div class="choices" id="onset_type_group" style="margin-top:6px;">
+          <div class="choice" onclick="pickOne(this,'onset_type_group')" data-val="Nuevos desde la lesión">Nuevos desde la lesión</div>
+          <div class="choice" onclick="pickOne(this,'onset_type_group')" data-val="Empeoraron desde la lesión">Empeoraron desde la lesión</div>
+        </div>
+        <input type="hidden" id="onset_type">
+      </div>
+
+      <div class="f" style="margin-bottom:14px;">
+        <label>Intensidad del Dolor — 0 (ninguno) a 10 (severo)</label>
+        <div class="pain-row" style="margin-top:6px;">
+          <span class="pain-lbl">Ninguno</span>
+          <div class="pb" onclick="setPain(this,'p_main',0)">0</div><div class="pb" onclick="setPain(this,'p_main',1)">1</div>
+          <div class="pb" onclick="setPain(this,'p_main',2)">2</div><div class="pb" onclick="setPain(this,'p_main',3)">3</div>
+          <div class="pb" onclick="setPain(this,'p_main',4)">4</div><div class="pb" onclick="setPain(this,'p_main',5)">5</div>
+          <div class="pb" onclick="setPain(this,'p_main',6)">6</div><div class="pb" onclick="setPain(this,'p_main',7)">7</div>
+          <div class="pb" onclick="setPain(this,'p_main',8)">8</div><div class="pb" onclick="setPain(this,'p_main',9)">9</div>
+          <div class="pb" onclick="setPain(this,'p_main',10)">10</div>
+          <span class="pain-lbl">Severo</span>
+        </div>
+        <input type="hidden" id="p_main">
+      </div>
+
+      <div class="f" style="margin-bottom:14px;">
+        <label>¿Qué porcentaje del día siente dolor?</label>
+        <div class="choices" id="pct_group" style="margin-top:6px;">
+          <div class="choice" onclick="pickOne(this,'pct_group')" data-val="0–25%">0–25%</div>
+          <div class="choice" onclick="pickOne(this,'pct_group')" data-val="26–50%">26–50%</div>
+          <div class="choice" onclick="pickOne(this,'pct_group')" data-val="51–75%">51–75%</div>
+          <div class="choice" onclick="pickOne(this,'pct_group')" data-val="76–100%">76–100%</div>
+        </div>
+        <input type="hidden" id="pain_pct">
+      </div>
+
+      <div class="f" style="margin-bottom:14px;">
+        <label>Tipo de Dolor — Seleccione Todos los que Apliquen</label>
+        <div class="choices" id="pain_type_group" style="margin-top:6px;">
+          <div class="choice" onclick="toggleChoice(this)" data-val="Agudo">Agudo</div>
+          <div class="choice" onclick="toggleChoice(this)" data-val="Sordo">Sordo</div>
+          <div class="choice" onclick="toggleChoice(this)" data-val="Molestia">Molestia</div>
+          <div class="choice" onclick="toggleChoice(this)" data-val="Ardor">Ardor</div>
+          <div class="choice" onclick="toggleChoice(this)" data-val="Pulsante">Pulsante</div>
+        </div>
+        <input type="hidden" id="pain_type">
+      </div>
+
+      <hr class="divider">
+      <!-- ── ÁREAS ADICIONALES ── -->
+      <div class="sec-lbl">Áreas Adicionales de Molestia — Seleccione Todas las que Apliquen</div>
+      <div class="ibox" style="margin-bottom:12px;">Toque cualquier otra área donde tenga dolor o molestias desde la lesión.</div>
+      <div class="body-wrap">
+        <div class="body-diagram" id="body-diagram-wrap2">
+          <!-- SVG inyectado por updateBodyDiagram() -->
+        </div>
+        <div class="body-info">
+          <div class="body-info-title">Áreas Adicionales</div>
+          <div class="body-tags" id="body-tags-display2"><span style="font-size:14px;font-weight:600;color:var(--navy);">Toque regiones para agregar</span></div>
+          <div class="body-hint" style="margin-top:8px;">Toque para seleccionar. Toque de nuevo para deseleccionar.</div>
+        </div>
+      </div>
+      <input type="hidden" id="body_regions2">
+
+      <hr class="divider">
+      <div class="sec-lbl">Síntomas Adicionales — Marque Todos los que Apliquen</div>
+      <div class="cg" style="margin-bottom:14px;">
+        <label class="ck"><input type="checkbox" id="sx_ha"><label for="sx_ha">Dolores de Cabeza</label></label>
+        <label class="ck"><input type="checkbox" id="sx_shoulders"><label for="sx_shoulders">Tensión en los Hombros</label></label>
+        <label class="ck"><input type="checkbox" id="sx_numb" onchange="toggleNumbSub()"><label for="sx_numb">Entumecimiento / Hormigueo</label></label>
+        <div id="numb_sub" style="display:none;grid-column:span 2;padding:8px 10px 4px 28px;">
+          <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">¿Dónde?</div>
+          <div class="choices" id="numb_where_group" style="gap:6px;">
+            <div class="choice" onclick="toggleChoice(this)" data-val="Brazos / Manos">Brazos / Manos</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Piernas / Pies">Piernas / Pies</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Otro">Otro</div>
+          </div>
+          <input type="hidden" id="numb_where">
+        </div>
+        <label class="ck"><input type="checkbox" id="sx_diz"><label for="sx_diz">Mareos</label></label>
+        <label class="ck"><input type="checkbox" id="sx_vision"><label for="sx_vision">Cambios en la Visión</label></label>
+        <label class="ck"><input type="checkbox" id="sx_swallow"><label for="sx_swallow">Dificultad para Tragar</label></label>
+        <label class="ck"><input type="checkbox" id="sx_tired"><label for="sx_tired">Fatiga</label></label>
+        <label class="ck"><input type="checkbox" id="sx_sleep"><label for="sx_sleep">Dificultad para Dormir</label></label>
+        <label class="ck"><input type="checkbox" id="sx_ring"><label for="sx_ring">Zumbido en los Oídos</label></label>
+        <label class="ck"><input type="checkbox" id="sx_fog"><label for="sx_fog">Niebla Mental / Dificultad para Concentrarse</label></label>
+        <label class="ck"><input type="checkbox" id="sx_naus"><label for="sx_naus">Náuseas</label></label>
+        <label class="ck"><input type="checkbox" id="sx_vomit"><label for="sx_vomit">Vómitos</label></label>
+        <label class="ck"><input type="checkbox" id="sx_bal"><label for="sx_bal">Dificultad con el Equilibrio</label></label>
+        <label class="ck"><input type="checkbox" id="sx_jaw"><label for="sx_jaw">Dolor de Mandíbula</label></label>
+        <label class="ck"><input type="checkbox" id="sx_mood"><label for="sx_mood">Cambios de Humor</label></label>
+        <label class="ck"><input type="checkbox" id="sx_anx"><label for="sx_anx">Ansiedad / Nerviosismo</label></label>
+      </div>
+
+      <div class="f"><label>Otros Síntomas No Mencionados</label><textarea class="fta" id="sx_other" placeholder="Describa cualquier síntoma adicional..."></textarea></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════
+     PASO 4 — HISTORIAL MÉDICO
+════════════════════════════════ -->
+<div class="step" id="s4">
+  <div class="card">
+    <div class="card-hdr"><h2>Historial Médico</h2><p>Marque cualquier condición que le hayan diagnosticado o tratado en el pasado.</p></div>
+    <div class="card-body">
+      <div class="cg3">
+        <label class="ck"><input type="checkbox" id="ph_hbp"><label for="ph_hbp">Presión Arterial Alta</label></label>
+        <label class="ck"><input type="checkbox" id="ph_heart"><label for="ph_heart">Enfermedad Cardíaca</label></label>
+        <label class="ck"><input type="checkbox" id="ph_diab"><label for="ph_diab">Diabetes</label></label>
+        <label class="ck"><input type="checkbox" id="ph_chol"><label for="ph_chol">Colesterol Alto</label></label>
+        <label class="ck"><input type="checkbox" id="ph_stroke"><label for="ph_stroke">Derrame Cerebral</label></label>
+        <label class="ck"><input type="checkbox" id="ph_cancer"><label for="ph_cancer">Cáncer</label></label>
+        <label class="ck"><input type="checkbox" id="ph_arth"><label for="ph_arth">Artritis</label></label>
+        <label class="ck"><input type="checkbox" id="ph_ra"><label for="ph_ra">Artritis Reumatoide</label></label>
+        <label class="ck"><input type="checkbox" id="ph_ost"><label for="ph_ost">Osteoporosis</label></label>
+        <label class="ck"><input type="checkbox" id="ph_disc"><label for="ph_disc">Disco Herniado</label></label>
+        <label class="ck"><input type="checkbox" id="ph_pin"><label for="ph_pin">Nervio Pellizcado</label></label>
+        <label class="ck"><input type="checkbox" id="ph_mig"><label for="ph_mig">Migrañas</label></label>
+        <label class="ck"><input type="checkbox" id="ph_asth"><label for="ph_asth">Asma</label></label>
+        <label class="ck"><input type="checkbox" id="ph_thyroid"><label for="ph_thyroid">Enfermedad de la Tiroides</label></label>
+        <label class="ck"><input type="checkbox" id="ph_dep"><label for="ph_dep">Depresión / Ansiedad</label></label>
+        <label class="ck"><input type="checkbox" id="ph_add"><label for="ph_add">TDA / TDAH</label></label>
+        <label class="ck"><input type="checkbox" id="ph_epil"><label for="ph_epil">Epilepsia / Convulsiones</label></label>
+        <label class="ck"><input type="checkbox" id="ph_kid"><label for="ph_kid">Enfermedad Renal</label></label>
+        <label class="ck"><input type="checkbox" id="ph_liver"><label for="ph_liver">Enfermedad Hepática</label></label>
+        <label class="ck"><input type="checkbox" id="ph_bleed"><label for="ph_bleed">Trastornos de Coagulación</label></label>
+        <label class="ck"><input type="checkbox" id="ph_hiv"><label for="ph_hiv">VIH / SIDA</label></label>
+        <label class="ck"><input type="checkbox" id="ph_tmj"><label for="ph_tmj">ATM / Problemas de Mandíbula</label></label>
+        <label class="ck"><input type="checkbox" id="ph_fib"><label for="ph_fib">Fibromialgia</label></label>
+      </div>
+      <div class="f" style="margin-top:13px;">
+        <label>Otras Condiciones No Mencionadas</label>
+        <input class="fi" id="ph_other" placeholder="Otros diagnósticos o condiciones importantes">
+      </div>
+
+      <hr class="divider">
+      <div class="sec-lbl">Medicamentos Actuales</div>
+      <div class="none-btn" id="no_meds_btn" onclick="toggleNone('no_meds_btn','meds_section')">✓ &nbsp;Actualmente no tomo ningún medicamento</div>
+      <div id="meds_section">
+        <div class="ibox">Seleccione todas las condiciones para las que actualmente toma medicamentos.</div>
+        <div class="cg3" style="margin-bottom:12px;">
+          <label class="ck"><input type="checkbox" id="med_hbp"><label for="med_hbp">Presión Arterial Alta</label></label>
+          <label class="ck"><input type="checkbox" id="med_chol"><label for="med_chol">Colesterol</label></label>
+          <label class="ck"><input type="checkbox" id="med_diab"><label for="med_diab">Diabetes</label></label>
+          <label class="ck"><input type="checkbox" id="med_pain"><label for="med_pain">Dolor Crónico</label></label>
+          <label class="ck"><input type="checkbox" id="med_anx"><label for="med_anx">Ansiedad / Depresión</label></label>
+          <label class="ck"><input type="checkbox" id="med_add"><label for="med_add">TDA / TDAH</label></label>
+          <label class="ck"><input type="checkbox" id="med_thy"><label for="med_thy">Tiroides</label></label>
+          <label class="ck"><input type="checkbox" id="med_bp"><label for="med_bp">Anticoagulantes</label></label>
+          <label class="ck"><input type="checkbox" id="med_asth"><label for="med_asth">Asma / Respiración</label></label>
+        </div>
+        <div class="f"><label>Otros Medicamentos (condición y/o nombre del fármaco)</label><textarea class="fta" id="med_other" placeholder="Liste cualquier otro medicamento no mencionado arriba..." style="min-height:60px;"></textarea></div>
+      </div>
+
+      <hr class="divider">
+      <div class="sec-lbl">Cirugías y Hospitalizaciones</div>
+      <div class="none-btn" id="no_surg_btn" onclick="toggleNone('no_surg_btn','surg_section')">✓ &nbsp;Sin cirugías ni hospitalizaciones</div>
+      <div id="surg_section">
+        <div class="f"><label>Cirugías / Hospitalizaciones (tipo y fecha aproximada)</label><textarea class="fta" id="surgeries" placeholder="Ej. Cirugía de rodilla 2019, Apendicectomía 2015..."></textarea></div>
+      </div>
+
+      <hr class="divider">
+      <div class="sec-lbl">Alergias</div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">Alergias Alimentarias</div>
+        <div class="choices" id="food_alg_group" style="flex-wrap:wrap;">
+          <div class="choice" onclick="toggleFoodAlg(this)" data-val="Mariscos / Yodo">Mariscos / Yodo</div>
+          <div class="choice" onclick="toggleFoodAlg(this)" data-val="Otras Alergias Alimentarias">Otras Alergias Alimentarias</div>
+          <div class="choice" onclick="toggleFoodAlg(this,'none')" data-val="Sin Alergias Alimentarias">Sin Alergias Alimentarias</div>
+        </div>
+        <input type="hidden" id="food_alg">
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">Alergias a Medicamentos</div>
+        <div class="choices" id="med_alg_group" style="flex-wrap:wrap;">
+          <div class="choice" onclick="toggleChoice(this)" data-val="Penicilina">Penicilina</div>
+          <div class="choice" onclick="toggleChoice(this)" data-val="Sulfonamidas">Sulfonamidas</div>
+          <div class="choice" onclick="toggleChoice(this)" data-val="Tetraciclina">Tetraciclina</div>
+          <div class="choice" onclick="toggleChoice(this)" data-val="Codeína">Codeína</div>
+          <div class="choice" onclick="toggleChoice(this)" data-val="AINEs / Aspirina">AINEs / Aspirina</div>
+          <div class="choice" onclick="toggleChoice(this)" data-val="Látex">Látex</div>
+          <div class="choice" onclick="pickOne(this,'med_alg_group',true)" data-val="Sin Alergias a Medicamentos">Sin Alergias a Medicamentos</div>
+        </div>
+        <input type="hidden" id="med_alg">
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">Alergias Ambientales</div>
+        <div class="choices" id="env_alg_group">
+          <div class="choice" onclick="pickOne(this,'env_alg_group')" data-val="Sí">Sí</div>
+          <div class="choice" onclick="pickOne(this,'env_alg_group')" data-val="No">No</div>
+        </div>
+        <input type="hidden" id="env_alg">
+      </div>
+      <div class="f"><label>Otras Alergias</label><input class="fi" id="alg_other" placeholder="Cualquier otra alergia no mencionada arriba"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PASO 5 — HISTORIAL FAMILIAR Y SOCIAL
+════════════════════════════════ -->
+<div class="step" id="s5">
+  <div class="card">
+    <div class="card-hdr"><h2>Historial Familiar y Social</h2><p>Esta información nos ayuda a entender su historial de salud general.</p></div>
+    <div class="card-body">
+      <div class="sec-lbl">Historial Familiar de Enfermedades</div>
+      <div class="ibox">Marque cualquier condición que exista en su familia e indique de qué lado.</div>
+
+      <div id="fam_history_rows">
+        <!-- Enfermedades del Corazón -->
+        <div class="fg" style="margin-bottom:10px;gap:8px;">
+          <div style="font-size:13.5px;font-weight:600;color:#1a2535;margin-bottom:4px;">Enfermedad Cardíaca</div>
+          <div class="choices" id="fh_heart_group">
+            <div class="choice" onclick="toggleChoice(this)" data-val="Lado Materno">Lado Materno</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Lado Paterno">Lado Paterno</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Hermano/a">Hermano/a</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Otro">Otro</div>
+            <div class="choice" onclick="pickOne(this,'fh_heart_group',true)" data-val="Ninguno">Ninguno</div>
+          </div>
+          <input type="hidden" id="fh_heart">
+        </div>
+        <hr style="border:none;border-top:1px solid var(--border);margin:6px 0;">
+        <!-- Diabetes -->
+        <div class="fg" style="margin-bottom:10px;gap:8px;">
+          <div style="font-size:13.5px;font-weight:600;color:#1a2535;margin-bottom:4px;">Diabetes</div>
+          <div class="choices" id="fh_diab_group">
+            <div class="choice" onclick="toggleChoice(this)" data-val="Lado Materno">Lado Materno</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Lado Paterno">Lado Paterno</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Hermano/a">Hermano/a</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Otro">Otro</div>
+            <div class="choice" onclick="pickOne(this,'fh_diab_group',true)" data-val="Ninguno">Ninguno</div>
+          </div>
+          <input type="hidden" id="fh_diab">
+        </div>
+        <hr style="border:none;border-top:1px solid var(--border);margin:6px 0;">
+        <!-- Cáncer -->
+        <div class="fg" style="margin-bottom:10px;gap:8px;">
+          <div style="font-size:13.5px;font-weight:600;color:#1a2535;margin-bottom:4px;">Cáncer</div>
+          <div class="choices" id="fh_cancer_group">
+            <div class="choice" onclick="toggleChoice(this)" data-val="Lado Materno">Lado Materno</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Lado Paterno">Lado Paterno</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Hermano/a">Hermano/a</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Otro">Otro</div>
+            <div class="choice" onclick="pickOne(this,'fh_cancer_group',true)" data-val="Ninguno">Ninguno</div>
+          </div>
+          <input type="hidden" id="fh_cancer">
+        </div>
+        <hr style="border:none;border-top:1px solid var(--border);margin:6px 0;">
+        <!-- Autoinmune -->
+        <div class="fg" style="margin-bottom:10px;gap:8px;">
+          <div style="font-size:13.5px;font-weight:600;color:#1a2535;margin-bottom:4px;">Enfermedad Autoinmune</div>
+          <div class="choices" id="fh_auto_group">
+            <div class="choice" onclick="toggleChoice(this)" data-val="Lado Materno">Lado Materno</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Lado Paterno">Lado Paterno</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Hermano/a">Hermano/a</div>
+            <div class="choice" onclick="toggleChoice(this)" data-val="Otro">Otro</div>
+            <div class="choice" onclick="pickOne(this,'fh_auto_group',true)" data-val="Ninguno">Ninguno</div>
+          </div>
+          <input type="hidden" id="fh_auto">
+        </div>
+      </div>
+
+      <hr class="divider">
+      <div class="sec-lbl">Historial Social</div>
+
+      <div class="f" style="margin-bottom:14px;">
+        <label>Frecuencia de Ejercicio</label>
+        <div class="choices" id="exercise_group" style="margin-top:6px;">
+          <div class="choice" onclick="pickOne(this,'exercise_group');buildReview()" data-val="Con frecuencia">Con frecuencia</div>
+          <div class="choice" onclick="pickOne(this,'exercise_group');buildReview()" data-val="Moderadamente">Moderadamente</div>
+          <div class="choice" onclick="pickOne(this,'exercise_group');buildReview()" data-val="Ocasionalmente">Ocasionalmente</div>
+          <div class="choice" onclick="pickOne(this,'exercise_group');buildReview()" data-val="Ninguno">Ninguno</div>
+        </div>
+        <input type="hidden" id="exercise">
+      </div>
+
+      <div class="f" style="margin-bottom:14px;">
+        <label>Consumo de Alcohol</label>
+        <div class="choices" id="alcohol_group" style="margin-top:6px;">
+          <div class="choice" onclick="pickOne(this,'alcohol_group');buildReview()" data-val="No bebo alcohol">No bebo</div>
+          <div class="choice" onclick="pickOne(this,'alcohol_group');buildReview()" data-val="Menos de 5 bebidas/semana">Menos de 5/semana</div>
+          <div class="choice" onclick="pickOne(this,'alcohol_group');buildReview()" data-val="5–10 bebidas/semana">5–10/semana</div>
+          <div class="choice" onclick="pickOne(this,'alcohol_group');buildReview()" data-val="Más de 10 bebidas/semana">Más de 10/semana</div>
+        </div>
+        <input type="hidden" id="alcohol">
+      </div>
+
+      <div class="f" style="margin-bottom:14px;">
+        <label>Uso de Tabaco / Cigarrillos</label>
+        <div class="choices" id="tobacco_group" style="margin-top:6px;">
+          <div class="choice" onclick="pickOne(this,'tobacco_group');buildReview()" data-val="No uso tabaco">No uso tabaco</div>
+          <div class="choice" onclick="pickOne(this,'tobacco_group');buildReview()" data-val="Fumador leve">Fumador leve</div>
+          <div class="choice" onclick="pickOne(this,'tobacco_group');buildReview()" data-val="Fumador moderado">Fumador moderado</div>
+          <div class="choice" onclick="pickOne(this,'tobacco_group');buildReview()" data-val="Fumador intenso">Fumador intenso</div>
+        </div>
+        <input type="hidden" id="tobacco">
+      </div>
+
+      <!-- RAYOS X — solo pacientes femeninas -->
+      <div class="xray-section" id="xray_section">
+        <hr class="divider">
+        <div class="sec-lbl">Información de Rayos X — Pacientes Femeninas</div>
+        <div class="ibox">Es posible que nuestro examen requiera rayos X. Necesitamos confirmar el estado de embarazo antes de proceder.</div>
+        <div class="f">
+          <label>Estado de Embarazo</label>
+          <div class="choices" id="preg_group" style="margin-top:6px;flex-wrap:wrap;">
+            <div class="choice" onclick="pickOne(this,'preg_group')" data-val="Existe la posibilidad de que esté embarazada">Posiblemente embarazada</div>
+            <div class="choice" onclick="pickOne(this,'preg_group')" data-val="Definitivamente estoy embarazada">Definitivamente embarazada</div>
+            <div class="choice" onclick="pickOne(this,'preg_group')" data-val="No estoy embarazada">No estoy embarazada</div>
+          </div>
+          <input type="hidden" id="preg_status">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOTOS ADJUNTAS -->
+  <div class="card">
+    <div class="card-hdr"><h2>Fotos Adjuntas</h2><p>Por favor adjunte fotos de su licencia de conducir (frente y reverso) y tarjeta(s) de seguro (frente y reverso). Máximo 6 fotos en total.</p></div>
+    <div class="card-body">
+      <div class="photo-btns" id="photoBtns">
+        <button class="btn btn-navy" type="button" onclick="document.getElementById('photoCam').click()">Tomar Foto</button>
+        <button class="btn btn-ghost" type="button" onclick="document.getElementById('photoFile').click()">Elegir Archivo</button>
+      </div>
+      <input type="file" id="photoCam" accept="image/*" capture="environment" style="display:none">
+      <input type="file" id="photoFile" accept="image/*" multiple style="display:none">
+      <div class="photo-cap" id="photoCap">No hay fotos adjuntas aún</div>
+      <div class="photo-grid" id="photoGrid"></div>
+    </div>
+  </div>
+
+  <!-- RESUMEN DE REVISIÓN -->
+  <div class="card">
+    <div class="card-hdr"><h2>Revise su Información</h2><p>Por favor confirme el resumen a continuación antes de enviar.</p></div>
+    <div class="card-body">
+      <div id="rv-content"></div>
+      <div class="ibox" style="margin-top:16px;">🔒 Al enviar, confirma que toda la información es precisa y completa según su mejor conocimiento.</div>
+    </div>
+  </div>
+  <div style="padding:8px 0 16px;text-align:center;">
+    <button class="btn btn-green" style="width:100%;max-width:420px;font-size:16px;padding:15px 28px;justify-content:center;" onclick="doSubmit()">✓ &nbsp;Enviar</button>
+  </div>
+</div>
+
+<!-- ══ ÉXITO ══ -->
+<div class="step" id="s-ok">
+  <div class="card">
+    <div class="ok-wrap">
+      <div class="ok-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="ok-title">Gracias</div>
+      <div class="ok-sub">Su formulario de admisión ha sido completado y está siendo enviado a nuestra recepción.</div>
+      <div style="margin-top:20px;">
+        <div id="email-status" style="font-size:14px;font-weight:600;color:var(--navy);min-height:22px;margin-bottom:20px;"></div>
+      </div>
+      <div style="margin-top:8px;display:flex;flex-direction:column;gap:12px;align-items:center;">
+        <button class="btn btn-navy" onclick="exportPDF()" style="font-size:15px;padding:14px 36px;justify-content:center;min-width:280px;">⬇ &nbsp;Guardar una Copia (PDF)</button>
+        <div id="pdf-status" style="font-size:12px;color:var(--gray);min-height:18px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NAV ══ -->
+<div class="nav" id="navbar">
+  <div class="nav-inner">
+    <button class="btn btn-ghost" id="btnBack" onclick="goBack()" style="display:none;">← Atrás</button>
+    <div style="flex:1;"></div>
+    <button class="btn btn-navy" id="btnNext" onclick="goNext()">Continuar →</button>
+  </div>
+</div>
+
+<script>
+// ── STATE ──────────────────────────────
+let cur = 1;
+const TOTAL = 5;
+const NAMES = ['Información del Paciente','Lesión y Seguro','Síntomas Desde la Lesión','Historial Médico','Historial Familiar y Social'];
+const pains = {};
+
+// ── NAV ──────────────────────────────
+function goNext(){
+  if(cur < TOTAL){ cur++; show(); }
+}
+function goBack(){ if(cur > 1){ cur--; show(); } }
+
+function show(){
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('s'+cur);
+  if(el) el.classList.add('active');
+  document.getElementById('scur').textContent = cur;
+  document.getElementById('sname').textContent = NAMES[cur-1];
+  const dots = document.querySelectorAll('.dot');
+  dots.forEach((d,i) => { d.classList.remove('active','done'); if(i<cur-1) d.classList.add('done'); if(i===cur-1) d.classList.add('active'); });
+  document.getElementById('btnBack').style.display = cur>1 ? '' : 'none';
+  document.getElementById('btnNext').style.display = cur===TOTAL ? 'none' : '';
+  if(cur===TOTAL) setTimeout(buildReview, 100);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── FORMAT HELPERS ──────────────────
+function fmtDate(el){
+  let v = el.value.replace(/\D/g,'');
+  if(v.length > 2) v = v.slice(0,2)+'/'+v.slice(2);
+  if(v.length > 5) v = v.slice(0,5)+'/'+v.slice(5,9);
+  el.value = v;
+}
+function fmtPhone(el){
+  let v = el.value.replace(/\D/g,'');
+  if(v.length === 0){ el.value=''; return; }
+  if(v.length <= 3) v = '('+v;
+  else if(v.length <= 6) v = '('+v.slice(0,3)+') '+v.slice(3);
+  else v = '('+v.slice(0,3)+') '+v.slice(3,6)+'-'+v.slice(6,10);
+  el.value = v;
+}
+
+// ── NAME SYNC ──────────────────────
+function syncName(){}
+
+// ── CHOICE HELPERS ──────────────────
+function pickOne(el, groupId, allowDeselect){
+  const group = document.getElementById(groupId);
+  const hidId = groupId.replace('_group','');
+  const hid = document.getElementById(hidId);
+  const wasOn = el.classList.contains('on');
+  group.querySelectorAll('.choice').forEach(c => c.classList.remove('on'));
+  if(!wasOn || !allowDeselect){
+    el.classList.add('on');
+    if(hid) hid.value = el.dataset.val;
+  } else {
+    if(hid) hid.value = '';
+  }
+}
+function toggleChoice(el){
+  el.classList.toggle('on');
+  const group = el.closest('.choices');
+  const hidId = group.id.replace('_group','');
+  const hid = document.getElementById(hidId);
+  if(hid){
+    const selected = [...group.querySelectorAll('.choice.on')].map(c=>c.dataset.val);
+    hid.value = selected.join(', ');
+  }
+}
+
+// ── NUMBNESS SUB-OPTIONS ──────────
+function toggleNumbSub(){
+  const cb = document.getElementById('sx_numb');
+  const sub = document.getElementById('numb_sub');
+  if(sub) sub.style.display = cb.checked ? 'block' : 'none';
+  if(!cb.checked){
+    const grp = document.getElementById('numb_where_group');
+    if(grp) grp.querySelectorAll('.choice').forEach(c=>c.classList.remove('on'));
+    const h = document.getElementById('numb_where'); if(h) h.value='';
+  }
+}
+
+// ── FOOD ALLERGY MUTUAL EXCLUSIVITY ──
+function toggleFoodAlg(el, mode){
+  const group = document.getElementById('food_alg_group');
+  const hid = document.getElementById('food_alg');
+  if(mode === 'none'){
+    const wasOn = el.classList.contains('on');
+    group.querySelectorAll('.choice').forEach(c => c.classList.remove('on'));
+    if(!wasOn){ el.classList.add('on'); }
+  } else {
+    group.querySelectorAll('.choice').forEach(c => { if(c.dataset.val === 'Sin Alergias Alimentarias') c.classList.remove('on'); });
+    el.classList.toggle('on');
+  }
+  const selected = [...group.querySelectorAll('.choice.on')].map(c=>c.dataset.val);
+  if(hid) hid.value = selected.join(', ');
+}
+
+function toggleNone(btnId, sectionId){
+  const btn = document.getElementById(btnId);
+  const sec = document.getElementById(sectionId);
+  btn.classList.toggle('on');
+  if(btn.classList.contains('on')){
+    sec.style.display = 'none';
+  } else {
+    sec.style.display = '';
+  }
+}
+
+// ── PAIN ──────────────────────────
+function setPain(el, fid, v){
+  el.closest('.pain-row').querySelectorAll('.pb').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  const f = document.getElementById(fid); if(f) f.value = v;
+  pains[fid] = v;
+}
+
+// ── NO INSURANCE TOGGLE ──────────
+function toggleNoInsurance(){
+  const btn = document.getElementById('no_ins_btn');
+  btn.classList.toggle('on');
+  const noIns = btn.classList.contains('on');
+  ['auto_ins','ins_claim','hlth_ins'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el){ el.disabled = noIns; el.style.opacity = noIns ? '0.4' : '1'; }
+  });
+}
+
+// ── PAIN TYPE MULTI-SELECT SYNC ──
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('#pain_type_group .choice').forEach(el => {
+    el.addEventListener('click', ()=>{
+      const vals = [...document.querySelectorAll('#pain_type_group .choice.on')].map(c=>c.dataset.val);
+      const h = document.getElementById('pain_type');
+      if(h) h.value = vals.join(', ');
+    });
+  });
+});
+
+// ── BODY DIAGRAM ──────────────────
+const bodyRegions = {};
+const bodyRegions2 = {};
+
+function buildBodySVG(prefix, isSingle, sex){
+  const W = 340, H = 410;
+
+  const fn = (id, label, shape, x, y, w, h, rx=6) => {
+    const onclick = isSingle
+      ? `selectPrimary(this,'${id}','${label}')`
+      : `toggleRegion2(this,'${id}','${label}')`;
+    if(shape === 'ellipse'){
+      return `<ellipse class="body-region" id="${prefix}${id}" cx="${x}" cy="${y}" rx="${w}" ry="${h}" onclick="${onclick}"/>`;
+    }
+    return `<rect class="body-region" id="${prefix}${id}" x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" onclick="${onclick}"/>`;
+  };
+
+  const front = `
+    <ellipse cx="82" cy="28" rx="19" ry="23" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M74,34 Q70,29 70,34 Q70,39 74,37" fill="none" stroke="#333" stroke-width="1.3"/>
+    <path d="M90,34 Q94,29 94,34 Q94,39 90,37" fill="none" stroke="#333" stroke-width="1.3"/>
+    <path d="M76,50 L76,60 Q82,63 88,60 L88,50" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M76,60 Q66,62 56,68 L50,90 Q48,108 50,124 Q54,136 62,140 L68,152 Q74,156 82,156 Q90,156 96,152 L102,140 Q110,136 114,124 Q116,108 114,90 L108,68 Q98,62 88,60" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M68,152 Q82,160 96,152" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M50,90 Q40,94 37,118 Q37,128 42,133 Q47,135 52,132 Q55,120 53,92" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M42,133 Q36,154 34,172 Q38,177 45,175 Q51,156 52,132" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M34,172 Q31,179 33,184 Q38,186 45,183 Q47,177 45,175" fill="none" stroke="#333" stroke-width="1.3"/>
+    <path d="M114,90 Q124,94 127,118 Q127,128 122,133 Q117,135 112,132 Q109,120 111,92" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M122,133 Q128,154 130,172 Q126,177 119,175 Q113,156 112,132" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M130,172 Q133,179 131,184 Q126,186 119,183 Q117,177 119,175" fill="none" stroke="#333" stroke-width="1.3"/>
+    <path d="M68,152 Q62,170 61,200 Q61,216 66,224 Q72,228 78,224 Q81,206 80,175" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M66,224 Q62,254 62,286 Q62,300 67,307 Q74,311 80,307 Q83,288 81,248 Q80,234 78,224" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M62,307 Q59,313 62,318 Q69,321 80,318 Q83,312 80,307" fill="none" stroke="#333" stroke-width="1.3"/>
+    <path d="M96,152 Q102,170 103,200 Q103,216 98,224 Q92,228 86,224 Q83,206 84,175" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M98,224 Q102,254 102,286 Q102,300 97,307 Q90,311 84,307 Q81,288 83,248 Q84,234 86,224" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M102,307 Q105,313 102,318 Q95,321 84,318 Q81,312 84,307" fill="none" stroke="#333" stroke-width="1.3"/>
+    <path d="M61,222 Q69,219 78,222" fill="none" stroke="#bbb" stroke-width="1"/>
+    <path d="M86,222 Q94,219 103,222" fill="none" stroke="#bbb" stroke-width="1"/>
+    <text x="82" y="342" style="font-size:12px;fill:#1a4fa0;font-family:'DM Sans',sans-serif;text-anchor:middle;font-weight:700;letter-spacing:2px;">FRENTE</text>
+    ${fn('head_f','Cabeza','ellipse',82,28,21,25)}
+    ${fn('throat','Garganta','rect',74,49,16,13,3)}
+    ${fn('lsh_f','Hombro Izq. Frente','ellipse',50,76,14,10)}
+    ${fn('rsh_f','Hombro Der. Frente','ellipse',114,76,14,10)}
+    ${fn('chest','Pecho','rect',58,62,48,34,5)}
+    ${fn('abd','Abdomen','rect',58,96,48,34,5)}
+    ${fn('lhip','Cadera Izq.','rect',58,130,22,26,4)}
+    ${fn('rhip','Cadera Der.','rect',84,130,22,26,4)}
+    ${fn('lua_f','Brazo Sup. Izq. Frente','rect',35,88,18,42,5)}
+    ${fn('rua_f','Brazo Sup. Der. Frente','rect',111,88,18,42,5)}
+    ${fn('lfa_f','Brazo/Mano Izq. Frente','rect',28,130,18,56,5)}
+    ${fn('rfa_f','Brazo/Mano Der. Frente','rect',118,130,18,56,5)}
+    ${fn('lth_f','Muslo Izq. Frente','rect',59,156,22,66,5)}
+    ${fn('rth_f','Muslo Der. Frente','rect',83,156,22,66,5)}
+    ${fn('lkn_f','Rodilla Izq. Frente','ellipse',69,224,11,10)}
+    ${fn('rkn_f','Rodilla Der. Frente','ellipse',95,224,11,10)}
+    ${fn('llf_f','Pierna/Pie Izq. Frente','rect',59,234,22,82,5)}
+    ${fn('rlf_f','Pierna/Pie Der. Frente','rect',83,234,22,82,5)}
+  `;
+
+  const back = `
+    <ellipse cx="258" cy="28" rx="19" ry="23" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M239,34 Q235,29 235,34 Q235,39 239,37" fill="none" stroke="#333" stroke-width="1.3"/>
+    <path d="M277,34 Q281,29 281,34 Q281,39 277,37" fill="none" stroke="#333" stroke-width="1.3"/>
+    <path d="M252,50 L252,60 Q258,63 264,60 L264,50" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M252,60 Q242,62 232,68 L226,90 Q224,108 226,124 Q230,136 238,140 L244,152 Q250,156 258,156 Q266,156 272,152 L278,140 Q286,136 290,124 Q292,108 290,90 L284,68 Q274,62 264,60" fill="none" stroke="#333" stroke-width="1.8"/>
+    <line x1="258" y1="62" x2="258" y2="148" stroke="#ccc" stroke-width="1" stroke-dasharray="3,4"/>
+    <path d="M236,88 Q232,97 236,104 Q242,106 246,101 Q244,92 240,88" fill="none" stroke="#ccc" stroke-width="1"/>
+    <path d="M280,88 Q284,97 280,104 Q274,106 270,101 Q272,92 276,88" fill="none" stroke="#ccc" stroke-width="1"/>
+    <path d="M244,152 Q258,160 272,152" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M258,152 Q256,158 258,161 Q260,158 258,152" fill="none" stroke="#aaa" stroke-width="1"/>
+    <path d="M226,90 Q216,94 213,118 Q213,128 218,133 Q223,135 228,132 Q231,120 229,92" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M218,133 Q212,154 210,172 Q214,177 221,175 Q227,156 228,132" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M210,172 Q207,179 209,184 Q214,186 221,183 Q223,177 221,175" fill="none" stroke="#333" stroke-width="1.3"/>
+    <path d="M290,90 Q300,94 303,118 Q303,128 298,133 Q293,135 288,132 Q285,120 287,92" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M298,133 Q304,154 306,172 Q302,177 295,175 Q289,156 288,132" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M306,172 Q309,179 307,184 Q302,186 295,183 Q293,177 295,175" fill="none" stroke="#333" stroke-width="1.3"/>
+    <path d="M244,152 Q238,170 237,200 Q237,216 242,224 Q248,228 254,224 Q257,206 256,175" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M242,224 Q238,254 238,286 Q238,300 243,307 Q250,311 256,307 Q259,288 257,248 Q256,234 254,224" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M238,307 Q235,313 238,318 Q245,321 256,318 Q259,312 256,307" fill="none" stroke="#333" stroke-width="1.3"/>
+    <path d="M272,152 Q278,170 279,200 Q279,216 274,224 Q268,228 262,224 Q259,206 260,175" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M274,224 Q278,254 278,286 Q278,300 273,307 Q266,311 260,307 Q257,288 259,248 Q260,234 262,224" fill="none" stroke="#333" stroke-width="1.8"/>
+    <path d="M278,307 Q281,313 278,318 Q271,321 260,318 Q257,312 260,307" fill="none" stroke="#333" stroke-width="1.3"/>
+    <path d="M237,222 Q245,219 254,222" fill="none" stroke="#bbb" stroke-width="1"/>
+    <path d="M262,222 Q270,219 279,222" fill="none" stroke="#bbb" stroke-width="1"/>
+    <text x="258" y="342" style="font-size:12px;fill:#1a4fa0;font-family:'DM Sans',sans-serif;text-anchor:middle;font-weight:700;letter-spacing:2px;">ESPALDA</text>
+    ${fn('head_b','Cabeza (Posterior)','ellipse',258,28,21,25)}
+    ${fn('neck_b','Dolor de Cuello','rect',250,49,16,13,3)}
+    ${fn('lsh_b','Hombro Izq. Espalda','ellipse',226,76,14,10)}
+    ${fn('rsh_b','Hombro Der. Espalda','ellipse',290,76,14,10)}
+    ${fn('upback','Espalda Alta','rect',234,62,48,34,5)}
+    ${fn('midback','Espalda Media','rect',234,96,48,34,5)}
+    ${fn('lowback','Espalda Baja','rect',234,130,48,24,5)}
+    ${fn('lua_b','Brazo Sup. Izq. Espalda','rect',211,88,18,42,5)}
+    ${fn('rua_b','Brazo Sup. Der. Espalda','rect',287,88,18,42,5)}
+    ${fn('lfa_b','Brazo/Mano Izq. Espalda','rect',204,130,18,56,5)}
+    ${fn('rfa_b','Brazo/Mano Der. Espalda','rect',294,130,18,56,5)}
+    ${fn('lbutt','Glúteo Izq.','rect',234,156,22,26,4)}
+    ${fn('rbutt','Glúteo Der.','rect',260,156,22,26,4)}
+    ${fn('lth_b','Muslo Izq. Espalda','rect',235,182,22,40,5)}
+    ${fn('rth_b','Muslo Der. Espalda','rect',259,182,22,40,5)}
+    ${fn('lkn_b','Rodilla Izq. Espalda','ellipse',245,224,11,10)}
+    ${fn('rkn_b','Rodilla Der. Espalda','ellipse',271,224,11,10)}
+    ${fn('llf_b','Pierna/Pie Izq. Espalda','rect',235,234,22,82,5)}
+    ${fn('rlf_b','Pierna/Pie Der. Espalda','rect',259,234,22,82,5)}
+  `;
+
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+    <style>
+      .body-region{fill:transparent;stroke:transparent;cursor:pointer;transition:all 0.15s;}
+      .body-region:hover{fill:rgba(26,79,160,0.18);stroke:#1a4fa0;stroke-width:1.5;}
+      .body-region.selected{fill:rgba(26,79,160,0.35);stroke:#1a4fa0;stroke-width:2;}
+      .body-region.primary{fill:rgba(192,57,43,0.4);stroke:#c0392b;stroke-width:2.5;}
+    </style>
+    ${front}${back}
+  </svg>`;
+}
+
+function updateBodyDiagram(){
+  const sex = document.getElementById('pt_sex')?.value || '';
+  ['body-diagram-wrap','body-diagram-wrap2'].forEach((wrapId, idx) => {
+    const wrap = document.getElementById(wrapId);
+    if(!wrap) return;
+    const isSingle = idx === 0;
+    wrap.innerHTML = buildBodySVG(isSingle ? 'br1_' : 'br2_', isSingle, sex);
+    const map = isSingle ? bodyRegions : bodyRegions2;
+    Object.keys(map).forEach(id => {
+      const el = document.getElementById((isSingle ? 'br1_' : 'br2_') + id);
+      if(el) el.classList.add(isSingle ? 'primary' : 'selected');
+    });
+  });
+}
+
+// PRIMARY — single select
+function selectPrimary(el, id, label){
+  const wrap = document.getElementById('body-diagram-wrap');
+  wrap.querySelectorAll('.body-region.primary').forEach(r => r.classList.remove('primary'));
+  const wasSelected = Object.keys(bodyRegions).length > 0 && bodyRegions[id];
+  Object.keys(bodyRegions).forEach(k => delete bodyRegions[k]);
+  if(!wasSelected){
+    el.classList.add('primary');
+    bodyRegions[id] = label;
+  }
+  const container = document.getElementById('body-tags-display');
+  const keys = Object.keys(bodyRegions);
+  if(keys.length === 0){
+    container.innerHTML = '<span style="font-size:14px;font-weight:600;color:var(--navy);">Toque una región</span>';
+  } else {
+    container.innerHTML = keys.map(k =>
+      `<span class="body-tag" onclick="clearPrimary('${k}')">${bodyRegions[k]} ✕</span>`
+    ).join('');
+  }
+  document.getElementById('body_regions').value = Object.values(bodyRegions).join(', ');
+}
+function clearPrimary(id){
+  delete bodyRegions[id];
+  const el = document.getElementById('br1_' + id);
+  if(el) el.classList.remove('primary');
+  document.getElementById('body-tags-display').innerHTML = '<span style="font-size:14px;font-weight:600;color:var(--navy);">Toque una región</span>';
+  document.getElementById('body_regions').value = '';
+}
+
+// SECONDARY — multi select
+function toggleRegion2(el, id, label){
+  el.classList.toggle('selected');
+  if(el.classList.contains('selected')){
+    bodyRegions2[id] = label;
+  } else {
+    delete bodyRegions2[id];
+  }
+  const container = document.getElementById('body-tags-display2');
+  const keys = Object.keys(bodyRegions2);
+  if(keys.length === 0){
+    container.innerHTML = '<span style="font-size:14px;font-weight:600;color:var(--navy);">Toque regiones para agregar</span>';
+  } else {
+    container.innerHTML = keys.map(k =>
+      `<span class="body-tag" onclick="removeRegion2('${k}')">${bodyRegions2[k]} ✕</span>`
+    ).join('');
+  }
+  document.getElementById('body_regions2').value = Object.values(bodyRegions2).join(', ');
+}
+function removeRegion2(id){
+  delete bodyRegions2[id];
+  const el = document.getElementById('br2_' + id);
+  if(el) el.classList.remove('selected');
+  toggleRegion2({classList:{toggle:()=>{},contains:()=>false,add:()=>{},remove:()=>{}}}, id, '');
+  const container = document.getElementById('body-tags-display2');
+  const keys = Object.keys(bodyRegions2);
+  container.innerHTML = keys.length === 0
+    ? '<span style="font-size:14px;font-weight:600;color:var(--navy);">Toque regiones para agregar</span>'
+    : keys.map(k => `<span class="body-tag" onclick="removeRegion2('${k}')">${bodyRegions2[k]} ✕</span>`).join('');
+  document.getElementById('body_regions2').value = Object.values(bodyRegions2).join(', ');
+}
+
+// ── X-RAY CONDITIONAL ──────────────
+function toggleXray(){
+  const sex = document.getElementById('pt_sex').value;
+  const xs = document.getElementById('xray_section');
+  if(xs) xs.classList.toggle('show', sex === 'Femenino');
+}
+
+// ── REVIEW BUILD ──────────────────
+function buildReview(){
+  const gv = id => { const e=document.getElementById(id); return e?e.value.trim():''; };
+  const gcb = ids => ids.filter(id => { const e=document.getElementById(id); return e&&e.checked; })
+    .map(id => { const lbl=document.querySelector('label[for="'+id+'"]'); return lbl?lbl.textContent.trim():''; }).filter(Boolean);
+
+  const row = (l,v) => v ? `<div><div class="rv-lbl">${l}</div><div class="rv-val">${v}</div></div>` : '';
+
+  const accSx = gcb(['sx_ha','sx_shoulders','sx_numb','sx_diz','sx_vision','sx_swallow','sx_tired','sx_sleep','sx_ring','sx_fog','sx_naus','sx_vomit','sx_bal','sx_jaw','sx_mood','sx_anx']);
+  const numbWhere = gv('numb_where');
+  const pmh = gcb(['ph_hbp','ph_heart','ph_diab','ph_chol','ph_stroke','ph_cancer','ph_arth','ph_ra','ph_ost','ph_disc','ph_pin','ph_mig','ph_asth','ph_thyroid','ph_dep','ph_add','ph_epil','ph_kid','ph_liver','ph_bleed','ph_hiv','ph_tmj','ph_fib']);
+  const medConds = gcb(['med_hbp','med_chol','med_diab','med_pain','med_anx','med_add','med_thy','med_bp','med_asth']);
+  const noMeds = document.getElementById('no_meds_btn')?.classList.contains('on');
+  const noSurg = document.getElementById('no_surg_btn')?.classList.contains('on');
+  const medAlg = gv('med_alg');
+  const exercise = gv('exercise');
+  const alcohol = gv('alcohol');
+  const tobacco = gv('tobacco');
+
+  let sxList = accSx.slice();
+  if(sxList.includes('Entumecimiento / Hormigueo') && numbWhere) {
+    const idx = sxList.indexOf('Entumecimiento / Hormigueo');
+    sxList[idx] = 'Entumecimiento / Hormigueo (' + numbWhere + ')';
+  }
+
+  const sections = [
+    { t:'Datos Demográficos del Paciente', rows:[
+      ['Nombre', gv('pt_name')], ['Fecha de Nacimiento', gv('pt_dob')],
+      ['Teléfono', gv('pt_phone')], ['Correo', gv('pt_email')],
+      ['Dirección', [gv('pt_addr'),gv('pt_city'),gv('pt_state'),gv('pt_zip')].filter(Boolean).join(', ')],
+      ['Ocupación', gv('pt_occ')], ['Empleador', gv('pt_emp')],
+      ['Contacto de Emergencia', gv('ec_name') + (gv('ec_ph')?' — '+gv('ec_ph'):'')],
+    ]},
+    { t:'Lesión y Seguro', rows:[
+      ['Fecha de la Lesión', gv('acc_date')], ['Lugar', gv('acc_loc')],
+      ['Tipo de Lesión', gv('injury_type')],
+      ['Seguro de Auto', gv('auto_ins')], ['Seguro de Salud', gv('hlth_ins')],
+      ['Número de Reclamo', gv('ins_claim')],
+    ]},
+    { t:'Síntomas', rows:[
+      ['Área Principal de Queja', gv('body_regions')||'—'],
+      ['Áreas Adicionales', gv('body_regions2')],
+      ['Inicio', gv('onset_type')],
+      ['Nivel de Dolor', pains['p_main']!==undefined ? pains['p_main']+'/10' : '—'],
+      ['% del Día con Dolor', gv('pain_pct')],
+      ['Tipo de Dolor', gv('pain_type')],
+      ['Síntomas Adicionales', sxList.length ? sxList.join(', ') : 'Ninguno seleccionado'],
+      ['Otro', gv('sx_other')],
+    ]},
+    { t:'Historial Médico', rows:[
+      ['Condiciones', pmh.length ? pmh.join(', ') : 'Ninguno seleccionado'],
+      ['Otro', gv('ph_other')],
+      ['Medicamentos', noMeds ? 'Ninguno' : (medConds.length ? medConds.join(', ') : '')+(gv('med_other')?' + '+gv('med_other'):'')],
+      ['Cirugías', noSurg ? 'Ninguno' : gv('surgeries')],
+      ['Alergias Alimentarias', gv('food_alg')||'Ninguna'],
+      ['Alergias a Medicamentos', medAlg||'Ninguna'],
+      ['Alergias Ambientales', gv('env_alg')],
+      ['Otras Alergias', gv('alg_other')],
+    ]},
+    { t:'Historial Familiar y Social', rows:[
+      ['Enfermedad Cardíaca', gv('fh_heart')||'—'], ['Diabetes', gv('fh_diab')||'—'],
+      ['Cáncer', gv('fh_cancer')||'—'], ['Autoinmune', gv('fh_auto')||'—'],
+      ['Ejercicio', exercise||'—'],
+      ['Alcohol', alcohol||'—'],
+      ['Tabaco', tobacco||'—'],
+    ]},
+  ];
+  if(gv('pt_sex')==='Femenino' && gv('preg_status')){
+    sections[sections.length-1].rows.push(['Estado de Embarazo', gv('preg_status')]);
+  }
+
+  let out = '';
+  sections.forEach(sec => {
+    out += `<div class="rv-sec"><div class="rv-hdr">${sec.t}</div><div class="rv-grid">`;
+    sec.rows.forEach(([l,v]) => { if(v) out += `${row(l,v)}`; });
+    out += `</div></div>`;
+  });
+  document.getElementById('rv-content').innerHTML = out;
+}
+
+// ── SUBMIT ──────────────────────────
+const WORKER_URL = 'https://spinemed-imap-worker.drberns.workers.dev/sendemail';
+
+function doSubmit(){
+  buildReview();
+  document.getElementById('navbar').style.display = 'none';
+  document.getElementById('pdots').style.display = 'none';
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('s-ok').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(sendToWorker, 500);
+}
+
+async function sendToWorker(){
+  const emailStatus = document.getElementById('email-status');
+  if(emailStatus) emailStatus.textContent = 'Enviando a recepción...';
+  const gv = id => { const e=document.getElementById(id); return e?e.value.trim():''; };
+  const ptName = gv('pt_name') || 'Paciente';
+  const doi = gv('acc_date') || '';
+  const today = new Date();
+  const ds = String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0')+'-'+today.getFullYear();
+  const filename = 'Capital Injury Group_Admision_'+ptName.replace(/\s+/g,'_')+'_'+ds+'.pdf';
+  try {
+    const pdfHtml = buildPDFHtml();
+    const pdfBlob = await html2pdf().set({
+      margin:[14,14,16,14],
+      image:{type:'jpeg',quality:1.0},
+      html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff'},
+      jsPDF:{unit:'mm',format:'letter',orientation:'portrait'}
+    }).from(pdfHtml).outputPdf('blob');
+    const base64 = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(pdfBlob);
+    });
+    const response = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'x-api-secret': 'Capital Injury Group2026'},
+      body: JSON.stringify({patientName:ptName, dateOfInjury:doi, pdfBase64:base64, pdfFilename:filename})
+    });
+    const result = await response.json();
+    if(result.success){
+      if(emailStatus) emailStatus.textContent = '\u2713 Admisión enviada a recepción.';
+    } else {
+      if(emailStatus) emailStatus.textContent = 'Error al enviar el correo — por favor exporte el PDF manualmente.';
+      console.error('Worker error:', result);
+    }
+  } catch(err) {
+    if(emailStatus) emailStatus.textContent = 'Error al enviar el correo — por favor exporte el PDF manualmente.';
+    console.error('sendToWorker error:', err);
+  }
+}
+
+// ── PHOTO ATTACHMENTS ──────────────────
+var photoDataUrls = [];
+var PHOTO_MAX = 6;
+
+function downscaleImage(file) {
+  return new Promise(function(resolve) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var img = new Image();
+      img.onload = function() {
+        var MAX = 1600, w = img.width, h = img.height;
+        if (w > MAX || h > MAX) {
+          if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+          else { w = Math.round(w * MAX / h); h = MAX; }
+        }
+        var c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(c.toDataURL('image/jpeg', 0.85));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function addPhotos(files) {
+  for (var i = 0; i < files.length && photoDataUrls.length < PHOTO_MAX; i++) {
+    if (!files[i].type.startsWith('image/')) continue;
+    photoDataUrls.push(await downscaleImage(files[i]));
+  }
+  renderPhotoGrid();
+}
+
+function removePhoto(idx) {
+  photoDataUrls.splice(idx, 1);
+  renderPhotoGrid();
+}
+
+function renderPhotoGrid() {
+  var grid = document.getElementById('photoGrid');
+  var cap = document.getElementById('photoCap');
+  var btns = document.getElementById('photoBtns');
+  grid.innerHTML = '';
+  if (photoDataUrls.length === 0) {
+    cap.textContent = 'No hay fotos adjuntas aún';
+    btns.querySelectorAll('button').forEach(function(b){ b.disabled = false; });
+    return;
+  }
+  cap.textContent = photoDataUrls.length + ' de ' + PHOTO_MAX + ' fotos adjuntas';
+  var atMax = photoDataUrls.length >= PHOTO_MAX;
+  btns.querySelectorAll('button').forEach(function(b){ b.disabled = atMax; });
+  if (atMax) cap.textContent = 'Máximo de ' + PHOTO_MAX + ' fotos alcanzado';
+  photoDataUrls.forEach(function(dataUrl, i) {
+    var thumb = document.createElement('div');
+    thumb.className = 'photo-thumb';
+    thumb.innerHTML = '<img src="' + dataUrl + '"><div class="photo-badge">' + (i+1) + '</div><button class="photo-del" type="button" onclick="removePhoto('+i+')">&times;</button>';
+    grid.appendChild(thumb);
+  });
+}
+
+document.getElementById('photoCam').addEventListener('change', function() {
+  if (this.files.length) addPhotos(this.files);
+  this.value = '';
+});
+document.getElementById('photoFile').addEventListener('change', function() {
+  if (this.files.length) addPhotos(this.files);
+  this.value = '';
+});
+
+// ── PDF HTML BUILDER ──
+function buildPDFHtml(){
+  const gv = id => { const e=document.getElementById(id); return e?e.value.trim():''; };
+  const gcb = ids => ids.filter(id => { const e=document.getElementById(id); return e&&e.checked; })
+    .map(id => { const lbl=document.querySelector('label[for="'+id+'"]'); return lbl?lbl.textContent.trim():''; }).filter(Boolean);
+
+  const accSx = gcb(['sx_ha','sx_shoulders','sx_numb','sx_diz','sx_vision','sx_swallow','sx_tired','sx_sleep','sx_ring','sx_fog','sx_naus','sx_vomit','sx_bal','sx_jaw','sx_mood','sx_anx']);
+  const numbWhere = gv('numb_where');
+  let sxList = accSx.slice();
+  if(sxList.includes('Entumecimiento / Hormigueo') && numbWhere){
+    const idx = sxList.indexOf('Entumecimiento / Hormigueo');
+    sxList[idx] = 'Entumecimiento / Hormigueo (' + numbWhere + ')';
+  }
+
+  const pmh = gcb(['ph_hbp','ph_heart','ph_diab','ph_chol','ph_stroke','ph_cancer','ph_arth','ph_ra','ph_ost','ph_disc','ph_pin','ph_mig','ph_asth','ph_thyroid','ph_dep','ph_add','ph_epil','ph_kid','ph_liver','ph_bleed','ph_hiv','ph_tmj','ph_fib']);
+  const medConds = gcb(['med_hbp','med_chol','med_diab','med_pain','med_anx','med_add','med_thy','med_bp','med_asth']);
+  const noMeds = document.getElementById('no_meds_btn')?.classList.contains('on');
+  const noSurg = document.getElementById('no_surg_btn')?.classList.contains('on');
+  const medAlg = gv('med_alg');
+  const S = v => v||'\u2014';
+  const today = new Date();
+
+  const ICD10_CONDITIONS = {
+    'Presión Arterial Alta':'I10','Enfermedad Cardíaca':'I25.10','Diabetes':'E11.9',
+    'Colesterol Alto':'E78.5','Derrame Cerebral':'I63.9','Cáncer':'C80.1',
+    'Artritis':'M19.90','Artritis Reumatoide':'M06.9','Osteoporosis':'M81.0',
+    'Disco Herniado':'M51.16','Nervio Pellizcado':'M54.12','Migrañas':'G43.909',
+    'Asma':'J45.909','Enfermedad de la Tiroides':'E07.9','Depresión / Ansiedad':'F32.9',
+    'TDA / TDAH':'F90.9','Epilepsia / Convulsiones':'G40.909','Enfermedad Renal':'N28.9',
+    'Enfermedad Hepática':'K76.9','Trastornos de Coagulación':'D68.9','VIH / SIDA':'B20',
+    'ATM / Problemas de Mandíbula':'M26.60','Fibromialgia':'M79.3'
+  };
+  const ICD10_SYMPTOMS = {
+    'Dolores de Cabeza':'R51.9','Tensión en los Hombros':'M62.838','Entumecimiento / Hormigueo':'R20.2',
+    'Mareos':'R42','Cambios en la Visión':'H53.9','Dificultad para Tragar':'R13.10',
+    'Fatiga':'R53.83','Dificultad para Dormir':'G47.00','Zumbido en los Oídos':'H93.19',
+    'Niebla Mental / Dificultad para Concentrarse':'R41.3','Náuseas':'R11.0','Vómitos':'R11.10',
+    'Dificultad con el Equilibrio':'R26.89','Dolor de Mandíbula':'M26.60','Cambios de Humor':'R45.89',
+    'Ansiedad / Nerviosismo':'F41.9'
+  };
+  const ICD10_MEDS = {
+    'Presión Arterial Alta':'I10','Colesterol':'E78.5','Diabetes':'E11.9',
+    'Dolor Crónico':'G89.29','Ansiedad / Depresión':'F32.9','TDA / TDAH':'F90.9',
+    'Tiroides':'E07.9','Anticoagulantes':'D68.9','Asma / Respiración':'J45.909'
+  };
+  function withICD(name, map){
+    const base = name.replace(/\s*\(.*\)$/,'').trim();
+    const code = map[base] || map[name];
+    if(code) return `${name} <span style="color:#cc0000;font-weight:700;">(${code})</span>`;
+    return name;
+  }
+  const pmhWithCodes = pmh.map(c => withICD(c, ICD10_CONDITIONS)).join('<br>');
+  const medCondsWithCodes = medConds.map(c => withICD(c, ICD10_MEDS)).join('<br>');
+  const sxWithCodes = sxList.map(s => withICD(s, ICD10_SYMPTOMS)).join('<br>');
+
+  const row = (l,v,allowHtml) => `<tr style="page-break-inside:avoid;">
+    <td style="width:34%;font-size:12pt;color:#333333;padding:5px 8px 5px 0;vertical-align:top;font-family:Arial,sans-serif;">${l}</td>
+    <td style="font-size:12pt;color:#111111;padding:5px 0 5px 6px;border-bottom:1px solid #cccccc;vertical-align:top;font-family:Arial,sans-serif;">${allowHtml?v:S(v)}</td>
+  </tr>`;
+  const hdr = t => `<tr style="page-break-inside:avoid;page-break-before:avoid;">
+    <td colspan="2" style="padding:12px 0 5px;">
+      <div style="font-size:10pt;font-weight:700;text-transform:uppercase;letter-spacing:0.9px;color:#1a4fa0;padding-bottom:5px;border-bottom:3px solid #1a4fa0;font-family:Arial,sans-serif;">${t}</div>
+    </td>
+  </tr>`;
+
+  return `<div style="font-family:Arial,Helvetica,sans-serif;font-size:12pt;color:#111111;width:680px;background:#ffffff;">
+  <div style="border-bottom:4px solid #1a4fa0;padding-bottom:12px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <span style="font-size:22pt;font-weight:900;color:#1a4fa0;font-family:Georgia,serif;letter-spacing:-0.5px;">SPINE</span><span style="font-size:22pt;font-weight:900;color:#2e7d32;font-family:Georgia,serif;letter-spacing:-0.5px;">M</span><span style="font-size:22pt;font-weight:900;color:#1a4fa0;font-family:Georgia,serif;letter-spacing:-0.5px;">ED</span>
+      <div style="font-size:10pt;color:#444444;margin-top:3px;font-family:Arial,sans-serif;">Formulario de Admisión de Nuevo Paciente</div>
+    </div>
+    <div style="text-align:right;font-size:9pt;color:#555555;font-family:Arial,sans-serif;">
+      Generado: ${today.toLocaleString('es-US')}<br>
+      2629 W 23rd Street, Unit H, Panama City, FL 32405<br>
+      3375 Capital Cir NE, Bldg C100, Tallahassee, FL 32308
+    </div>
+  </div>
+  <table style="width:100%;border-collapse:collapse;">
+    ${hdr('Datos Demográficos del Paciente')}
+    ${row('Nombre Legal Completo', gv('pt_name'))}
+    ${row('Fecha de Nacimiento', gv('pt_dob'))}
+    ${row('Dirección', [gv('pt_addr'),gv('pt_city'),gv('pt_state'),gv('pt_zip')].filter(Boolean).join(', '))}
+    ${row('Teléfono Celular', gv('pt_phone'))}
+    ${row('Teléfono de Casa', gv('pt_phone_h'))}
+    ${row('Correo Electrónico', gv('pt_email'))}
+    ${row('Sexo', gv('pt_sex'))}
+    ${row('Estado Civil', gv('pt_marital'))}
+    ${row('Cónyuge / Pareja', gv('pt_spouse'))}
+    ${row('Ocupación', gv('pt_occ'))}
+    ${row('Empleador', gv('pt_emp'))}
+    ${row('Teléfono del Trabajo', gv('pt_work_ph'))}
+    ${row('Contacto de Emergencia', gv('ec_name')+(gv('ec_ph')?' \u2014 '+gv('ec_ph'):''))}
+    ${hdr('Lesión y Seguro')}
+    ${row('Fecha de la Lesión', gv('acc_date'))}
+    ${row('Lugar', gv('acc_loc'))}
+    ${row('Tipo de Lesión', gv('injury_type'))}
+    ${row('Seguro de Auto / Primario', gv('auto_ins'))}
+    ${row('Seguro de Salud', gv('hlth_ins'))}
+    ${row('No. de Reclamo / Póliza', gv('ins_claim'))}
+    ${hdr('Síntomas Desde la Lesión')}
+    ${row('Área Principal de Queja', gv('body_regions'))}
+    ${row('Áreas Adicionales de Queja', gv('body_regions2'))}
+    ${row('Inicio', gv('onset_type'))}
+    ${row('Nivel de Dolor (0\u201310)', document.getElementById('p_main')?.value!==undefined&&document.getElementById('p_main')?.value!==''?document.getElementById('p_main').value+'/10':'\u2014')}
+    ${row('% del Día con Dolor', gv('pain_pct'))}
+    ${row('Tipo de Dolor', gv('pain_type'))}
+    ${row('Síntomas Adicionales', sxList.length?sxWithCodes:'Ninguno', true)}
+    ${row('Otros Síntomas', gv('sx_other'))}
+    ${hdr('Historial Médico')}
+    ${row('Condiciones', pmh.length?pmhWithCodes:'Ninguno reportado', true)}
+    ${row('Otras Condiciones', gv('ph_other'))}
+    ${row('Medicamentos', noMeds?'Ninguno':(medConds.length?medCondsWithCodes:'\u2014')+(gv('med_other')?'<br>Otros: '+gv('med_other'):''), true)}
+    ${row('Cirugías / Hospitalizaciones', noSurg?'Ninguno':S(gv('surgeries')))}
+    ${row('Alergias Alimentarias', gv('food_alg')||'Ninguna')}
+    ${row('Alergias a Medicamentos', medAlg||'Ninguna')}
+    ${row('Alergias Ambientales', gv('env_alg'))}
+    ${row('Otras Alergias', gv('alg_other'))}
+    ${hdr('Historial Familiar y Social')}
+    ${row('Enfermedad Cardíaca', gv('fh_heart'))}
+    ${row('Diabetes', gv('fh_diab'))}
+    ${row('Cáncer', gv('fh_cancer'))}
+    ${row('Enfermedad Autoinmune', gv('fh_auto'))}
+    ${row('Ejercicio', gv('exercise'))}
+    ${row('Alcohol', gv('alcohol'))}
+    ${row('Tabaco', gv('tobacco'))}
+    ${gv('pt_sex')==='Femenino'?row('Estado de Embarazo', gv('preg_status')):''}
+  </table>
+  <div style="margin-top:18px;padding-top:10px;border-top:2px solid #cccccc;font-size:9pt;color:#777777;text-align:center;font-family:Arial,sans-serif;">
+    Capital Injury Group, LLC &nbsp;\u2022&nbsp; info@capitalinjurygroup.com &nbsp;\u2022&nbsp; www.capitalinjurygroup.com
+  </div>
+</div>` + buildPhotoPages();
+}
+
+function buildPhotoPages() {
+  if (!photoDataUrls.length) return '';
+  var html = '';
+  for (var i = 0; i < photoDataUrls.length; i++) {
+    if (i % 2 === 0) {
+      html += '<div style="page-break-before:always;font-family:Arial,Helvetica,sans-serif;width:680px;background:#fff;padding-top:16px;">';
+      if (i === 0) {
+        html += '<div style="font-size:10pt;font-weight:700;text-transform:uppercase;letter-spacing:0.9px;color:#1a4fa0;padding-bottom:5px;border-bottom:3px solid #1a4fa0;margin-bottom:14px;">Fotos Adjuntas</div>';
+      }
+    }
+    html += '<div style="margin-bottom:14px;page-break-inside:avoid;">'
+      + '<img src="' + photoDataUrls[i] + '" style="max-width:100%;height:auto;border:1px solid #ccc;border-radius:4px;display:block;">'
+      + '<div style="font-size:9pt;color:#555;margin-top:4px;font-family:Arial,sans-serif;">Foto ' + (i+1) + '</div>'
+      + '</div>';
+    if (i % 2 === 1 || i === photoDataUrls.length - 1) html += '</div>';
+  }
+  return html;
+}
+
+// ── PDF EXPORT ──────────────────────
+function exportPDF(){
+  const status = document.getElementById('pdf-status');
+  status.textContent = 'Generando PDF — por favor espere...';
+  const gv = id => { const e=document.getElementById(id); return e?e.value.trim():''; };
+  const ptName = gv('pt_name').replace(/\s+/g,'_')||'Paciente';
+  const today = new Date();
+  const ds = String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0')+'-'+today.getFullYear();
+  const filename = 'Capital Injury Group_Admision_'+ptName+'_'+ds+'.pdf';
+  const html = buildPDFHtml();
+  html2pdf().set({
+    margin:[14,14,16,14],
+    filename:filename,
+    image:{type:'jpeg',quality:1.0},
+    html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff'},
+    jsPDF:{unit:'mm',format:'letter',orientation:'portrait'}
+  }).from(html).save().then(() => {
+    status.textContent = 'PDF guardado.';
+  }).catch(err => {
+    status.textContent = 'Error al generar PDF.';
+    console.error(err);
+  });
+}
+
+// ── INIT ──────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  updateBodyDiagram();
+});
+</script>
+</body>
+</html>
