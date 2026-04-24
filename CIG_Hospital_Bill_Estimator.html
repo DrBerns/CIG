@@ -1,0 +1,2137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospital Bill Estimator — Capital Injury Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', Arial, sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; }
+  .hdr { background: #161b24; border-bottom: 1px solid #2a3040; padding: 14px 28px; position: sticky; top: 0; z-index: 100; }
+  .hdr-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 18px; }
+  .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: #4a5568; text-decoration: none; transition: color 0.15s; padding: 6px 10px; border-radius: 6px; border: 1px solid #2a3040; background: #1e2433; }
+  .back-link:hover { color: #4ade80; border-color: #4ade80; }
+  .hdr-title { font-size: 14px; font-weight: 600; color: #cbd5e1; }
+  .hdr-title .tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.4px; color: #374151; display: block; margin-bottom: 2px; }
+  .live-badge { display: inline-block; font-size: 9px; font-weight: 600; background: #0d2b1a; color: #4ade80; border: 1px solid #166534; border-radius: 4px; padding: 1px 6px; margin-left: 8px; vertical-align: middle; }
+
+  main { max-width: 1200px; margin: 28px auto; padding: 0 28px; display: grid; grid-template-columns: 380px 1fr; gap: 20px; align-items: start; }
+  .card { background: #161b24; border: 1px solid #2a3040; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .card-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.4px; color: #374151; }
+  .card-sub { font-size: 12px; color: #4a5568; line-height: 1.5; margin-top: -8px; }
+
+  label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #4a5568; margin-bottom: 4px; display: block; }
+
+  .drop-zone { border: 1.5px dashed #2a3040; border-radius: 8px; padding: 22px 14px; text-align: center; cursor: pointer; transition: background 0.15s, border-color 0.15s; background: #1e2433; }
+  .drop-zone:hover, .drop-zone.drag-over { background: #1a2535; border-color: #4ade80; }
+  .drop-zone.ready { border-color: #4ade80; border-style: solid; background: #0f2018; }
+  .drop-icon { font-size: 24px; margin-bottom: 6px; display: block; }
+  .drop-label { font-size: 13px; font-weight: 500; color: #cbd5e1; margin-bottom: 2px; }
+  .drop-hint { font-size: 11px; color: #4a5568; }
+  .drop-status { font-size: 11px; color: #4ade80; margin-top: 6px; font-weight: 500; }
+  .drop-status.blue { color: #60a5fa; }
+
+  input[type=text], select { width: 100%; background: #1e2433; border: 1px solid #2a3040; border-radius: 6px; color: #e2e8f0; padding: 9px 11px; font-family: 'DM Sans', Arial, sans-serif; font-size: 13px; outline: none; transition: border-color 0.15s; }
+  input[type=text]:focus, select:focus { border-color: #4ade80; }
+
+  .btn-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .btn-primary { padding: 10px 18px; font-size: 13px; font-weight: 600; font-family: 'DM Sans', Arial, sans-serif; border-radius: 8px; border: none; background: #4ade80; color: #0f1117; cursor: pointer; transition: background 0.15s, opacity 0.15s; }
+  .btn-primary:hover:not(:disabled) { background: #22c55e; }
+  .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-secondary { padding: 10px 14px; font-size: 13px; font-weight: 500; font-family: 'DM Sans', Arial, sans-serif; border-radius: 8px; border: 1px solid #2a3040; background: #1e2433; color: #94a3b8; cursor: pointer; transition: border-color 0.15s, color 0.15s; }
+  .btn-secondary:hover:not(:disabled) { border-color: #4ade80; color: #4ade80; }
+  .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-download { padding: 10px 16px; font-size: 13px; font-weight: 600; font-family: 'DM Sans', Arial, sans-serif; border-radius: 8px; border: none; background: #60a5fa; color: #0f1117; cursor: pointer; transition: background 0.15s; }
+  .btn-download:hover:not(:disabled) { background: #3b82f6; }
+  .btn-download:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* Attorney email group */
+  .attorney-group .check-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 12px; color: #94a3b8; cursor: pointer; user-select: none; text-transform: none; letter-spacing: 0; font-weight: 400; margin-bottom: 0; }
+  .attorney-group .check-row input[type=checkbox] { width: 14px; height: 14px; accent-color: #4ade80; cursor: pointer; }
+  .attorney-group .check-row input[type=checkbox]:disabled { cursor: not-allowed; }
+  .attorney-group .check-row input[type=checkbox]:disabled + span { color: #374151; cursor: not-allowed; }
+
+  /* Email delivery status under the download button */
+  .email-status { font-size: 11px; font-weight: 500; text-align: right; display: none; max-width: 260px; }
+  .email-status.sending { color: #f59e0b; display: inline-block; }
+  .email-status.ok { color: #4ade80; display: inline-block; }
+  .email-status.error { color: #fca5a5; display: inline-block; }
+
+  .status { font-size: 11px; color: #4a5568; min-height: 14px; }
+  .status.sending { color: #f59e0b; }
+  .status.error { color: #ef4444; }
+  .status.ok { color: #4ade80; }
+
+  .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid #2a3040; border-top-color: #f59e0b; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 6px; vertical-align: -2px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hospital-detected { background: #0f2018; border: 1px solid #166534; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #4ade80; display: flex; align-items: center; gap: 8px; }
+  .hospital-detected .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: #4a5568; font-weight: 600; }
+  .hospital-detected .name { font-weight: 600; color: #4ade80; }
+
+  .results-grid { display: flex; flex-direction: column; gap: 20px; }
+
+  .patient-info { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; font-size: 12.5px; }
+  .pi-row { display: flex; flex-direction: column; gap: 2px; }
+  .pi-label { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.8px; color: #374151; font-weight: 600; }
+  .pi-value { color: #cbd5e1; font-weight: 500; }
+
+  .summary-box { background: #1e2433; border: 1px solid #2a3040; border-radius: 8px; padding: 12px 14px; font-size: 12.5px; line-height: 1.6; color: #cbd5e1; }
+
+  .dx-list { list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: #cbd5e1; }
+  .dx-list li { padding-left: 16px; position: relative; }
+  .dx-list li::before { content: '•'; color: #60a5fa; position: absolute; left: 4px; top: 0; font-weight: 700; }
+
+  table.charges { width: 100%; border-collapse: collapse; font-size: 12px; }
+  table.charges th { background: #1e2433; color: #4a5568; font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; text-align: left; padding: 9px 10px; border-bottom: 1px solid #2a3040; }
+  table.charges th.right { text-align: right; }
+  table.charges td { padding: 8px 10px; border-bottom: 1px solid #1e2433; color: #cbd5e1; vertical-align: top; }
+  table.charges td.code { font-family: ui-monospace, Menlo, Consolas, monospace; color: #94a3b8; font-size: 11.5px; }
+  table.charges td.charge { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; color: #e2e8f0; }
+  table.charges td.missing { text-align: right; color: #ef4444; font-style: italic; font-size: 11px; }
+  table.charges tr.total td { border-top: 2px solid #4ade80; border-bottom: none; font-weight: 700; color: #4ade80; padding-top: 12px; font-size: 13px; }
+  table.charges tr.no-code td { color: #fca5a5; font-style: italic; }
+  table.charges tr.no-code td.code { color: #fca5a5; }
+  table.charges tr.no-code td.charge { color: #fca5a5; }
+  .no-code-asterisk { color: #fca5a5; font-weight: 700; margin-left: 2px; }
+  .no-code-footer { margin-top: 10px; padding: 10px 12px; background: #1a0f14; border: 1px solid #7f1d1d; border-radius: 6px; font-size: 11px; color: #fca5a5; line-height: 1.55; font-style: italic; }
+  .flagged-note { margin-top: 10px; font-size: 11px; color: #f59e0b; }
+
+  /* EMC + acute injury panels */
+  .emc-panel { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 8px; font-size: 13px; border: 1px solid; }
+  .emc-panel.yes { background: #0f2018; border-color: #166534; color: #4ade80; }
+  .emc-panel.no { background: #1e2433; border-color: #2a3040; color: #4a5568; }
+  .emc-panel .emc-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
+  .emc-panel.yes .emc-tag { background: #166534; color: #d1fae5; }
+  .emc-panel.no .emc-tag { background: #2a3040; color: #4a5568; }
+  .emc-panel .emc-label { font-weight: 600; }
+  .emc-panel .emc-pages { font-size: 11.5px; color: inherit; opacity: 0.85; }
+
+  .acute-card { border-color: #7f1d1d; background: #1a0f14; }
+  .acute-card .card-title { color: #fca5a5; }
+  .acute-intro { font-size: 11.5px; color: #fca5a5; opacity: 0.85; line-height: 1.5; }
+  .acute-empty { font-size: 12.5px; color: #4a5568; font-style: italic; padding: 8px 2px; }
+  .acute-list { display: flex; flex-direction: column; gap: 6px; }
+  .acute-item { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: baseline; padding: 8px 12px; background: #2a0f14; border: 1px solid #7f1d1d; border-radius: 6px; font-size: 12.5px; }
+  .acute-term { color: #fecaca; font-weight: 600; text-transform: capitalize; }
+  .acute-pages { font-size: 11px; color: #fca5a5; font-family: ui-monospace, Menlo, Consolas, monospace; }
+
+  /* Chargemaster status (header) */
+  .cm-status { display: inline-flex; align-items: center; gap: 8px; font-size: 11.5px; padding: 6px 10px; border-radius: 6px; border: 1px solid #2a3040; background: #1e2433; color: #94a3b8; margin-left: auto; }
+  .cm-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #4a5568; flex-shrink: 0; }
+  .cm-status.loading { color: #f59e0b; border-color: #78350f; }
+  .cm-status.loading .dot { background: #f59e0b; animation: pulse 1.2s infinite; }
+  .cm-status.ready { color: #4ade80; border-color: #166534; background: #0f2018; }
+  .cm-status.ready .dot { background: #4ade80; }
+  .cm-status.error { color: #fca5a5; border-color: #7f1d1d; background: #1a0f14; }
+  .cm-status.error .dot { background: #ef4444; }
+  .cm-retry { background: none; border: 1px solid #7f1d1d; color: #fca5a5; font-size: 10.5px; font-family: 'DM Sans', sans-serif; font-weight: 600; padding: 3px 8px; border-radius: 4px; cursor: pointer; margin-left: 4px; }
+  .cm-retry:hover { background: #2a0f14; }
+
+  .drop-zone.disabled { opacity: 0.45; cursor: not-allowed; }
+  .drop-zone.disabled:hover { background: #1e2433; border-color: #2a3040; }
+
+  /* Elapsed-time progress bar */
+  .process-timer { margin-top: 8px; border-radius: 8px; background: #1e2433; border: 1px solid #2a3040; overflow: hidden; }
+  .pt-bar { height: 5px; background: #0f1117; overflow: hidden; position: relative; }
+  .pt-bar-fill { position: absolute; inset: 0; width: 0%; transition: width 0.25s ease-out; }
+  .pt-inner { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 14px; }
+  .pt-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: #4a5568; }
+  .pt-value { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; color: #cbd5e1; }
+  .process-timer.running { border-color: #78350f; background: #1e1913; }
+  .process-timer.running .pt-label { color: #f59e0b; }
+  .process-timer.running .pt-value { color: #fbbf24; }
+  .process-timer.running .pt-bar-fill { width: 40%; background: linear-gradient(90deg, transparent, #f59e0b, #fbbf24, #f59e0b, transparent); animation: pt-slide 1.6s ease-in-out infinite; transition: none; }
+  @keyframes pt-slide { 0% { transform: translateX(-110%); } 100% { transform: translateX(260%); } }
+  .process-timer.done { border-color: #166534; background: #0f2018; }
+  .process-timer.done .pt-label { color: #4ade80; }
+  .process-timer.done .pt-value { color: #86efac; }
+  .process-timer.done .pt-bar-fill { width: 100%; background: #4ade80; animation: none; }
+  .process-timer.error { border-color: #7f1d1d; background: #1a0f14; }
+  .process-timer.error .pt-label { color: #fca5a5; }
+  .process-timer.error .pt-value { color: #fecaca; }
+  .process-timer.error .pt-bar-fill { width: 100%; background: #ef4444; animation: none; }
+
+  .empty-state { color: #4a5568; font-style: italic; text-align: center; padding: 40px 16px; font-size: 13px; }
+
+  .select-wrap { position: relative; }
+  .select-wrap select { appearance: none; padding-right: 28px; }
+  .select-wrap::after { content: '▾'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #4a5568; pointer-events: none; font-size: 10px; }
+
+  .file-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #94a3b8; background: #1e2433; border: 1px solid #2a3040; border-radius: 6px; padding: 4px 9px; }
+  .file-chip button { background: none; border: none; color: #374151; cursor: pointer; font-size: 14px; line-height: 1; padding: 0; }
+  .file-chip button:hover { color: #ef4444; }
+
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } .patient-info { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <a class="back-link" href="dashboard.html">← Dashboard</a>
+    <div class="hdr-title">
+      <span class="tag">Financial · Personal Injury</span>
+      Hospital Bill Estimator<span class="live-badge">Live</span>
+    </div>
+    <div class="cm-status loading" id="cmStatus" role="status" aria-live="polite">
+      <span class="dot"></span>
+      <span id="cmStatusText">Loading chargemaster…</span>
+      <button class="cm-retry" id="cmRetry" style="display:none;">Retry</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- LEFT: inputs -->
+  <section class="card">
+    <div>
+      <div class="card-title">Inputs</div>
+      <div class="card-sub">Drop the ER records PDF. The 5-hospital chargemaster is loaded automatically from the repo.</div>
+    </div>
+
+    <div>
+      <label>Hospital records PDF</label>
+      <div class="drop-zone disabled" id="pdfDrop" title="Waiting for chargemaster…">
+        <span class="drop-icon">📄</span>
+        <div class="drop-label">Drop ER records PDF</div>
+        <div class="drop-hint">or click to browse</div>
+        <input type="file" id="pdfInput" accept=".pdf,application/pdf" style="display:none">
+        <div class="drop-status" id="pdfStatus" style="display:none;"></div>
+      </div>
+      <div class="process-timer" id="processTimer" style="display:none;">
+        <div class="pt-bar"><div class="pt-bar-fill"></div></div>
+        <div class="pt-inner">
+          <span class="pt-label" id="ptLabel">Elapsed</span>
+          <span class="pt-value" id="ptValue">0.0s</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="hospitalBox" style="display:none;">
+      <label>Hospital</label>
+      <div id="hospitalDetected" class="hospital-detected" style="display:none;">
+        <span class="label">Detected</span>
+        <span class="name" id="detectedName">—</span>
+      </div>
+      <div id="hospitalPicker" style="display:none;">
+        <div class="select-wrap">
+          <select id="hospitalSelect">
+            <option value="">— Select hospital —</option>
+
+            <optgroup label="AdventHealth">
+              <option value="AdventHealth Tampa">AdventHealth Tampa (Fletcher Ave)</option>
+              <option value="AdventHealth Carrollwood">AdventHealth Carrollwood (N Dale Mabry)</option>
+              <option value="AdventHealth Riverview">AdventHealth Riverview (US-301)</option>
+              <option value="AdventHealth Connerton">AdventHealth Connerton (Land O' Lakes)</option>
+              <option value="AdventHealth Dade City">AdventHealth Dade City</option>
+              <option value="AdventHealth Heart of Florida">AdventHealth Heart of Florida (Davenport)</option>
+              <option value="AdventHealth Ocala">AdventHealth Ocala</option>
+              <option value="AdventHealth Wesley Chapel">AdventHealth Wesley Chapel (Bruce B Downs)</option>
+              <option value="AdventHealth Zephyrhills">AdventHealth Zephyrhills</option>
+            </optgroup>
+
+            <optgroup label="BayCare Health System">
+              <option value="St. Joseph's Hospital (BayCare)">St. Joseph's Hospital – Tampa</option>
+              <option value="St. Joseph's Hospital (BayCare)">St. Joseph's Hospital – North (Lutz)</option>
+              <option value="St. Joseph's Hospital (BayCare)">St. Joseph's Hospital – South (Riverview)</option>
+              <option value="St. Joseph's Hospital (BayCare)">St. Joseph's Children's Hospital</option>
+              <option value="St. Joseph's Hospital (BayCare)">St. Joseph's Women's Hospital</option>
+            </optgroup>
+
+            <optgroup label="HCA Florida Healthcare">
+              <option value="HCA Florida South Tampa Hospital">HCA Florida South Tampa Hospital (Swann Ave)</option>
+              <option value="HCA Florida South Tampa Hospital">HCA Florida West Tampa Hospital → South Tampa license</option>
+              <option value="HCA Florida South Tampa Hospital">HCA Florida Central Tampa ER → South Tampa license</option>
+              <option value="HCA Florida Brandon Hospital">HCA Florida Brandon Hospital</option>
+              <option value="HCA Florida Brandon Hospital">HCA Florida New Tampa ER → Brandon license</option>
+              <option value="HCA Florida Brandon Hospital">HCA Florida Riverview ER → Brandon license</option>
+              <option value="HCA Florida Brandon Hospital">HCA Florida Plant City ER → Brandon license</option>
+              <option value="HCA Florida Brandon Hospital">HCA Florida Lakeland ER → Brandon license</option>
+              <option value="HCA Florida Trinity Hospital">HCA Florida Trinity Hospital (SR-54)</option>
+              <option value="HCA Florida Trinity Hospital">HCA Florida Citrus Park ER → Trinity license</option>
+              <option value="HCA Florida Trinity Hospital">HCA Florida Lake Tarpon ER → Trinity license</option>
+              <option value="HCA Florida Trinity Hospital">HCA Florida Lutz ER → Trinity license</option>
+              <option value="HCA Florida Largo Hospital">HCA Florida Largo Hospital</option>
+              <option value="HCA Florida Largo Hospital">HCA Florida Clearwater ER → Largo license</option>
+              <option value="HCA Florida Largo Hospital">HCA Florida Largo West Hospital → Largo license</option>
+              <option value="HCA Florida Ocala Hospital">HCA Florida Ocala Hospital</option>
+              <option value="HCA Florida Ocala Hospital">HCA Florida West Marion Hospital → Ocala license</option>
+            </optgroup>
+
+            <optgroup label="Tampa General Hospital">
+              <option value="Tampa General Hospital">Tampa General Hospital (Davis Islands)</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="attorney-group">
+      <label>Attorney / firm (for PDF header)</label>
+      <input type="text" id="attorneyInput" placeholder="e.g., Smith &amp; Associates">
+
+      <label style="margin-top:10px;">Attorney email</label>
+      <input type="email" id="attorneyEmail" placeholder="attorney@lawfirm.com">
+
+      <label class="check-row" for="emailToAttorney">
+        <input type="checkbox" id="emailToAttorney" disabled>
+        <span id="emailToAttorneyText">Email ER records + bill estimate to attorney</span>
+      </label>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="processBtn" disabled>Process records</button>
+      <button class="btn-secondary" id="clearBtn">Clear</button>
+    </div>
+    <div class="status" id="status"></div>
+  </section>
+
+  <!-- RIGHT: results -->
+  <section class="results-grid">
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+        <div>
+          <div class="card-title">Visit summary</div>
+          <div class="card-sub">Patient, date of service, and chief complaint.</div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+          <button class="btn-download" id="downloadBtn" disabled>Download one-sheet PDF</button>
+          <span class="email-status" id="emailStatus"></span>
+        </div>
+      </div>
+      <div id="visitInfo" class="empty-state">Upload a PDF to begin.</div>
+    </div>
+
+    <div class="card" id="summaryCard" style="display:none;">
+      <div class="card-title">Treatment summary</div>
+      <div id="treatmentSummary" class="summary-box"></div>
+    </div>
+
+    <div class="card" id="dxCard" style="display:none;">
+      <div class="card-title">Discharge diagnoses</div>
+      <ul id="dxList" class="dx-list"></ul>
+    </div>
+
+    <div class="card" id="chargesCard" style="display:none;">
+      <div class="card-title">Estimated charges</div>
+      <div class="card-sub">Gross facility charges from the hospital's published chargemaster.</div>
+      <table class="charges">
+        <thead>
+          <tr><th>Service</th><th>CPT</th><th class="right">Gross charge</th></tr>
+        </thead>
+        <tbody id="chargesBody"></tbody>
+        <tfoot id="chargesFoot"></tfoot>
+      </table>
+      <div id="flaggedNote" class="flagged-note" style="display:none;"></div>
+      <div id="noCodeFooter" class="no-code-footer" style="display:none;"></div>
+    </div>
+
+    <div class="card" id="emcCard" style="display:none;">
+      <div class="card-title">Emergency Medical Condition</div>
+      <div class="card-sub">Scans the records for the phrase "emergency medical condition" <em>or</em> the abbreviation "EMC" (Fla. Stat. 769.732 for PIP purposes).</div>
+      <div id="emcPanel" class="emc-panel no"></div>
+    </div>
+
+    <div class="card acute-card" id="acuteCard" style="display:none;">
+      <div class="card-title">Acute injury screener</div>
+      <div class="acute-intro">Keyword scan — fractures, TBI, intracranial bleed, pneumothorax, organ laceration, etc. Negated mentions ("no fracture", "ruled out", "negative for", "without") are filtered out. Page numbers reference the source PDF for clinician review.</div>
+      <div id="acuteList"></div>
+    </div>
+
+    <div class="card acute-card" id="lowSevCard" style="display:none;">
+      <div class="card-title">No / minor injury screener</div>
+      <div class="acute-intro">Attorney red-flag wording detected. Scans for injury-negating language ("no apparent injury", "no tenderness", "hemodynamically stable", "within normal limits", Z04.1, etc.) that can undercut a PI claim. Review the flagged passages in context before evaluating the case.</div>
+      <div id="lowSevList"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  const WORKER_URL = 'https://spinemed-anthropic-proxy.drberns.workers.dev';
+  const WORKER_SECRET = 'Capital Injury Group2026';
+  const MODEL = 'claude-sonnet-4-6';
+
+  // Co-branding logos (same URLs as combined_ledger.html)
+  const SPINE_LOGO_URL = 'https://raw.githubusercontent.com/DrBerns/Capital Injury Group/541bd9a23a43a5d9572c1febe9bb0ceeff8e3206/CIG_Logo_transparent.png';
+  const PAIN_LOGO_URL  = 'https://raw.githubusercontent.com/DrBerns/PainMed/135bf92e61955243a18aab95b52646917b20efec/PainMed%20-%20Blue%20Sub%20Text%20-%20with%20Swirl.png';
+
+  // Phrase to flag for Florida PIP statutory purposes (769.732 "emergency medical condition").
+  // Records often abbreviate this as "EMC" — scan for both, require word boundaries on
+  // the abbreviation so we don't false-match things like "emcee".
+  const EMC_PHRASE = 'emergency medical condition';
+  const EMC_ABBR_RE = /\bemc\b/i;
+
+  // ─ Medication HCPCS resolution ─────────────────────────────────────────
+  // Claude sometimes tags medications with catch-all codes (J3490 / J3590).
+  // J3490 rows in the chargemaster represent unclassified drugs with no
+  // meaningful unit price, so a catch-all match can balloon the estimate by
+  // thousands. The map overrides catch-all codes with the correct drug-
+  // specific HCPCS code when the medication name is known. `null` and
+  // 'J3490_skip' mean "no standardized code exists — do not look up, do not
+  // charge anything, show the line with an explanatory note."
+  const MEDICATION_CODE_MAP = {
+    'J3490': null, // never use — catch-all, always try to find specific code
+    'J3590': null, // never use — biological catch-all
+    'acetaminophen': 'J0131',
+    'tylenol': 'J0131',
+    'ketorolac': 'J1885',
+    'toradol': 'J1885',
+    'ondansetron': 'J2405',
+    'zofran': 'J2405',
+    'morphine': 'J2270',
+    'dilaudid': 'J1170',
+    'hydromorphone': 'J1170',
+    'lorazepam': 'J2060',
+    'ativan': 'J2060',
+    'diphenhydramine': 'J1200',
+    'benadryl': 'J1200',
+    'metoclopramide': 'J2765',
+    'reglan': 'J2765',
+    'dexamethasone': 'J1100',
+    'decadron': 'J1100',
+    'methylprednisolone': 'J2920',
+    'solumedrol': 'J2920',
+    'famotidine': 'J3490_skip',
+    'ibuprofen': 'J3490_skip'
+  };
+
+  const NO_CODE_FOOTER = 'This medication has no established CPT or HCPCS code. The charge is unknown and has been intentionally omitted from the estimated total. Refer to the official hospital ledger for the actual charged amount.';
+
+  // ─ DME / orthopedic supply resolution ────────────────────────────────
+  // Hospitals almost never expose generic HCPCS supply codes (A4570, A4649,
+  // L-codes, etc.) as chargemaster CPT rows. Instead they carry internal
+  // CDM codes with revenue codes 0271 / 0272 / 0274 / 0290. Matching by
+  // HCPCS yields either nothing or a ~$0 "not otherwise classified" row.
+  // Fix: when a line item uses one of these catch-all supply codes, skip
+  // the CPT-code lookup entirely and match by description keyword instead.
+  const DME_SUPPLY_CODES = new Set([
+    'A4570',  // splint
+    'A4649',  // surgical supply NOS
+    'A4299',  // supply NOS
+    'A9999',  // misc supply
+    'L3908',  // wrist splint
+    'L3960',  // shoulder immobilizer
+    'L4350',  // ankle splint
+    'L4360',  // walking boot
+    'L1830',  // knee immobilizer
+    'L0627',  // lumbar orthosis
+    'Q4049'   // finger splint
+  ]);
+
+  // Primary keywords tried against the chargemaster description column
+  // when a DME code is encountered. Ordered most-specific first so the
+  // best match wins before we fall back to the service name tokens.
+  const DME_KEYWORD_MAP = {
+    'A4570': ['splint volar', 'volar slab', 'thumb spica', 'splint'],
+    'A4649': ['surgical supply'],
+    'A4299': ['supply'],
+    'A9999': ['supply'],
+    'L3908': ['wrist splint', 'cock-up splint'],
+    'L3960': ['shoulder immobilizer', 'sling swath', 'sling and swath', 'sling'],
+    'L4350': ['ankle splint', 'stirrup splint', 'posterior ankle splint'],
+    'L4360': ['walking boot', 'cam boot', 'fracture boot'],
+    'L1830': ['knee immobilizer', 'knee splint'],
+    'L0627': ['lumbar brace', 'back brace', 'lso brace'],
+    'Q4049': ['finger splint', 'digit splint']
+  };
+
+  // Tampa General's chargemaster prefixes hospital-billed descriptions
+  // with "Hb " (hospital-billed). Keyed by the generic term used above
+  // so we can layer TGH-specific aliases on top of the generic keywords
+  // when the detected hospital is TGH.
+  const TGH_ALIASES = {
+    'splint':               ['hb splint volar', 'hb splint', 'hb apply splint'],
+    'cervical collar':      ['hb cervical collar', 'hb c-collar', 'hb c collar'],
+    'knee immobilizer':     ['hb knee immobilizer', 'hb knee splint'],
+    'walking boot':         ['hb cam boot', 'hb fracture boot', 'hb walking boot'],
+    'shoulder immobilizer': ['hb shoulder immobilizer', 'hb sling'],
+    'sling':                ['hb sling', 'hb shoulder immobilizer'],
+    'ankle splint':         ['hb ankle splint', 'hb posterior splint'],
+    'wrist splint':         ['hb wrist splint', 'hb cock up splint'],
+    'lumbar brace':         ['hb lumbar brace', 'hb back brace', 'hb lso'],
+    'finger splint':        ['hb finger splint', 'hb digit splint'],
+    'crutches':             ['hb crutches']
+  };
+
+  // Low-severity / no-injury phrases — attorney red-flag wording.
+  // Any of these in an ER note can undercut a PI case; surface them for
+  // clinician review with page references. Plain substring match (with
+  // word-bounded plurals); no negation filter — "no apparent injury" IS
+  // the finding we want to flag.
+  // Plain case-insensitive substring matches. Word-boundary regexes were
+  // skipping phrases like "…(motor vehicle collision), no apparent injury"
+  // when punctuation intervened; substring search is more forgiving and the
+  // phrases below are distinctive enough that false positives are unlikely.
+  const LOW_SEVERITY_TERMS = [
+    // Injury-negating language
+    'no apparent injury',
+    'no apparent injuries',
+    'no acute injury',
+    'no traumatic injury',
+    'no acute traumatic',
+    'no apparent traumatic',
+    'no objective injury',
+    'no objective evidence',
+    'no evidence of injury',
+    'no signs of injury',
+    'no acute findings',
+    'no acute traumatic findings',
+    'no acute abnormality',
+    'no acute abnormalities',
+    // Diagnosis codes / encounter types that themselves mean "no injury found"
+    'exam following mvc',
+    'z04.1',
+    // Patient-reported absence
+    'denies physical complaints',
+    'denies any complaints',
+    'pt denies',
+    'patient denies',
+    'no complaints',
+    'no complaint of pain',
+    // Exam findings — absence of trauma signs
+    'no bruises',
+    'no bruising',
+    'no lacerations',
+    'no abrasions',
+    'no tenderness',
+    'nontender',
+    'non-tender',
+    'no deformity',
+    'no deformities',
+    'skin integrity intact',
+    // Distress / disposition language implying "nothing wrong"
+    'not in acute distress',
+    'no acute distress',
+    'within defined limits',
+    'within normal limits',
+    'normal exam',
+    'unremarkable',
+    'hemodynamically stable',
+    'stable for discharge',
+    'discharged home in stable condition',
+    // "No workup required" language
+    'no intervention required',
+    'no imaging necessary',
+    'no imaging warranted',
+    'further x-rays or scans are not warranted',
+    'no orders of the defined types were placed',
+    'no medications administered',
+    // Catch-alls
+    'minor injury',
+    'minor injuries',
+    'minimal injury',
+    'minimal injuries'
+  ];
+
+  // Acute / high-severity injury terms scanned page-by-page.
+  // Anything here will be listed in red on the output for clinician review.
+  const ACUTE_INJURY_TERMS = [
+    'fracture', 'dislocation',
+    'traumatic brain injury', 'tbi', 'concussion', 'loss of consciousness',
+    'intracranial hemorrhage', 'intracranial hematoma',
+    'subdural hematoma', 'epidural hematoma', 'subarachnoid hemorrhage',
+    'cerebral contusion', 'skull fracture',
+    'spinal cord injury', 'cord compression', 'cord contusion',
+    'pneumothorax', 'hemothorax', 'pulmonary contusion', 'flail chest',
+    'cardiac tamponade', 'aortic dissection', 'aortic injury',
+    'splenic laceration', 'splenic rupture', 'hepatic laceration', 'liver laceration',
+    'renal laceration', 'bowel perforation',
+    'internal bleeding', 'internal hemorrhage', 'active hemorrhage', 'vascular injury',
+    'crush injury', 'degloving', 'amputation'
+  ];
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  // ── state ──────────────────────────────────────────────────────────────
+  const state = {
+    pdfFile: null,
+    pdfBase64: null,
+    pagesText: [],            // array of extracted text per page
+    csvRows: null,
+    hospital: null,           // canonical name, or null
+    hospitalAuto: false,      // was it auto-detected?
+    result: null,             // parsed AI result
+    emcPages: [],             // pages where "emergency medical condition" appears
+    acuteFindings: [],        // [{ term, pages: [n, ...] }, ...]
+    lowSeverityFindings: [],  // [{ term, pages: [n, ...] }, ...] — attorney red-flag phrases
+    logos: { spine: null, pain: null }  // data URLs, loaded async
+  };
+
+  // Fire-and-forget logo preload; PDF generator falls back to text if not ready.
+  preloadLogo(SPINE_LOGO_URL).then(d => { state.logos.spine = d; }).catch(() => {});
+  preloadLogo(PAIN_LOGO_URL).then(d => { state.logos.pain = d; }).catch(() => {});
+
+  async function preloadLogo(url) {
+    const res = await fetch(url, { mode: 'cors' });
+    if (!res.ok) throw new Error('logo fetch ' + res.status);
+    const blob = await res.blob();
+    return await new Promise((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(fr.result);
+      fr.onerror = reject;
+      fr.readAsDataURL(blob);
+    });
+  }
+
+  // ── hospital matching ──────────────────────────────────────────────────
+  // Substring match (case-insensitive) against a large alias list covering
+  // every campus, satellite ER, and common address fragment for the 17
+  // hospitals currently in the combined chargemaster. A satellite ER
+  // collapses to the parent hospital's license (e.g. New Tampa ER →
+  // Brandon, West Tampa → South Tampa). chargemasterName is the exact
+  // value that appears in the CSV's `hospital` column.
+  const HOSPITAL_DETECTION_MAP = [
+    {
+      chargemasterName: "AdventHealth Tampa",
+      aliases: ["adventhealth tampa", "advent health tampa", "ahtam", "florida hospital tampa",
+                "university community hospital", "3100 east fletcher", "3100 e fletcher",
+                "fletcher ave", "fletcher avenue"]
+    },
+    {
+      chargemasterName: "AdventHealth Carrollwood",
+      aliases: ["adventhealth carrollwood", "advent health carrollwood", "carrollwood",
+                "7171 north dale mabry", "7171 n dale mabry"]
+    },
+    {
+      chargemasterName: "AdventHealth Riverview",
+      aliases: ["adventhealth riverview", "advent health riverview", "9330 us highway 301",
+                "us-301 south riverview"]
+    },
+    {
+      chargemasterName: "AdventHealth Connerton",
+      aliases: ["adventhealth connerton", "connerton", "land o lakes", "land o' lakes",
+                "20500 sr-54"]
+    },
+    {
+      chargemasterName: "AdventHealth Dade City",
+      aliases: ["adventhealth dade city", "dade city", "13100 fort king"]
+    },
+    {
+      chargemasterName: "AdventHealth Heart of Florida",
+      aliases: ["adventhealth heart of florida", "heart of florida", "davenport",
+                "40100 us highway 27", "us-27 davenport"]
+    },
+    {
+      chargemasterName: "AdventHealth Ocala",
+      aliases: ["adventhealth ocala", "advent health ocala", "1500 sw 1st ave ocala",
+                "ocala regional"]
+    },
+    {
+      chargemasterName: "AdventHealth Wesley Chapel",
+      aliases: ["adventhealth wesley chapel", "wesley chapel adventhealth",
+                "2600 bruce b downs", "bruce b downs blvd"]
+    },
+    {
+      chargemasterName: "AdventHealth Zephyrhills",
+      aliases: ["adventhealth zephyrhills", "zephyrhills", "7050 gall blvd"]
+    },
+    {
+      chargemasterName: "St. Joseph's Hospital (BayCare)",
+      aliases: ["st. joseph", "st joseph", "saint joseph", "baycare", "stjoesph",
+                "3001 w martin luther king", "3001 w. dr. martin luther king",
+                "st joseph's women", "st joseph's north", "st joseph's south",
+                "st joseph's children", "lutz baycare", "riverview baycare"]
+    },
+    {
+      chargemasterName: "Tampa General Hospital",
+      aliases: ["tampa general", "tgh", "1 tampa general circle", "1 tamp general"]
+    },
+    {
+      chargemasterName: "HCA Florida South Tampa Hospital",
+      aliases: ["hca florida south tampa", "south tampa hospital", "memorial hospital tampa",
+                "2901 swann", "swann avenue",
+                // West Tampa is on the same license
+                "hca florida west tampa", "west tampa hospital", "6001 webb road"]
+    },
+    {
+      chargemasterName: "HCA Florida Brandon Hospital",
+      aliases: ["hca florida brandon", "brandon hospital", "brandon regional",
+                "119 oakfield drive",
+                // Brandon satellite ERs
+                "hca florida new tampa emergency", "new tampa emergency",
+                "hca florida lakeland emergency", "lakeland emergency",
+                "hca florida plant city emergency", "plant city emergency",
+                "hca florida riverview emergency", "riverview emergency hca"]
+    },
+    {
+      chargemasterName: "HCA Florida Trinity Hospital",
+      aliases: ["hca florida trinity", "trinity hospital", "medical center of trinity",
+                "9330 state road 54",
+                // Trinity satellite ERs
+                "hca florida citrus park", "citrus park emergency",
+                "hca florida lake tarpon", "lake tarpon emergency",
+                "hca florida lutz emergency", "lutz emergency"]
+    },
+    {
+      chargemasterName: "HCA Florida Ocala Hospital",
+      aliases: ["hca florida ocala", "ocala regional medical", "1431 sw 1st ave",
+                "hca florida west marion", "west marion",
+                "hca florida maricamp", "maricamp emergency",
+                "hca florida silver springs", "silver springs fser",
+                "hca florida summerfield", "summerfield emergency",
+                "hca florida trailwinds", "trailwinds emergency"]
+    },
+    {
+      chargemasterName: "HCA Florida Largo Hospital",
+      aliases: ["hca florida largo", "largo medical center", "201 14th street sw",
+                "hca florida clearwater emergency", "clearwater emergency hca",
+                "hca florida largo west", "largo west hospital"]
+    }
+  ];
+
+  function normalizeForMatch(s) { return String(s || '').toLowerCase().replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim(); }
+
+  function detectHospital(text) {
+    // Scan a bigger window (5000 chars) to catch address-line aliases that
+    // aren't always at the top of the document.
+    const head = String(text || '').slice(0, 5000).toLowerCase();
+    for (const h of HOSPITAL_DETECTION_MAP) {
+      for (const alias of h.aliases) {
+        if (head.includes(alias.toLowerCase())) return h.chargemasterName;
+      }
+    }
+    return null;
+  }
+
+  // ── page-by-page phrase scanning ───────────────────────────────────────
+  function findPhrasePages(pages, needle) {
+    const lc = String(needle).toLowerCase();
+    const out = [];
+    pages.forEach((text, i) => {
+      const hay = normalizeExtractedText(text).toLowerCase();
+      if (hay.includes(lc)) out.push(i + 1);
+    });
+    return out;
+  }
+
+  // Scan for "emergency medical condition" OR the abbreviation "EMC" (word-bounded).
+  // Returns a sorted, deduplicated list of pages where either is present.
+  function findEmcPages(pages) {
+    const hits = new Set();
+    pages.forEach((text, i) => {
+      const hay = normalizeExtractedText(text);
+      const lc = hay.toLowerCase();
+      if (lc.includes(EMC_PHRASE)) hits.add(i + 1);
+      else if (EMC_ABBR_RE.test(hay)) hits.add(i + 1);
+    });
+    return Array.from(hits).sort((a, b) => a - b);
+  }
+
+  // Negation cues found immediately before the term (within the same sentence).
+  // Examples caught: "no fracture", "no acute fracture", "no evidence of TBI",
+  // "without pneumothorax", "negative for concussion", "denies loss of
+  // consciousness", "no history of seizure".
+  const NEG_PRE_RE = /\b(?:no\s+(?:acute|obvious|significant|evidence\s+of|sign\s+of|signs\s+of|indication\s+of|apparent|gross|history\s+of|new|definite)|no|without|negative\s+for|denies|denied|absent)\s+$/;
+
+  // Negation cues found immediately AFTER the term (within the same sentence).
+  // Examples caught: "fracture ruled out", "fracture is negative", "TBI not seen",
+  // "pneumothorax: none", "hemorrhage is not present".
+  const NEG_POST_RE = /^\s*(?::\s*(?:negative|none|nil|no\b|not\s+seen|not\s+noted|absent)|(?:is|are|was|were)\s+(?:negative|ruled\s+out|not\s+(?:present|observed|seen|identified|noted|evident|appreciated))|ruled\s+out|not\s+(?:present|observed|seen|identified|noted|evident|appreciated))/;
+
+  function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  function lastSentenceCutAfter(s) {
+    let at = 0;
+    for (const c of ['. ', '; ', '! ', '? ', '\n']) {
+      const i = s.lastIndexOf(c);
+      if (i >= 0 && i + c.length > at) at = i + c.length;
+    }
+    return at;
+  }
+
+  function firstSentenceCutIn(s) {
+    let at = s.length;
+    for (const c of ['. ', '; ', '! ', '? ', '\n']) {
+      const i = s.indexOf(c);
+      if (i >= 0 && i < at) at = i;
+    }
+    return at;
+  }
+
+  function isNegatedAt(hayLower, start, end) {
+    const pre = hayLower.slice(Math.max(0, start - 60), start);
+    const preWindow = pre.slice(lastSentenceCutAfter(pre));
+    if (NEG_PRE_RE.test(preWindow)) return true;
+
+    const post = hayLower.slice(end, Math.min(hayLower.length, end + 50));
+    const postWindow = post.slice(0, firstSentenceCutIn(post));
+    if (NEG_POST_RE.test(postWindow)) return true;
+
+    return false;
+  }
+
+  function scanAcuteInjuries(pages) {
+    const results = [];
+    for (const rawTerm of ACUTE_INJURY_TERMS) {
+      // Match the term at word boundary, optionally with a plural -s.
+      const termRe = new RegExp('\\b' + escapeRegex(rawTerm) + 's?\\b', 'gi');
+      const positivePages = [];
+      pages.forEach((pageText, i) => {
+        const hay = normalizeExtractedText(pageText);
+        const hayLower = hay.toLowerCase();
+        termRe.lastIndex = 0;
+        let m;
+        while ((m = termRe.exec(hayLower)) !== null) {
+          if (!isNegatedAt(hayLower, m.index, m.index + m[0].length)) {
+            positivePages.push(i + 1);
+            break; // one positive is enough to list this page
+          }
+        }
+      });
+      if (positivePages.length) results.push({ term: rawTerm, pages: positivePages });
+    }
+    return results;
+  }
+
+  // Strip invisible / zero-width characters that pdf.js can emit (soft
+  // hyphens, zero-width spaces, BOM) and collapse any run of whitespace to
+  // a single ASCII space. Without this, phrases that cross line breaks or
+  // contain soft hyphens can slip past substring / regex matching.
+  function normalizeExtractedText(s) {
+    return String(s == null ? '' : s)
+      .replace(/[\u00AD\u200B-\u200F\u2060\uFEFF]/g, '')
+      .replace(/\s+/g, ' ');
+  }
+
+  // Low-severity / no-injury screener. Plain phrase scan (with plural), no
+  // negation filter because these phrases ARE themselves the negative
+  // finding we want to flag for the clinician/attorney.
+  //
+  // Some PDFs (especially older hospital systems) extract text character-
+  // by-character with positional spaces, producing something like
+  // "N o  a p p a r e n t  i n j u r y" after pdf.js joins items. The
+  // primary regex won't match that, so we also do a compact-text fallback
+  // that strips ALL whitespace and looks for the phrase letter-adjacent.
+  // Risk of false positives is near zero for the specific phrases we flag.
+  // Plain case-insensitive substring scan. Each keyword that appears on a
+  // page adds that page number to its result list. Pages get deduplicated
+  // but every keyword that matches is listed so the attorney can see which
+  // wording hit. Compact (whitespace-stripped) fallback preserved for PDFs
+  // that extract text character-by-character.
+  // Merge Claude's low-severity findings into the local state. Claude reads
+  // the PDF directly (including scanned pages and fragmented column text
+  // that pdf.js can't reassemble), so its findings are often the only ones
+  // that fire on Piedmont-style records. Existing local findings keep their
+  // pages; new ones get added. Pages are deduped + sorted.
+  function mergeClaudeLowSeverity(claudeFindings) {
+    if (!Array.isArray(claudeFindings)) return;
+    const by = new Map();
+    for (const existing of state.lowSeverityFindings) {
+      by.set(String(existing.term).toLowerCase(), {
+        term: existing.term,
+        pages: new Set(existing.pages)
+      });
+    }
+    for (const cf of claudeFindings) {
+      const phrase = String((cf && cf.phrase) || '').trim();
+      if (!phrase) continue;
+      const pagesRaw = Array.isArray(cf.pages) ? cf.pages : [];
+      const pages = pagesRaw.map(n => parseInt(n, 10)).filter(n => Number.isFinite(n) && n > 0);
+      const key = phrase.toLowerCase();
+      if (!by.has(key)) {
+        by.set(key, { term: phrase.toLowerCase(), pages: new Set() });
+      }
+      const entry = by.get(key);
+      pages.forEach(p => entry.pages.add(p));
+    }
+    state.lowSeverityFindings = Array.from(by.values())
+      .filter(e => e.pages.size > 0)
+      .map(e => ({ term: e.term, pages: Array.from(e.pages).sort((a, b) => a - b) }));
+  }
+
+  function scanLowSeverity(pages) {
+    const results = [];
+    for (const rawTerm of LOW_SEVERITY_TERMS) {
+      const needle = rawTerm.toLowerCase();
+      const compactNeedle = needle.replace(/\s+/g, '');
+      const hitPages = [];
+      pages.forEach((pageText, i) => {
+        const hay = normalizeExtractedText(pageText).toLowerCase();
+        if (hay.includes(needle)) { hitPages.push(i + 1); return; }
+        const compact = hay.replace(/\s+/g, '');
+        if (compact.includes(compactNeedle)) hitPages.push(i + 1);
+      });
+      if (hitPages.length) results.push({ term: rawTerm, pages: hitPages });
+    }
+    return results;
+  }
+
+  function titleCase(s) {
+    return String(s || '').replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  // ── dom ────────────────────────────────────────────────────────────────
+  const $ = (id) => document.getElementById(id);
+  const pdfDrop = $('pdfDrop'), pdfInput = $('pdfInput'), pdfStatus = $('pdfStatus');
+  const hospitalBox = $('hospitalBox'), hospitalDetected = $('hospitalDetected'), detectedName = $('detectedName');
+  const hospitalPicker = $('hospitalPicker'), hospitalSelect = $('hospitalSelect');
+  const attorneyInput = $('attorneyInput');
+  const attorneyEmail = $('attorneyEmail');
+  const emailToAttorney = $('emailToAttorney');
+  const emailStatus = $('emailStatus');
+  const processBtn = $('processBtn'), clearBtn = $('clearBtn'), status = $('status');
+  const visitInfo = $('visitInfo');
+  const summaryCard = $('summaryCard'), treatmentSummary = $('treatmentSummary');
+  const dxCard = $('dxCard'), dxList = $('dxList');
+  const chargesCard = $('chargesCard'), chargesBody = $('chargesBody'), chargesFoot = $('chargesFoot');
+  const flaggedNote = $('flaggedNote');
+  const noCodeFooter = $('noCodeFooter');
+  const emcCard = $('emcCard'), emcPanel = $('emcPanel');
+  const acuteCard = $('acuteCard'), acuteList = $('acuteList');
+  const lowSevCard = $('lowSevCard'), lowSevList = $('lowSevList');
+  const downloadBtn = $('downloadBtn');
+  const cmStatus = $('cmStatus'), cmStatusText = $('cmStatusText'), cmRetry = $('cmRetry');
+  const processTimer = $('processTimer'), ptLabel = $('ptLabel'), ptValue = $('ptValue');
+
+  // ── elapsed-time timer ────────────────────────────────────────────────
+  let timerStart = null, timerHandle = null;
+
+  function fmtElapsed(ms) {
+    const s = ms / 1000;
+    if (s < 60) return s.toFixed(1) + 's';
+    const m = Math.floor(s / 60);
+    const r = (s - m * 60).toFixed(1);
+    return m + 'm ' + r + 's';
+  }
+
+  function startTimer() {
+    timerStart = performance.now();
+    processTimer.style.display = 'block';
+    processTimer.className = 'process-timer running';
+    ptLabel.textContent = 'Processing';
+    ptValue.textContent = '0.0s';
+    if (timerHandle) clearInterval(timerHandle);
+    timerHandle = setInterval(() => {
+      ptValue.textContent = fmtElapsed(performance.now() - timerStart);
+    }, 100);
+  }
+
+  function stopTimer(kind) {
+    if (timerHandle) { clearInterval(timerHandle); timerHandle = null; }
+    if (timerStart == null) return;
+    const final = fmtElapsed(performance.now() - timerStart);
+    processTimer.className = 'process-timer ' + (kind === 'error' ? 'error' : 'done');
+    ptLabel.textContent = kind === 'error' ? 'Failed after' : 'Done in';
+    ptValue.textContent = final;
+    timerStart = null;
+  }
+
+  function resetTimer() {
+    if (timerHandle) { clearInterval(timerHandle); timerHandle = null; }
+    timerStart = null;
+    processTimer.style.display = 'none';
+    processTimer.className = 'process-timer';
+  }
+
+  // ── drop-zone helpers ──────────────────────────────────────────────────
+  function wireDrop(zone, input, onFile) {
+    zone.onclick = () => input.click();
+    input.onchange = (e) => { if (e.target.files[0]) onFile(e.target.files[0]); };
+    ['dragenter','dragover'].forEach(ev => zone.addEventListener(ev, (e) => { e.preventDefault(); zone.classList.add('drag-over'); }));
+    ['dragleave','drop'].forEach(ev => zone.addEventListener(ev, (e) => { e.preventDefault(); zone.classList.remove('drag-over'); }));
+    zone.addEventListener('drop', (e) => { if (e.dataTransfer.files[0]) onFile(e.dataTransfer.files[0]); });
+  }
+
+  function fmtBytes(n) { if (n < 1024) return n + ' B'; if (n < 1048576) return (n/1024).toFixed(1) + ' KB'; return (n/1048576).toFixed(1) + ' MB'; }
+
+  function setStatus(msg, cls) {
+    status.textContent = msg || '';
+    status.className = 'status' + (cls ? ' ' + cls : '');
+  }
+
+  function setStatusLoading(msg) {
+    status.innerHTML = '<span class="spinner"></span>' + msg;
+    status.className = 'status sending';
+  }
+
+  function updateProcessEnabled() {
+    processBtn.disabled = !(state.pdfFile && state.csvRows && state.hospital);
+  }
+
+  // ── PDF handling ───────────────────────────────────────────────────────
+  wireDrop(pdfDrop, pdfInput, handlePdf);
+
+  async function handlePdf(file) {
+    if (pdfDrop.classList.contains('disabled')) {
+      setStatus('Chargemaster is still loading — try again in a moment.', 'error');
+      return;
+    }
+    if (!file || file.type !== 'application/pdf') { setStatus('Please drop a PDF.', 'error'); return; }
+    state.pdfFile = file;
+    pdfStatus.style.display = 'block';
+    pdfStatus.textContent = 'Reading ' + file.name + ' (' + fmtBytes(file.size) + ')…';
+    pdfDrop.classList.add('ready');
+
+    try {
+      const buf = await file.arrayBuffer();
+      // base64 for API
+      state.pdfBase64 = arrayBufferToBase64(buf);
+      // text extraction — ALL pages (needed for EMC + acute injury scans)
+      const pdf = await pdfjsLib.getDocument({ data: buf.slice(0) }).promise;
+      const pages = [];
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        pages.push(content.items.map(it => it.str).join(' '));
+      }
+      state.pagesText = pages;
+
+      // run scans now so user sees flags immediately even before Claude call
+      state.emcPages = findEmcPages(pages);
+      state.acuteFindings = scanAcuteInjuries(pages);
+      state.lowSeverityFindings = scanLowSeverity(pages);
+
+      const totalChars = pages.reduce((sum, p) => sum + String(p).length, 0);
+      pdfStatus.textContent = '✓ ' + file.name + ' · ' + fmtBytes(file.size) + ' · ' + pdf.numPages + ' page(s) · ' + totalChars.toLocaleString() + ' text chars';
+      tryHospitalDetection();
+    } catch (e) {
+      pdfStatus.textContent = 'PDF error: ' + e.message;
+      pdfDrop.classList.remove('ready');
+      state.pdfFile = null;
+      state.pdfBase64 = null;
+    }
+    updateProcessEnabled();
+  }
+
+  function arrayBufferToBase64(buffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+    }
+    return btoa(binary);
+  }
+
+  function tryHospitalDetection() {
+    const headerText = state.pagesText.slice(0, 3).join('\n\n');
+    const detected = detectHospital(headerText);
+    hospitalBox.style.display = 'block';
+    if (detected) {
+      state.hospital = detected;
+      state.hospitalAuto = true;
+      hospitalDetected.style.display = 'flex';
+      hospitalPicker.style.display = 'none';
+      detectedName.textContent = detected;
+    } else {
+      state.hospital = null;
+      state.hospitalAuto = false;
+      hospitalDetected.style.display = 'none';
+      hospitalPicker.style.display = 'block';
+    }
+  }
+
+  hospitalSelect.onchange = () => {
+    state.hospital = hospitalSelect.value || null;
+    updateProcessEnabled();
+  };
+
+  // ── Chargemaster auto-fetch ────────────────────────────────────────────
+  // Try the new combined filename first; fall back to the legacy 5-hospital
+  // file so the widget keeps working during the data pipeline transition
+  // (before the processor script runs and the new CSV is uploaded).
+  const CHARGEMASTER_URLS = [
+    'https://drberns.github.io/Capital Injury Group/data/Chargemaster_Combined_v_04.20.26.csv',
+    'https://drberns.github.io/Capital Injury Group/data/Chargemaster_Combined_5Hospitals_v_04.20.26.csv'
+  ];
+
+  function setCmStatus(kind, text) {
+    cmStatus.className = 'cm-status ' + kind;
+    cmStatusText.textContent = text;
+    cmRetry.style.display = (kind === 'error') ? 'inline-block' : 'none';
+    if (kind === 'ready') {
+      pdfDrop.classList.remove('disabled');
+      pdfDrop.removeAttribute('title');
+    } else {
+      pdfDrop.classList.add('disabled');
+      pdfDrop.title = (kind === 'error') ? 'Chargemaster failed to load — retry above.' : 'Waiting for chargemaster…';
+    }
+  }
+
+  function parseCsvText(text) {
+    return new Promise((resolve, reject) => {
+      Papa.parse(text, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (res) => resolve(res.data || []),
+        error: (err) => reject(err)
+      });
+    });
+  }
+
+  async function fetchFirstAvailable(urls) {
+    let lastErr;
+    for (const url of urls) {
+      try {
+        const res = await fetch(url, { cache: 'force-cache' });
+        if (res.ok) return res;
+        lastErr = new Error('HTTP ' + res.status + ' at ' + url);
+      } catch (e) {
+        lastErr = e;
+      }
+    }
+    throw lastErr || new Error('no chargemaster url reachable');
+  }
+
+  async function loadChargemaster() {
+    setCmStatus('loading', 'Loading chargemaster…');
+    try {
+      const res = await fetchFirstAvailable(CHARGEMASTER_URLS);
+      const text = await res.text();
+      const rows = await parseCsvText(text);
+      state.csvRows = rows.map(row => ({
+        hospital: (row.hospital || '').trim(),
+        description: (row.description || '').trim(),
+        cpt_code: (row.cpt_code || '').trim(),
+        cdm_code: (row.cdm_code || '').trim(),
+        rc_code: (row.rc_code || '').trim(),
+        setting: (row.setting || '').toLowerCase().trim(),
+        billing_class: (row.billing_class || '').toLowerCase().trim(),
+        gross_charge: parseFloat(String(row.gross_charge || '').replace(/[$,]/g, '')) || null
+      }));
+      const hospitalCount = new Set(state.csvRows.map(r => r.hospital).filter(Boolean)).size;
+      setCmStatus('ready', 'Chargemaster loaded (' + hospitalCount + ' hospitals · ' + state.csvRows.length.toLocaleString() + ' rows)');
+      updateProcessEnabled();
+    } catch (e) {
+      state.csvRows = null;
+      setCmStatus('error', 'Chargemaster unavailable');
+      updateProcessEnabled();
+    }
+  }
+
+  cmRetry.onclick = () => loadChargemaster();
+  loadChargemaster();
+
+  // ── AI call ────────────────────────────────────────────────────────────
+  const SYSTEM_PROMPT = `You are a medical billing specialist analyzing emergency department records for a personal injury law firm. Extract all billable services from this ER visit and return ONLY a JSON object — no preamble, no markdown, no explanation.
+
+Return this exact structure:
+{
+  "patient_name": "string",
+  "date_of_service": "MM/DD/YYYY",
+  "hospital_name": "string as it appears in the document",
+  "chief_complaint": "string",
+  "treatment_summary": "2-4 sentence plain-English summary of what was done",
+  "discharge_diagnosis": ["array of diagnosis strings"],
+  "billable_services": [
+    {
+      "service_name": "plain English name",
+      "cpt_code": "5-digit CPT or HCPCS code",
+      "category": "ER Visit | CT Scan | X-Ray | Lab | Medication | Procedure | Ancillary",
+      "quantity": 1,
+      "notes": "brief clinical context"
+    }
+  ],
+  "low_severity_findings": [
+    { "phrase": "matched phrase, lowercased", "pages": [1, 5, 7] }
+  ]
+}
+
+Rules for billable_services:
+- Include the ER facility visit level (99281-99285) based on complexity. For MVC cases with multiple imaging studies and labs, this is typically 99285 (Level 5) or 99284 (Level 4).
+- Include every imaging study ordered (CT, MRI, X-ray, ultrasound) as a separate line item with the correct CPT code.
+- Imaging study names may appear with alternative wording. Treat these as equivalent and do not miss studies described only with the alternate term:
+  • "CAT scan" = "CT scan" = "CT" = "Computed Tomography" (e.g. "CAT scan of the head" is a CT Head, CPT 70450)
+  • "MRI" = "Magnetic Resonance Imaging" = "MR"
+  • "X-ray" = "XR" = "plain film" = "radiograph" = "plain radiograph"
+  • "Ultrasound" = "US" = "sonogram" = "sonography"
+- Include every lab panel ordered (CBC, CMP, troponin, HCG, POC creatinine, etc.) as separate line items.
+- Include any medications administered in the ED.
+- Include any procedures performed (IV access, foley, splinting, etc.).
+- Do NOT include physician professional fees — facility charges only.
+- Use standard CPT codes. Common ER codes: CT Head WO=70450, CT Cervical Spine WO=72125, CT Thoracic Spine WO=72128, CT Lumbar Spine WO=72131, CT Chest WO=71250, CT Abd/Pelvis WO=74176, XR Shoulder 2+ views=73030, XR Knee 3 views=73562, XR Ankle 3+ views=73610, CBC=85025, CMP=80053, HCG Serum=84703, POC Creatinine=82565.
+
+IV ADMINISTRATION CODING RULES — always apply these when IV medications or fluids are documented:
+
+1. IV PUSH CODES:
+   - Whenever one or more IV medications are administered as IV push (morphine, ondansetron, ketorolac, dexamethasone, diphenhydramine, or any drug described as "IV push", "IVP", or "injected IV"), add:
+     - CPT 96374 — "IV Push Injection, Initial Drug" — quantity 1 (for the first IV push drug)
+     - CPT 96375 — "IV Push Injection, Sequential New Drug" — quantity 1 per each ADDITIONAL IV push drug after the first
+   - Example: morphine IV + ondansetron IV = one 96374 + one 96375
+
+2. IV INFUSION HYDRATION CODES:
+   - CPT 96360 covers the first hour of IV hydration (saline, LR, etc.)
+   - CPT 96361 covers each ADDITIONAL hour beyond the first — quantity = number of additional hours
+   - If the record documents IV fluids running for more than one hour, or documents "IV hydration" with multiple bags or extended infusion, add 96361 with the appropriate quantity
+   - If the total infusion time is not explicitly stated but the patient was in the ED for 3+ hours and received IV fluids, assume at least one additional hour — add 96361 × 1
+
+3. IV CONTRAST AGENT:
+   - When a CT scan with IV contrast is performed, add a separate line item for the contrast agent:
+     - CPT Q9967 — "Iopamidol (Isovue) IV Contrast" — quantity 1
+     - This applies to any CT ordered "with contrast" or "W contrast"
+     - Do NOT add this for CT scans ordered "without contrast" or "WO contrast"
+
+4. NORMAL SALINE / IV FLUID BAG:
+   - When IV normal saline or lactated Ringer's is administered as a bolus or maintenance fluid (separate from the infusion administration code), add:
+     - Description: "IV Normal Saline 0.9% or IV Fluid Administration"
+     - CPT 96360 for the first bag/hour
+     - This is in addition to 96361 for additional hours — both may appear
+
+5. GENERAL RULE:
+   - Never omit IV administration codes just because the clinical note doesn't explicitly list a billing code
+   - Any documented IV medication = at least one 96374
+   - Any second or additional IV medication pushed sequentially = one 96375 per drug
+   - Any IV fluid infusion beyond 60 minutes = one 96361 per additional hour
+
+CONTRAST AGENTS:
+- Q9967 — Iopamidol (Isovue-300, Isovue-370) — used for CT with IV contrast
+- A9579 — Gadolinium contrast — used for MRI with contrast
+- Always add the appropriate contrast code as a separate line item when contrast-enhanced imaging is documented.
+
+LOW-SEVERITY / NO-INJURY PHRASE SCAN:
+
+Scan the ENTIRE record text (including scanned pages, handwritten notes visible in image form, and table cells) for any of the following attorney red-flag phrases. Match case-insensitively and tolerate line wraps / column fragmentation — if the phrase is visually present on a page but split across line breaks or columns, still treat it as a hit.
+
+Phrases to scan for (non-exhaustive — include any close variant you see):
+- Injury-negating: "no apparent injury", "no apparent injuries", "no acute injury", "no traumatic injury", "no acute traumatic", "no apparent traumatic", "no objective injury", "no objective evidence", "no evidence of injury", "no signs of injury", "no acute findings", "no acute traumatic findings", "no acute abnormality", "no acute abnormalities"
+- Diagnosis wording: "exam following mvc", "z04.1"
+- Patient-reported absence: "denies physical complaints", "denies any complaints", "pt denies", "patient denies", "no complaints", "no complaint of pain"
+- Exam findings absence: "no bruises", "no bruising", "no lacerations", "no abrasions", "no tenderness", "nontender", "non-tender", "no deformity", "no deformities", "skin integrity intact"
+- Distress / disposition: "not in acute distress", "no acute distress", "within defined limits", "within normal limits", "normal exam", "unremarkable", "hemodynamically stable", "stable for discharge", "discharged home in stable condition"
+- No-workup language: "no intervention required", "no imaging necessary", "no imaging warranted", "further x-rays or scans are not warranted", "no orders of the defined types were placed", "no medications administered"
+- Minimization: "minor injury", "minor injuries", "minimal injury", "minimal injuries"
+
+Return results in the "low_severity_findings" field as an array of objects, one per distinct phrase, with all page numbers where that phrase appears collected into a sorted list. Example:
+[
+  { "phrase": "no apparent injury", "pages": [4, 13, 17, 38] },
+  { "phrase": "pt denies physical complaints", "pages": [13] },
+  { "phrase": "z04.1", "pages": [7] }
+]
+
+Page numbers are 1-indexed starting from the first page of the PDF. If no phrases match, return an empty array. Do not fabricate matches — only include phrases that are actually present in the document.
+
+DME AND ORTHOPEDIC SUPPLY CODING RULES:
+
+When a splint, brace, orthosis, boot, or other durable medical equipment item is applied or dispensed:
+
+1. Bill the APPLICATION procedure separately from the SUPPLY item:
+   - Splint application (forearm/wrist): CPT 29125 or 29126
+   - Splint application (long arm): CPT 29105
+   - Splint application (short leg): CPT 29515
+   - Splint application (long leg): CPT 29505
+   - Shoulder immobilizer application: CPT 29240
+   - Knee immobilizer application: CPT 27570
+   - Walking boot application: CPT 29425
+
+2. Bill the SUPPLY item as a separate line with category "DME Supply":
+   - Volar/wrist splint supply: A4570
+   - Shoulder immobilizer/sling: L3960
+   - Ankle splint supply: L4350
+   - Walking boot supply: L4360
+   - Knee immobilizer supply: L1830
+   - Finger splint supply: Q4049
+
+3. IMPORTANT: For supply items, the chargemaster lookup will use description matching rather than code matching. This is expected and correct — hospital supply pricing varies significantly by internal CDM codes.
+
+4. Cervical collar (C-collar):
+   - Application: CPT 97750 or included in ER level
+   - Supply: A4570 with description "cervical collar"
+   - Note: many hospitals include C-collar in the ER facility fee
+
+5. Never omit the supply item just because it seems minor — orthopedic supplies are consistently billed separately and can range from $50 to $500+ depending on the hospital.`;
+
+  // 529 = overloaded, 429 = rate-limited, 5xx = transient server error.
+  const RETRYABLE_STATUS = new Set([408, 429, 500, 502, 503, 504, 529]);
+
+  async function callClaudeWithPdf() {
+    const body = JSON.stringify({
+      model: MODEL,
+      max_tokens: 4000,
+      temperature: 0.1,
+      system: SYSTEM_PROMPT,
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: state.pdfBase64 } },
+          { type: 'text', text: 'Analyze these ER records and return ONLY the JSON object described in the system prompt.' }
+        ]
+      }]
+    });
+
+    const MAX_ATTEMPTS = 4;
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      const res = await fetch(WORKER_URL + '/anthropic', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-api-secret': WORKER_SECRET },
+        body: body
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const text = (data?.content || []).filter(p => p.type === 'text').map(p => p.text).join('').trim();
+        return extractJson(text);
+      }
+      let detail = '';
+      try { const b = await res.json(); detail = b?.error?.message || JSON.stringify(b); }
+      catch { detail = await res.text().catch(() => ''); }
+
+      if (!RETRYABLE_STATUS.has(res.status) || attempt === MAX_ATTEMPTS) {
+        throw new Error('API ' + res.status + ' — ' + detail);
+      }
+      const ra = parseFloat(res.headers.get('retry-after'));
+      const backoff = Number.isFinite(ra) && ra > 0
+        ? Math.min(20000, ra * 1000)
+        : Math.min(16000, 1500 * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 500));
+      const label = res.status === 529 ? 'Overloaded' : ('API ' + res.status);
+      setStatusLoading(label + ' — retrying in ' + Math.round(backoff / 1000) + 's (attempt ' + (attempt + 1) + '/' + MAX_ATTEMPTS + ')…');
+      await new Promise(r => setTimeout(r, backoff));
+    }
+    throw new Error('API unreachable after ' + MAX_ATTEMPTS + ' attempts');
+  }
+
+  function extractJson(text) {
+    if (!text) return null;
+    let s = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '');
+    const first = s.indexOf('{'), last = s.lastIndexOf('}');
+    if (first < 0 || last < 0) return null;
+    try { return JSON.parse(s.slice(first, last + 1)); } catch { return null; }
+  }
+
+  // ── medication code resolver ───────────────────────────────────────────
+  // Returns { code, skip, reason }. `skip: true` means do NOT hit the
+  // chargemaster and charge $0 with an explanatory asterisk instead.
+  function resolveMedicationCode(svc) {
+    const origCode = String(svc.cpt_code || '').trim().toUpperCase();
+    const category = String(svc.category || '').toLowerCase();
+    const isMed = category.includes('medication');
+    const isCatchAll = origCode === 'J3490' || origCode === 'J3590';
+
+    // Non-medication with a real code → leave alone.
+    if (!isCatchAll && !isMed) return { code: svc.cpt_code || '', skip: false, reason: null };
+
+    // Search the map by service name + notes.
+    const searchText = (String(svc.service_name || '') + ' ' + String(svc.notes || '')).toLowerCase();
+    let mapped;
+    for (const [key, val] of Object.entries(MEDICATION_CODE_MAP)) {
+      if (key === 'J3490' || key === 'J3590') continue; // these are blacklist markers, not drug names
+      if (searchText.includes(key.toLowerCase())) { mapped = val; break; }
+    }
+
+    // Specific replacement code found.
+    if (typeof mapped === 'string' && mapped !== 'J3490_skip') {
+      return { code: mapped, skip: false, reason: null };
+    }
+    // Explicitly no standardized code for this drug.
+    if (mapped === null || mapped === 'J3490_skip') {
+      return { code: origCode, skip: true, reason: 'no_standardized_code' };
+    }
+    // Drug not in the map but landed on a catch-all → refuse to look up.
+    if (isCatchAll) {
+      return { code: origCode, skip: true, reason: 'catchall_unmatched' };
+    }
+    // Medication with a non-catch-all code that isn't in the map → pass through.
+    return { code: svc.cpt_code || '', skip: false, reason: null };
+  }
+
+  // ── chargemaster lookup ────────────────────────────────────────────────
+  function lookupCharge(service, hospitalName) {
+    if (!state.csvRows) return null;
+    const rows = state.csvRows.filter(r => r.hospital === hospitalName);
+    if (!rows.length) return null;
+
+    const cpt = (service.cpt_code || '').trim().toUpperCase();
+    const isTgh = hospitalName === "Tampa General Hospital";
+
+    // ── DME / supply short-circuit ──────────────────────────────────────
+    // Hospitals don't stock generic HCPCS supply codes in their chargemaster
+    // as CPT rows, so matching A4570 / L3960 / etc. directly either misses
+    // or pulls the wrong (catch-all NOC) row. Go straight to description
+    // matching, TGH-specific aliases first when TGH is detected.
+    if (cpt && DME_SUPPLY_CODES.has(cpt)) {
+      const primaryKeywords = DME_KEYWORD_MAP[cpt] || [];
+      const rowHasCharge = r => r && r.description && r.gross_charge != null && r.gross_charge > 0;
+      const descMatch = (needle) => {
+        const n = String(needle).toLowerCase();
+        return rows.find(r => rowHasCharge(r) && String(r.description).toLowerCase().includes(n));
+      };
+
+      // 1) TGH-specific aliases ("Hb Splint Volar", etc.)
+      if (isTgh) {
+        for (const primary of primaryKeywords) {
+          const aliases = TGH_ALIASES[primary.toLowerCase()];
+          if (!aliases) continue;
+          for (const alias of aliases) {
+            const hit = descMatch(alias);
+            if (hit) return { gross_charge: hit.gross_charge, description_matched: hit.description, cpt_matched: hit.cpt_code };
+          }
+        }
+      }
+      // 2) Generic primary keywords from DME_KEYWORD_MAP
+      for (const kw of primaryKeywords) {
+        const hit = descMatch(kw);
+        if (hit) return { gross_charge: hit.gross_charge, description_matched: hit.description, cpt_matched: hit.cpt_code };
+      }
+      // 3) Final fallback: individual long-ish tokens from the service name
+      const nameWords = String(service.service_name || '').toLowerCase().split(/\s+/).filter(w => w.length > 3);
+      for (const word of nameWords) {
+        const hit = descMatch(word);
+        if (hit) return { gross_charge: hit.gross_charge, description_matched: hit.description, cpt_matched: hit.cpt_code };
+      }
+      return null;
+    }
+
+    // 1) exact CPT match
+    let matches = [];
+    if (cpt) matches = rows.filter(r => r.cpt_code && r.cpt_code.toUpperCase() === cpt);
+
+    // 2) keyword search on description
+    if (!matches.length && service.service_name) {
+      const kw = normalizeForMatch(service.service_name);
+      if (kw) {
+        matches = rows.filter(r => {
+          const d = normalizeForMatch(r.description);
+          if (!d) return false;
+          // all meaningful tokens present
+          const toks = kw.split(' ').filter(t => t.length > 2);
+          return toks.length > 0 && toks.every(t => d.includes(t));
+        });
+        // fallback: any token match scored
+        if (!matches.length) {
+          const toks = kw.split(' ').filter(t => t.length > 2);
+          const scored = rows.map(r => {
+            const d = normalizeForMatch(r.description);
+            const hits = toks.filter(t => d.includes(t)).length;
+            return { r, hits };
+          }).filter(x => x.hits > 0).sort((a, b) => b.hits - a.hits);
+          if (scored.length) matches = scored.filter(x => x.hits === scored[0].hits).map(x => x.r);
+        }
+      }
+    }
+
+    if (!matches.length) return null;
+
+    // prefer outpatient/both + facility
+    const preferred = matches.filter(r =>
+      (r.setting === 'outpatient' || r.setting === 'both') &&
+      r.billing_class === 'facility'
+    );
+    const pick = (preferred.length ? preferred : matches).find(r => r.gross_charge != null) || matches[0];
+    return {
+      gross_charge: pick.gross_charge,
+      description_matched: pick.description,
+      cpt_matched: pick.cpt_code
+    };
+  }
+
+  // ── process flow ───────────────────────────────────────────────────────
+  processBtn.onclick = async () => {
+    if (processBtn.disabled) return;
+    processBtn.disabled = true;
+    clearResults();
+    startTimer();
+    try {
+      setStatusLoading('Reading records…');
+      await new Promise(r => setTimeout(r, 150));
+
+      setStatusLoading('Identifying billable services…');
+      const parsed = await callClaudeWithPdf();
+      if (!parsed || !Array.isArray(parsed.billable_services)) {
+        throw new Error('Could not parse AI response — no billable_services found.');
+      }
+
+      // Merge Claude's low-severity scan on top of the local one. Claude
+      // reads the PDF visually so it catches phrases that pdf.js misses
+      // because of column / line-wrap fragmentation.
+      mergeClaudeLowSeverity(parsed.low_severity_findings);
+
+      setStatusLoading('Looking up charges…');
+      const items = parsed.billable_services.map(svc => {
+        const qty = Math.max(1, Number(svc.quantity) || 1);
+        const resolved = resolveMedicationCode(svc);
+
+        // Belt-and-suspenders: never allow J3490/J3590 to resolve to a charge.
+        if (!resolved.skip && (resolved.code === 'J3490' || resolved.code === 'J3590')) {
+          resolved.skip = true;
+          resolved.reason = resolved.reason || 'catchall_safety';
+        }
+
+        let lu = null;
+        if (!resolved.skip) {
+          lu = lookupCharge({ ...svc, cpt_code: resolved.code }, state.hospital);
+        }
+        const unit = lu ? lu.gross_charge : null;
+        const total = unit != null ? unit * qty : null;
+        return {
+          service_name: svc.service_name || '',
+          cpt_code: resolved.code || svc.cpt_code || '',
+          original_cpt_code: svc.cpt_code || '',
+          category: svc.category || '',
+          quantity: qty,
+          notes: svc.notes || '',
+          matched_description: lu ? lu.description_matched : null,
+          unit_charge: resolved.skip ? 0 : unit,
+          total_charge: resolved.skip ? 0 : total,
+          not_found: !resolved.skip && unit == null,
+          no_code: resolved.skip
+        };
+      });
+
+      state.result = { ...parsed, line_items: items };
+      renderResults();
+      setStatus('Done · ' + items.length + ' line item(s) · ' + items.filter(x => !x.not_found && !x.no_code).length + ' matched.', 'ok');
+      downloadBtn.disabled = false;
+      stopTimer('done');
+    } catch (e) {
+      setStatus('Error: ' + e.message, 'error');
+      stopTimer('error');
+    } finally {
+      updateProcessEnabled();
+    }
+  };
+
+  // ── rendering ──────────────────────────────────────────────────────────
+  function clearResults() {
+    state.result = null;
+    downloadBtn.disabled = true;
+    visitInfo.innerHTML = '';
+    visitInfo.className = 'empty-state';
+    visitInfo.textContent = 'Processing…';
+    summaryCard.style.display = 'none';
+    dxCard.style.display = 'none';
+    chargesCard.style.display = 'none';
+    flaggedNote.style.display = 'none';
+    noCodeFooter.style.display = 'none';
+    emcCard.style.display = 'none';
+    acuteCard.style.display = 'none';
+    lowSevCard.style.display = 'none';
+  }
+
+  function money(n) {
+    if (n == null || isNaN(n)) return '—';
+    return '$' + Number(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function renderResults() {
+    const r = state.result;
+    if (!r) return;
+
+    // visit info
+    visitInfo.className = '';
+    visitInfo.innerHTML = '';
+    const grid = document.createElement('div');
+    grid.className = 'patient-info';
+    const rows = [
+      ['Patient', r.patient_name || '—'],
+      ['Date of service', r.date_of_service || '—'],
+      ['Hospital', state.hospital || r.hospital_name || '—'],
+      ['Chief complaint', r.chief_complaint || '—']
+    ];
+    for (const [k, v] of rows) {
+      const c = document.createElement('div'); c.className = 'pi-row';
+      const l = document.createElement('div'); l.className = 'pi-label'; l.textContent = k;
+      const vd = document.createElement('div'); vd.className = 'pi-value'; vd.textContent = v;
+      c.appendChild(l); c.appendChild(vd); grid.appendChild(c);
+    }
+    visitInfo.appendChild(grid);
+
+    // treatment summary
+    if (r.treatment_summary) {
+      summaryCard.style.display = 'flex';
+      treatmentSummary.textContent = r.treatment_summary;
+    }
+
+    // diagnoses
+    const dx = Array.isArray(r.discharge_diagnosis) ? r.discharge_diagnosis : [];
+    if (dx.length) {
+      dxCard.style.display = 'flex';
+      dxList.innerHTML = '';
+      for (const d of dx) {
+        const li = document.createElement('li');
+        li.textContent = d;
+        dxList.appendChild(li);
+      }
+    }
+
+    // charges
+    const items = r.line_items || [];
+    if (items.length) {
+      chargesCard.style.display = 'flex';
+      chargesBody.innerHTML = '';
+      let total = 0;
+      let notFoundCount = 0;
+      let noCodeCount = 0;
+      for (const it of items) {
+        const tr = document.createElement('tr');
+        if (it.no_code) tr.className = 'no-code';
+
+        const svc = document.createElement('td');
+        svc.className = 'service';
+        const asterisk = it.no_code ? '<span class="no-code-asterisk">*</span>' : '';
+        svc.innerHTML = '<div style="font-weight:500;">' + escapeHtml(it.service_name) + asterisk + (it.quantity > 1 ? ' <span style="color:#4a5568;">× ' + it.quantity + '</span>' : '') + '</div>' +
+          (it.category ? '<div style="font-size:10.5px;color:#4a5568;margin-top:2px;">' + escapeHtml(it.category) + '</div>' : '');
+        tr.appendChild(svc);
+
+        const code = document.createElement('td');
+        code.className = 'code';
+        code.textContent = it.cpt_code || '—';
+        tr.appendChild(code);
+
+        const ch = document.createElement('td');
+        if (it.no_code) {
+          ch.className = 'charge';
+          ch.textContent = '$0.00';
+          noCodeCount++;
+        } else if (it.not_found) {
+          ch.className = 'missing';
+          ch.textContent = '— Not in chargemaster';
+          notFoundCount++;
+        } else {
+          ch.className = 'charge';
+          ch.textContent = money(it.total_charge);
+          total += it.total_charge;
+        }
+        tr.appendChild(ch);
+        chargesBody.appendChild(tr);
+      }
+      chargesFoot.innerHTML = '';
+      const tr = document.createElement('tr');
+      tr.className = 'total';
+      tr.innerHTML = '<td colspan="2">Estimated total (gross)</td><td class="charge">' + money(total) + '</td>';
+      chargesFoot.appendChild(tr);
+
+      if (notFoundCount > 0) {
+        flaggedNote.style.display = 'block';
+        flaggedNote.textContent = '⚠ ' + notFoundCount + ' line item(s) not found in chargemaster — not included in total.';
+      }
+
+      if (noCodeCount > 0) {
+        noCodeFooter.style.display = 'block';
+        noCodeFooter.textContent = '* ' + NO_CODE_FOOTER;
+      }
+    }
+
+    // EMC
+    emcCard.style.display = 'flex';
+    const hasEmc = state.emcPages.length > 0;
+    emcPanel.className = 'emc-panel ' + (hasEmc ? 'yes' : 'no');
+    emcPanel.innerHTML = '';
+    const tag = document.createElement('span');
+    tag.className = 'emc-tag';
+    tag.textContent = hasEmc ? 'Yes' : 'Not present';
+    emcPanel.appendChild(tag);
+    const lbl = document.createElement('span');
+    lbl.className = 'emc-label';
+    lbl.textContent = '"emergency medical condition" / "EMC"';
+    emcPanel.appendChild(lbl);
+    if (hasEmc) {
+      const p = document.createElement('span');
+      p.className = 'emc-pages';
+      p.textContent = '· page ' + state.emcPages.join(', ');
+      emcPanel.appendChild(p);
+    }
+
+    // Acute findings
+    acuteCard.style.display = 'flex';
+    acuteList.innerHTML = '';
+    if (!state.acuteFindings.length) {
+      const none = document.createElement('div');
+      none.className = 'acute-empty';
+      none.textContent = 'No acute-injury keywords detected in the document text.';
+      acuteList.appendChild(none);
+    } else {
+      const wrap = document.createElement('div');
+      wrap.className = 'acute-list';
+      for (const f of state.acuteFindings) {
+        const row = document.createElement('div');
+        row.className = 'acute-item';
+        const t = document.createElement('div');
+        t.className = 'acute-term';
+        t.textContent = f.term;
+        const p = document.createElement('div');
+        p.className = 'acute-pages';
+        p.textContent = 'page ' + f.pages.join(', ');
+        row.appendChild(t);
+        row.appendChild(p);
+        wrap.appendChild(row);
+      }
+      acuteList.appendChild(wrap);
+    }
+
+    // Low-severity / no-injury findings (same red styling as acute)
+    lowSevCard.style.display = 'flex';
+    lowSevList.innerHTML = '';
+    if (!state.lowSeverityFindings.length) {
+      const none = document.createElement('div');
+      none.className = 'acute-empty';
+      none.textContent = 'No low-severity / no-injury wording detected in the document text.';
+      lowSevList.appendChild(none);
+    } else {
+      const wrap = document.createElement('div');
+      wrap.className = 'acute-list';
+      for (const f of state.lowSeverityFindings) {
+        const row = document.createElement('div');
+        row.className = 'acute-item';
+        const t = document.createElement('div');
+        t.className = 'acute-term';
+        t.textContent = f.term;
+        const p = document.createElement('div');
+        p.className = 'acute-pages';
+        p.textContent = 'page ' + f.pages.join(', ');
+        row.appendChild(t);
+        row.appendChild(p);
+        wrap.appendChild(row);
+      }
+      lowSevList.appendChild(wrap);
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  }
+
+  // ── clear ──────────────────────────────────────────────────────────────
+  clearBtn.onclick = () => {
+    state.pdfFile = null; state.pdfBase64 = null; state.pagesText = [];
+    state.hospital = null; state.hospitalAuto = false;
+    state.result = null;
+    state.emcPages = []; state.acuteFindings = []; state.lowSeverityFindings = [];
+    pdfInput.value = '';
+    pdfDrop.classList.remove('ready');
+    pdfStatus.style.display = 'none';
+    resetTimer();
+    emailStatus.className = 'email-status'; emailStatus.textContent = '';
+    hospitalBox.style.display = 'none';
+    hospitalDetected.style.display = 'none'; hospitalPicker.style.display = 'none';
+    hospitalSelect.value = '';
+    setStatus('');
+    visitInfo.className = 'empty-state';
+    visitInfo.textContent = 'Upload a PDF and CSV to begin.';
+    summaryCard.style.display = 'none';
+    dxCard.style.display = 'none';
+    chargesCard.style.display = 'none';
+    flaggedNote.style.display = 'none';
+    downloadBtn.disabled = true;
+    updateProcessEnabled();
+  };
+
+  // ── attorney email delivery ────────────────────────────────────────────
+  const EMAIL_WORKER_URL = 'https://spinemed-imap-worker.drberns.workers.dev';
+  const EMAIL_SECRET = 'Capital Injury Group2026';
+
+  function updateEmailCheckbox() {
+    const canSend = !!attorneyInput.value.trim() && !!attorneyEmail.value.trim();
+    emailToAttorney.disabled = !canSend;
+    if (!canSend) emailToAttorney.checked = false;
+  }
+  attorneyInput.addEventListener('input', updateEmailCheckbox);
+  attorneyEmail.addEventListener('input', updateEmailCheckbox);
+
+  function setEmailStatus(kind, text) {
+    emailStatus.className = 'email-status ' + kind;
+    emailStatus.textContent = text;
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  }
+
+  function buildAttorneyEmailHtml(attorney, patientName) {
+    return `<p>Dear ${escapeHtml(attorney)},</p>
+
+<p>Please find attached the emergency room records for your client, <strong>${escapeHtml(patientName)}</strong>, as well as an estimate of the charges likely to be billed for that visit.</p>
+
+<p>This service is a courtesy we extend to all of the attorneys we work with. We hope you find it useful as you evaluate your client's case. Please do not hesitate to contact us if you have any questions or if we can be of further assistance.</p>
+
+<p>Warm regards,</p>
+
+<p style="line-height:1.55;">
+<strong style="font-size:14px;">Capital Injury Group</strong><br>
+<span style="color:#4a5568;font-size:12.5px;">Capital Injury Group &nbsp;·&nbsp; PainMed</span>
+</p>
+
+<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-top:6px;font-size:12.5px;line-height:1.5;">
+  <tr>
+    <td style="padding:0 18px 10px 0;vertical-align:top;">
+      <div style="font-weight:700;color:#1a2535;">Panama City</div>
+      <div>2629 W 23rd Street, Unit H<br>Panama City, FL 32405</div>
+      <div style="color:#4a5568;">Phone: (813) 906-0000 &nbsp;·&nbsp; Fax: (813) 906-0010</div>
+    </td>
+    <td style="padding:0 0 10px 0;vertical-align:top;">
+      <div style="font-weight:700;color:#1a2535;">Tallahassee</div>
+      <div>3375 Capital Cir NE, Bldg C100<br>Tallahassee, FL 32308</div>
+      <div style="color:#4a5568;">Phone: (813) 668-0000 &nbsp;·&nbsp; Fax: (813) 668-0978</div>
+    </td>
+  </tr>
+</table>
+
+<p style="margin-top:4px;"><a href="mailto:info@capitalinjurygroup.com">info@capitalinjurygroup.com</a></p>
+
+<hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
+
+<p style="font-size:11px;color:#6b7280;">
+<strong>CONFIDENTIALITY NOTICE:</strong> This email and any attachments are intended solely for the use of the individual or entity to whom they are addressed and may contain information that is privileged, confidential, or exempt from disclosure under applicable law, including the Health Insurance Portability and Accountability Act (HIPAA). If you are not the intended recipient, you are hereby notified that any use, dissemination, distribution, or copying of this communication is strictly prohibited. If you have received this communication in error, please notify the sender immediately by reply email and destroy all copies of the original message and any attachments.
+</p>`;
+  }
+
+  async function blobToBase64(blob) {
+    const buf = await blob.arrayBuffer();
+    const u8 = new Uint8Array(buf);
+    let binary = '';
+    const chunk = 0x8000;
+    for (let i = 0; i < u8.length; i += chunk) {
+      binary += String.fromCharCode.apply(null, u8.subarray(i, i + chunk));
+    }
+    return btoa(binary);
+  }
+
+  async function sendToAttorney(estimateBlob, estimateFilename) {
+    const attorney = attorneyInput.value.trim() || 'Counsel';
+    const email = attorneyEmail.value.trim();
+    if (!email) return;
+    const patientName = (state.result?.patient_name || 'Patient').trim();
+    const dateOfService = (state.result?.date_of_service || '').trim();
+    const safePatient = patientName.replace(/[^\w]+/g, '_');
+    const safeDate = dateOfService.replace(/[^\w]+/g, '-');
+    const erFilename = 'ER_Records_' + safePatient + (safeDate ? '_' + safeDate : '') + '.pdf';
+
+    setEmailStatus('sending', 'Sending to ' + email + '…');
+    try {
+      // state.pdfBase64 is already the base64 of the uploaded ER records PDF
+      const estimateB64 = await blobToBase64(estimateBlob);
+      const html = buildAttorneyEmailHtml(attorney, patientName);
+      const subject = 'Emergency Room Records for Your Client — ' + patientName;
+
+      const res = await fetch(EMAIL_WORKER_URL + '/sendemail', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-api-secret': EMAIL_SECRET },
+        body: JSON.stringify({
+          to: email,
+          subject,
+          html,
+          patientName,
+          formType: 'ER Records & Bill Estimate',
+          attachments: [
+            { filename: erFilename,      content: state.pdfBase64, content_type: 'application/pdf' },
+            { filename: estimateFilename, content: estimateB64,    content_type: 'application/pdf' }
+          ]
+        })
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      let data = {};
+      try { data = await res.json(); } catch {}
+      if (data && data.success === false) throw new Error(data.error || 'send failed');
+      setEmailStatus('ok', '✓ Sent to ' + email);
+    } catch (e) {
+      setEmailStatus('error', '✗ Email failed — PDFs downloaded successfully');
+    }
+  }
+
+  // ── PDF download ───────────────────────────────────────────────────────
+  downloadBtn.onclick = async () => {
+    if (!state.result) return;
+    try {
+      const { pdfBlob, pdfFilename } = buildOneSheetPdf();
+      // Trigger browser download
+      const url = URL.createObjectURL(pdfBlob);
+      const a = document.createElement('a');
+      a.href = url; a.download = pdfFilename; a.style.display = 'none';
+      document.body.appendChild(a); a.click();
+      setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+
+      if (emailToAttorney.checked && !emailToAttorney.disabled) {
+        sendToAttorney(pdfBlob, pdfFilename);
+      }
+    } catch (e) {
+      setStatus('PDF error: ' + e.message, 'error');
+    }
+  };
+
+  function buildOneSheetPdf() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+    const PAGE_W = doc.internal.pageSize.getWidth();
+    const PAGE_H = doc.internal.pageSize.getHeight();
+    const MARGIN = 48;
+    let y = MARGIN;
+
+    const r = state.result;
+    const atty = (attorneyInput.value || '[Attorney Name / Firm]').trim() || '[Attorney Name / Firm]';
+    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    // ── Pre-compute totals so the header box can show them ──────────────
+    const items = r.line_items || [];
+    const RED = [178, 34, 34];
+    const GREEN = [22, 101, 52];
+    let preTotal = 0, preMissing = 0, preNoCode = 0;
+    for (const it of items) {
+      if (it.no_code) preNoCode++;
+      else if (it.not_found) preMissing++;
+      else preTotal += (it.total_charge || 0);
+    }
+
+    // ── Co-branded header ────────────────────────────────────────────────
+    const LOGO_H = 42, LOGO_GAP = 18;
+    let leftX = MARGIN;
+    const topY = y;
+    if (state.logos.spine) {
+      const props = doc.getImageProperties(state.logos.spine);
+      const w = LOGO_H * (props.width / props.height);
+      doc.addImage(state.logos.spine, 'PNG', leftX, topY, w, LOGO_H);
+      leftX += w + LOGO_GAP;
+    } else {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(26, 79, 160);
+      doc.text('Capital Injury Group', leftX, topY + 18);
+      leftX += 80 + LOGO_GAP;
+    }
+    doc.setDrawColor(210); doc.setLineWidth(0.8);
+    doc.line(leftX - LOGO_GAP / 2, topY + 2, leftX - LOGO_GAP / 2, topY + LOGO_H - 2);
+    if (state.logos.pain) {
+      const props = doc.getImageProperties(state.logos.pain);
+      const w = LOGO_H * (props.width / props.height);
+      doc.addImage(state.logos.pain, 'PNG', leftX, topY, w, LOGO_H);
+    } else {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(26, 79, 160);
+      doc.text('PainMed', leftX, topY + 18);
+    }
+
+    // Right: prepared-for + date (12pt header meta)
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(90);
+    const pfText = 'PREPARED FOR: ' + atty.toUpperCase();
+    doc.text(pfText, PAGE_W - MARGIN - doc.getTextWidth(pfText), topY + 16);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(12); doc.setTextColor(120);
+    const dateTxt = 'Prepared ' + today;
+    doc.text(dateTxt, PAGE_W - MARGIN - doc.getTextWidth(dateTxt), topY + 34);
+
+    y = topY + LOGO_H + 10;
+
+    // Divisions subtitle (12pt italic)
+    doc.setFont('helvetica', 'italic'); doc.setFontSize(12); doc.setTextColor(120);
+    const divs = 'Capital Injury Group, LLC · Chiropractic & Physical Medicine · Interventional Pain Management';
+    const divLines = doc.splitTextToSize(divs, PAGE_W - 2 * MARGIN);
+    doc.text(divLines, MARGIN, y);
+    y += divLines.length * 15 + 4;
+    doc.setDrawColor(200); doc.setLineWidth(0.6); doc.line(MARGIN, y, PAGE_W - MARGIN, y);
+    y += 22;
+
+    // Title (18pt)
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(20);
+    doc.text('Hospital Bill Estimate — Emergency Department Visit', MARGIN, y);
+    y += 26;
+
+    // ── Patient & visit info (left) + Total Estimated Charges box (right) ─
+    sectionHeader(doc, 'Patient & Visit Info', MARGIN, y); y += 20;
+
+    const boxW = 230;
+    const boxX = PAGE_W - MARGIN - boxW;
+    const leftW = boxX - MARGIN - 18;
+    const labelColW = 130;
+    const rowHeight = 16;
+
+    // Pre-wrap each value so we know the exact total height of the info rows
+    doc.setFontSize(12);
+    const info = [
+      ['Patient Name', r.patient_name || '—'],
+      ['Date of Service', r.date_of_service || '—'],
+      ['Hospital', state.hospital || r.hospital_name || '—'],
+      ['Chief Complaint', r.chief_complaint || '—']
+    ];
+    doc.setFont('helvetica', 'normal');
+    const prepared = info.map(([k, v]) => {
+      const lines = doc.splitTextToSize(String(v), Math.max(120, leftW - labelColW));
+      return { k, v, lines };
+    });
+    const infoHeight = prepared.reduce((sum, p) => sum + rowHeight * p.lines.length, 0);
+
+    // Total Estimated Charges box — same height as the info rows
+    const boxY = y - 14;                  // ascender height above first baseline
+    const boxH = infoHeight + 6;          // matches the visual block of data rows
+    doc.setDrawColor(22, 101, 52);        // green-700 border, no fill (white bg)
+    doc.setLineWidth(1.5);
+    doc.roundedRect(boxX, boxY, boxW, boxH, 8, 8, 'S');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(RED[0], RED[1], RED[2]);
+    doc.text('TOTAL ESTIMATED CHARGES', boxX + boxW - 14, boxY + 22, { align: 'right' });
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(22); doc.setTextColor(RED[0], RED[1], RED[2]);
+    doc.text(money(preTotal), boxX + boxW - 14, boxY + boxH - 14, { align: 'right' });
+
+    // Draw the info rows to the left of the box
+    doc.setFontSize(12); doc.setTextColor(20);
+    for (const p of prepared) {
+      doc.setFont('helvetica', 'bold'); doc.text(p.k + ':', MARGIN, y);
+      doc.setFont('helvetica', 'normal');
+      doc.text(p.lines, MARGIN + labelColW, y);
+      y += rowHeight * p.lines.length;
+    }
+    y += 14;
+
+    // Treatment summary (12pt body)
+    if (r.treatment_summary) {
+      sectionHeader(doc, 'Treatment Summary', MARGIN, y); y += 20;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(12); doc.setTextColor(40);
+      const lines = doc.splitTextToSize(r.treatment_summary, PAGE_W - 2 * MARGIN);
+      doc.text(lines, MARGIN, y);
+      y += lines.length * 15 + 12;
+    }
+
+    // Diagnoses (12pt)
+    const dx = Array.isArray(r.discharge_diagnosis) ? r.discharge_diagnosis : [];
+    if (dx.length) {
+      sectionHeader(doc, 'Discharge Diagnoses', MARGIN, y); y += 20;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(12); doc.setTextColor(40);
+      for (const d of dx) {
+        const lines = doc.splitTextToSize('• ' + d, PAGE_W - 2 * MARGIN - 12);
+        doc.text(lines, MARGIN + 6, y);
+        y += lines.length * 15;
+      }
+      y += 10;
+    }
+
+    // Emergency Medical Condition (12pt)
+    sectionHeader(doc, 'Emergency Medical Condition', MARGIN, y); y += 20;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
+    const emcLines = state.emcPages.length
+      ? doc.splitTextToSize('Yes — "emergency medical condition" or "EMC" found on page ' + state.emcPages.join(', ') + '.', PAGE_W - 2 * MARGIN)
+      : doc.splitTextToSize('Not present — neither "emergency medical condition" nor "EMC" found in the document.', PAGE_W - 2 * MARGIN);
+    doc.setTextColor(state.emcPages.length ? 0 : 120, state.emcPages.length ? 110 : 120, state.emcPages.length ? 40 : 120);
+    doc.text(emcLines, MARGIN, y);
+    y += emcLines.length * 15 + 10;
+
+    // Charges table (body/head 12pt, total 14pt bold)
+    sectionHeader(doc, 'Estimated Charges', MARGIN, y); y += 12;
+    const body = items.map(it => {
+      const redItalic = { textColor: RED, fontStyle: 'italic' };
+      const serviceText = it.service_name + (it.quantity > 1 ? ' (×' + it.quantity + ')' : '') + (it.no_code ? ' *' : '');
+      const chargeText = it.no_code
+        ? '$0.00'
+        : (it.not_found ? '— Not in chargemaster' : money(it.total_charge));
+      return [
+        { content: serviceText, styles: it.no_code ? redItalic : {} },
+        { content: it.cpt_code || '—', styles: it.no_code ? { ...redItalic, halign: 'center' } : {} },
+        { content: chargeText, styles: it.no_code ? { ...redItalic, halign: 'right' } : {} }
+      ];
+    });
+
+    doc.autoTable({
+      startY: y + 4,
+      head: [['Service Description', 'CPT Code', 'Estimated Gross Charge']],
+      body: body,
+      theme: 'grid',
+      styles: { font: 'helvetica', fontSize: 12, cellPadding: 7, textColor: 30, lineColor: [220, 220, 220], lineWidth: 0.3 },
+      headStyles: { fillColor: [245, 245, 245], textColor: 40, fontStyle: 'bold', fontSize: 12 },
+      columnStyles: {
+        0: { cellWidth: 'auto' },
+        1: { cellWidth: 85, halign: 'center', font: 'courier', fontSize: 11 },
+        2: { cellWidth: 140, halign: 'right' }
+      },
+      foot: [[
+        { content: 'Estimated Total (Gross)', colSpan: 2, styles: { fontStyle: 'bold', halign: 'right' } },
+        { content: money(preTotal), styles: { fontStyle: 'bold', halign: 'right', textColor: GREEN } }
+      ]],
+      footStyles: { fillColor: [245, 250, 245], fontSize: 14 },
+      margin: { left: MARGIN, right: MARGIN }
+    });
+    y = doc.lastAutoTable.finalY + 12;
+
+    // Footer-style notes (kept small as requested)
+    if (preNoCode > 0) {
+      doc.setFont('helvetica', 'italic'); doc.setFontSize(9); doc.setTextColor(RED[0], RED[1], RED[2]);
+      const noteLines = doc.splitTextToSize('* ' + NO_CODE_FOOTER, PAGE_W - 2 * MARGIN);
+      doc.text(noteLines, MARGIN, y);
+      y += noteLines.length * 11 + 4;
+    }
+    if (preMissing > 0) {
+      doc.setFont('helvetica', 'italic'); doc.setFontSize(9); doc.setTextColor(160, 80, 0);
+      doc.text('Note: ' + preMissing + ' line item(s) had no chargemaster match and are excluded from the total.', MARGIN, y);
+      y += 14;
+    }
+
+    // ── Acute injury screener (RED, 12pt body) ────────────────────────
+    const acuteNeeded = 90 + (state.acuteFindings.length || 1) * 16;
+    if (y + acuteNeeded > PAGE_H - MARGIN - 90) { doc.addPage(); y = MARGIN; }
+    y += 10;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(180, 30, 30);
+    doc.text('ACUTE INJURY SCREENER', MARGIN, y);
+    doc.setDrawColor(180, 30, 30); doc.setLineWidth(0.5); doc.line(MARGIN, y + 4, MARGIN + 220, y + 4);
+    y += 20;
+    doc.setFont('helvetica', 'italic'); doc.setFontSize(10); doc.setTextColor(160, 60, 60);
+    const acuteIntroLines = doc.splitTextToSize('Keyword scan for review. Page numbers below reference the source PDF so the clinician can read the passage in context.', PAGE_W - 2 * MARGIN);
+    doc.text(acuteIntroLines, MARGIN, y);
+    y += acuteIntroLines.length * 12 + 4;
+
+    if (!state.acuteFindings.length) {
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(12); doc.setTextColor(120);
+      doc.text('No acute-injury keywords detected in the document text.', MARGIN, y);
+      y += 18;
+    } else {
+      doc.setFontSize(12); doc.setTextColor(180, 30, 30);
+      for (const f of state.acuteFindings) {
+        if (y > PAGE_H - MARGIN - 80) { doc.addPage(); y = MARGIN; }
+        const termLabel = titleCase(f.term);
+        const bulletText = '• ' + termLabel;
+        doc.setFont('helvetica', 'bold');
+        const bulletW = doc.getTextWidth(bulletText + ' ');
+        doc.text(bulletText, MARGIN + 4, y);
+        doc.setFont('helvetica', 'normal');
+        doc.text('— page ' + f.pages.join(', '), MARGIN + 4 + bulletW, y);
+        y += 16;
+      }
+      y += 6;
+    }
+
+    // ── No / minor injury screener (RED, 12pt body) ──────────────────
+    const lowNeeded = 90 + (state.lowSeverityFindings.length || 1) * 16;
+    if (y + lowNeeded > PAGE_H - MARGIN - 90) { doc.addPage(); y = MARGIN; }
+    y += 10;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(180, 30, 30);
+    doc.text('NO / MINOR INJURY SCREENER', MARGIN, y);
+    doc.setDrawColor(180, 30, 30); doc.setLineWidth(0.5); doc.line(MARGIN, y + 4, MARGIN + 260, y + 4);
+    y += 20;
+    doc.setFont('helvetica', 'italic'); doc.setFontSize(10); doc.setTextColor(160, 60, 60);
+    const lowIntroLines = doc.splitTextToSize('Attorney red-flag wording detected. Review these passages in context before evaluating the claim.', PAGE_W - 2 * MARGIN);
+    doc.text(lowIntroLines, MARGIN, y);
+    y += lowIntroLines.length * 12 + 4;
+
+    if (!state.lowSeverityFindings.length) {
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(12); doc.setTextColor(120);
+      doc.text('No low-severity / no-injury wording detected in the document text.', MARGIN, y);
+      y += 18;
+    } else {
+      doc.setFontSize(12); doc.setTextColor(180, 30, 30);
+      for (const f of state.lowSeverityFindings) {
+        if (y > PAGE_H - MARGIN - 80) { doc.addPage(); y = MARGIN; }
+        const termLabel = titleCase(f.term);
+        const bulletText = '• ' + termLabel;
+        doc.setFont('helvetica', 'bold');
+        const bulletW = doc.getTextWidth(bulletText + ' ');
+        doc.text(bulletText, MARGIN + 4, y);
+        doc.setFont('helvetica', 'normal');
+        doc.text('— page ' + f.pages.join(', '), MARGIN + 4 + bulletW, y);
+        y += 16;
+      }
+      y += 6;
+    }
+
+    // Disclaimer — footer, stays small
+    const disclaimer = "This estimate is based on gross charges from the hospital's published chargemaster and the CPT codes were derived by our proprietary software's interpretation of the clinical documentation. It represents the amount likely billed before any insurance adjustments, negotiated rates, or contractual discounts. Actual billed amounts may differ. This document is intended for attorney use only and does not constitute a medical bill or legal advice.";
+    doc.setFont('helvetica', 'italic'); doc.setFontSize(9); doc.setTextColor(120);
+    const dLines = doc.splitTextToSize(disclaimer, PAGE_W - 2 * MARGIN);
+    const dHeight = dLines.length * 11;
+    if (y + 18 + dHeight > PAGE_H - MARGIN) { doc.addPage(); y = MARGIN; }
+    const dY = Math.max(y + 18, PAGE_H - MARGIN - dHeight);
+    doc.setDrawColor(220); doc.setLineWidth(0.3); doc.line(MARGIN, dY - 10, PAGE_W - MARGIN, dY - 10);
+    doc.text(dLines, MARGIN, dY);
+
+    const safePatient = (r.patient_name || 'patient').replace(/[^\w]+/g, '_');
+    const safeDate = (r.date_of_service || '').replace(/[^\w]+/g, '-');
+    const pdfFilename = 'Hospital_Bill_Estimate_' + safePatient + (safeDate ? '_' + safeDate : '') + '.pdf';
+    const pdfBlob = doc.output('blob');
+    return { pdfBlob, pdfFilename };
+  }
+
+  function sectionHeader(doc, label, x, y) {
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(80);
+    doc.text(label.toUpperCase(), x, y);
+    doc.setDrawColor(200); doc.setLineWidth(0.3); doc.line(x, y + 4, x + 220, y + 4);
+  }
+})();
+</script>
+</body>
+</html>
