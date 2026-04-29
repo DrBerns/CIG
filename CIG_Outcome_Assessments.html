@@ -384,6 +384,66 @@ const ACE_COGNITIVE = ['Feeling mentally foggy','Feeling slowed down','Difficult
 const ACE_EMOTIONAL = ['Irritability','Sadness','More emotional','Nervousness'];
 const ACE_SLEEP = ['Drowsiness','Sleeping less than usual','Sleeping more than usual','Trouble falling asleep'];
 
+// LEDD — Loss of Enjoyment & Duties Under Duress
+// Documents how injury affects work, school, household, domestic, and life-enjoyment activities.
+// Each item is rated 0 (no difficulty) to 3 (unable), with N/A for activities that don't apply.
+const LEDD_CATEGORIES = [
+  { key:'work', label:'Work / Occupational Duties', intro:'Tasks related to your job', items:[
+    'Performing the physical demands of my regular job',
+    'Sitting at a desk or workstation for prolonged periods',
+    'Standing for extended periods at work',
+    'Lifting, pushing, or pulling items at work',
+    'Operating tools, equipment, or a vehicle for work',
+    'Concentrating, remembering, and following directions',
+    'Completing a full work day without increased pain',
+    'Keeping up with my normal pace and workload'
+  ]},
+  { key:'school', label:'Educational / School Duties', intro:'Tasks related to school or studies', items:[
+    'Carrying books, a backpack, or class supplies',
+    'Sitting through class or lectures without pain',
+    'Concentrating while studying or reading',
+    'Taking notes or writing for extended periods',
+    'Attending a full day of classes'
+  ]},
+  { key:'outdoor', label:'Household — Outdoor Duties', intro:'Tasks performed outside the home', items:[
+    'Mowing the lawn',
+    'Trimming hedges, weeding, or gardening',
+    'Washing the car or windows',
+    'Taking out the trash or recycling',
+    'Grocery shopping or running errands',
+    'Loading and unloading the vehicle',
+    'Driving or transporting family members',
+    'Home maintenance or minor repairs'
+  ]},
+  { key:'indoor', label:'Domestic — Indoor Duties', intro:'Tasks performed inside the home', items:[
+    'Washing dishes',
+    'Doing laundry',
+    'Vacuuming, sweeping, or mopping',
+    'Dusting and tidying',
+    'Making the bed or changing sheets',
+    'Cooking meals',
+    'Caring for young children or dependents',
+    'Caring for pets'
+  ]},
+  { key:'enjoy', label:'Loss of Enjoyment — Recreation, Social & Personal', intro:'Activities you enjoyed before the injury', items:[
+    'Usual hobbies (e.g., crafts, music, reading)',
+    'Sports or physical exercise',
+    'Going out with friends or family',
+    'Attending social, religious, or community events',
+    'Travel or vacations',
+    'Intimate / sexual activity',
+    'Sleeping through the night',
+    'Playing with children, grandchildren, or pets'
+  ]}
+];
+
+const LEDD_SCALE = [
+  {val:0, num:'0', lbl:'No difficulty'},
+  {val:1, num:'1', lbl:'Painful but able'},
+  {val:2, num:'2', lbl:'Great difficulty'},
+  {val:3, num:'3', lbl:'Unable'}
+];
+
 const ASSESSMENTS = {
   odi: {
     id:'odi', short:'ODI', name:'Oswestry Disability Index',
@@ -511,6 +571,40 @@ const ASSESSMENTS = {
       };
     }
   },
+  ledd: {
+    id:'ledd', short:'LEDD', name:'Loss of Enjoyment & Duties Under Duress',
+    intro:'For each activity below, rate how much difficulty you currently have because of your injury. Tap N/A if the activity does not apply to you.',
+    type:'ledd',
+    categories: LEDD_CATEGORIES,
+    score: function(answers){
+      let sum=0, answered=0, total=0;
+      LEDD_CATEGORIES.forEach(function(cat){
+        total += cat.items.length;
+        const arr = answers[cat.key] || [];
+        arr.forEach(function(v){
+          if (v==null || v==='na') return;
+          answered++; sum += Number(v);
+        });
+      });
+      const denom = answered*3;
+      const pct = denom===0?0:Math.round((sum/denom)*100);
+      const bycat = {};
+      LEDD_CATEGORIES.forEach(function(cat){
+        let cSum=0, cAns=0;
+        (answers[cat.key]||[]).forEach(function(v){
+          if (v==null || v==='na') return;
+          cAns++; cSum += Number(v);
+        });
+        bycat[cat.key] = { sum:cSum, answered:cAns, total:cat.items.length };
+      });
+      let band = 'Minimal impact';
+      if (pct>75) band='Severe impact';
+      else if (pct>50) band='Moderate-to-severe impact';
+      else if (pct>25) band='Moderate impact';
+      else if (pct>0)  band='Mild impact';
+      return { raw:sum, denom, pct, band, answered, total, bycat };
+    }
+  },
   ace: {
     id:'ace', short:'ACE', name:'Acute Concussion Evaluation',
     intro:'Since your injury, have you experienced any of these symptoms more than usual today or in the past day? Tap Yes or No for each.',
@@ -539,7 +633,7 @@ const ASSESSMENTS = {
   }
 };
 
-const ASSESSMENT_ORDER = ['odi','ndi','pdi','hdi','uefi','lefs','spadi','ace'];
+const ASSESSMENT_ORDER = ['odi','ndi','pdi','hdi','uefi','lefs','spadi','ace','ledd'];
 
 // ═══════════════════════════════════════════════════════════════════
 // BRAND
@@ -629,6 +723,12 @@ function startAssessments(){
       sleep:new Array(ACE_SLEEP.length).fill(null),
       overall: null
     };
+    else if (a.type==='ledd') {
+      state.answers[id] = {};
+      LEDD_CATEGORIES.forEach(function(cat){
+        state.answers[id][cat.key] = new Array(cat.items.length).fill(null);
+      });
+    }
     else if (a.type==='radio6') state.answers[id] = new Array(a.sections.length).fill(null);
     else state.answers[id] = new Array(a.items.length).fill(null);
   });
@@ -664,6 +764,7 @@ function renderAssessment(){
   else if (a.type==='lik5') renderLik5(body, a, id);
   else if (a.type==='spadi') renderSpadi(body, a, id);
   else if (a.type==='ace') renderAce(body, a, id);
+  else if (a.type==='ledd') renderLedd(body, a, id);
 
   // Nav buttons
   const btnBack = document.getElementById('btnBack');
@@ -899,6 +1000,44 @@ function renderAce(body, a, id){
   body.appendChild(oblock);
 }
 
+function renderLedd(body, a, id){
+  let qNum = 0;
+  a.categories.forEach(function(cat){
+    const h = document.createElement('div');
+    h.className = 'sub-head';
+    h.innerHTML = cat.label + (cat.intro?'<div class="sub-head-intro">'+cat.intro+'</div>':'');
+    body.appendChild(h);
+    cat.items.forEach(function(item, i){
+      qNum++;
+      const block = document.createElement('div');
+      block.className = 'q-block';
+      const cur = state.answers[id][cat.key][i];
+      let html = '<div><span class="q-num">'+qNum+'</span><span class="q-title">'+item+'</span></div>';
+      html += '<div class="lik-row">';
+      LEDD_SCALE.forEach(function(o){
+        const on = cur===o.val;
+        html += '<button class="lik-btn'+(on?' on':'')+'" data-k="'+cat.key+'" data-i="'+i+'" data-v="'+o.val+'"><span class="lik-num">'+o.num+'</span><span>'+o.lbl+'</span></button>';
+      });
+      const onNa = cur==='na';
+      html += '<button class="lik-btn'+(onNa?' on':'')+'" data-k="'+cat.key+'" data-i="'+i+'" data-v="na"><span class="lik-num">N/A</span><span>Doesn\'t apply</span></button>';
+      html += '</div>';
+      block.innerHTML = html;
+      block.querySelectorAll('.lik-btn').forEach(function(el){
+        el.addEventListener('click', function(){
+          const k = el.dataset.k;
+          const ii = +el.dataset.i;
+          const v = el.dataset.v === 'na' ? 'na' : +el.dataset.v;
+          state.answers[id][k][ii] = v;
+          block.querySelectorAll('.lik-btn').forEach(x=>x.classList.remove('on'));
+          el.classList.add('on');
+          updateNavStatus();
+        });
+      });
+      body.appendChild(block);
+    });
+  });
+}
+
 function updateNavStatus(){
   if (state.screen!=='assess'){ return; }
   const id = state.selected[state.idx];
@@ -911,6 +1050,12 @@ function updateNavStatus(){
   } else if (a.type==='ace'){
     total = ACE_PHYSICAL.length + ACE_COGNITIVE.length + ACE_EMOTIONAL.length + ACE_SLEEP.length + 1; // +1 for overall
     answered = ans.phys.filter(v=>v!=null).length + ans.cog.filter(v=>v!=null).length + ans.emo.filter(v=>v!=null).length + ans.sleep.filter(v=>v!=null).length + (ans.overall!=null?1:0);
+  } else if (a.type==='ledd'){
+    total = 0; answered = 0;
+    LEDD_CATEGORIES.forEach(function(cat){
+      total += cat.items.length;
+      answered += (ans[cat.key]||[]).filter(v=>v!=null).length;
+    });
   } else if (a.type==='radio6'){
     total = a.sections.length;
     answered = ans.filter(v=>v!=null).length;
@@ -967,6 +1112,7 @@ function finishAll(){
     else if (id==='pdi') valText = s.raw+' / 70';
     else if (id==='hdi') valText = s.raw+' / 100';
     else if (id==='ace') valText = s.raw+' / 22 symptoms' + (s.overall!=null?' · Overall '+s.overall+'/6':'');
+    else if (id==='ledd') valText = s.raw+' / '+s.denom+' ('+s.pct+'%)';
     else valText = s.pct+'%';
     row.innerHTML = '<div class="score-name">'+a.short+' — '+a.name+'</div>'
       + '<div class="score-val">'+valText+' <span class="score-interp">· '+s.band+'</span></div>';
@@ -1065,6 +1211,22 @@ function buildPdfHtml(id){
       });
     });
     body += questionRow(qn+1, 'Overall Rating (0 Normal – 6 Very Different)', ans.overall==null?null:('Score: '+ans.overall+' / 6'));
+  } else if (a.type==='ledd'){
+    let qn = 0;
+    a.categories.forEach(function(cat){
+      body += '<div style="font-weight:700;color:#1a4fa0;margin:10px 0 4px;font-size:11pt;">'+esc(cat.label)+'</div>';
+      cat.items.forEach(function(it,i){
+        qn++;
+        const v = ans[cat.key][i];
+        let lbl = null;
+        if (v==='na') lbl = 'Not applicable';
+        else if (v!=null){
+          const opt = LEDD_SCALE.find(o=>o.val===v);
+          lbl = opt ? ('('+opt.val+') '+opt.lbl) : null;
+        }
+        body += questionRow(qn, it, lbl);
+      });
+    });
   }
 
   // Score summary
@@ -1102,6 +1264,19 @@ function buildPdfHtml(id){
       + '<b>Sleep:</b> '+s.bycat.sleep+' / '+ACE_SLEEP.length+'<br>'
       + (s.overall!=null?('<b>Overall Rating:</b> '+s.overall+' / 6<br>'):'')
       + '<span style="color:#5a6a7d;font-size:9pt;">Items answered: '+s.answered+' of '+s.total+'.</span>'
+      + '</div>';
+  } else if (id==='ledd'){
+    let catLines = '';
+    LEDD_CATEGORIES.forEach(function(cat){
+      const c = s.bycat[cat.key];
+      const cMax = c.answered*3;
+      const cPct = cMax===0?0:Math.round((c.sum/cMax)*100);
+      catLines += '<b>'+esc(cat.label)+':</b> '+c.sum+' / '+cMax+' ('+cPct+'%) &nbsp;·&nbsp; '+c.answered+'/'+c.total+' answered<br>';
+    });
+    scoreHtml += '<div style="font-size:10pt;color:#222;line-height:1.55;">'
+      + '<b>Total LEDD:</b> '+s.raw+' / '+s.denom+' ('+s.pct+'%) &nbsp;·&nbsp; <i>'+esc(s.band)+'</i><br>'
+      + catLines
+      + '<span style="color:#5a6a7d;font-size:9pt;">Items answered: '+s.answered+' of '+s.total+'. Higher = greater impact on duties and enjoyment of life.</span>'
       + '</div>';
   } else {
     scoreHtml += '<div style="font-size:10pt;color:#222;line-height:1.55;">'
