@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capital Injury Group — Patient Case Dashboard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: #f4ecec; color: #1a1a1a; min-height: 100vh; display: flex; flex-direction: column; }
+
+  .hdr { background: linear-gradient(135deg, #7b1a2e 0%, #9e1b32 100%); color: #fff; padding: 28px 24px 24px; text-align: center; }
+  .hdr img { height: 60px; width: auto; margin-bottom: 12px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+  .hdr h1 { font-size: 21px; font-weight: 800; letter-spacing: 0.3px; margin-bottom: 4px; }
+  .hdr p { font-size: 13px; opacity: 0.9; font-weight: 400; }
+
+  main { flex: 1; max-width: 1600px; margin: 0 auto; padding: 28px 20px 48px; width: 100%; }
+
+  .demo-banner { background: #fff7e6; border: 1px solid #f0d8a8; color: #8a5a00; font-size: 12.5px; border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+  .demo-banner b { font-weight: 700; }
+
+  .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+  .toolbar-left { display: flex; align-items: baseline; gap: 12px; }
+  .toolbar-title { font-size: 17px; font-weight: 800; color: #1a1a1a; }
+  .toolbar-count { font-size: 12px; color: #6b5a5c; font-weight: 600; background: #fff; border: 1px solid #e5d3d6; border-radius: 999px; padding: 3px 12px; }
+  .toolbar-right { display: flex; align-items: center; gap: 10px; }
+  .search-box { background: #fff; border: 1px solid #e5d3d6; border-radius: 8px; padding: 8px 12px; font-size: 13px; color: #1a1a1a; outline: none; width: 220px; font-family: inherit; }
+  .search-box:focus { border-color: #7b1a2e; }
+  .btn-ghost { background: #fff; border: 1px solid #e5d3d6; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; color: #7b1a2e; cursor: pointer; font-family: inherit; transition: border-color .15s; }
+  .btn-ghost:hover { border-color: #7b1a2e; }
+
+  /* Summary stat tiles */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+  .stat { background: #fff; border: 1px solid #e5d3d6; border-radius: 10px; padding: 14px 16px; }
+  .stat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #7b1a2e; margin-bottom: 6px; }
+  .stat-value { font-size: 22px; font-weight: 800; color: #1a1a1a; letter-spacing: 0.3px; }
+  .stat-sub { font-size: 11px; color: #6b5a5c; margin-top: 2px; }
+
+  /* Table */
+  .table-wrap { background: #fff; border: 1px solid #e5d3d6; border-radius: 12px; overflow: auto; box-shadow: 0 2px 10px rgba(123,26,46,0.06); max-height: 72vh; }
+  table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 12.5px; white-space: nowrap; }
+  thead th { position: sticky; top: 0; z-index: 3; background: #7b1a2e; color: #fff; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; text-align: left; padding: 11px 14px; border-bottom: 2px solid #6a1626; }
+  thead th.num { text-align: right; }
+  thead th.ctr { text-align: center; }
+
+  tbody td { padding: 11px 14px; border-bottom: 1px solid #f0e3e5; color: #2a2024; vertical-align: middle; }
+  tbody tr:nth-child(even) td { background: #fbf6f7; }
+  tbody tr:hover td { background: #fff0f2; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.ctr { text-align: center; }
+  td.money { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+  td.muted { color: #a0898c; }
+
+  /* Sticky first column (patient name) */
+  thead th.sticky-col { left: 0; z-index: 4; }
+  tbody td.sticky-col { position: sticky; left: 0; z-index: 2; background: #fff; font-weight: 700; color: #1a1a1a; box-shadow: 1px 0 0 #f0e3e5; }
+  tbody tr:nth-child(even) td.sticky-col { background: #fbf6f7; }
+  tbody tr:hover td.sticky-col { background: #fff0f2; }
+
+  .pat-name { font-weight: 700; }
+  .ref-doc { color: #4a3a3d; }
+
+  /* Status badges / pills */
+  .pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; line-height: 1.5; }
+  .pill-pi-auto { background: #fde2e4; color: #b3261e; }
+  .pill-pi-slip { background: #ffedd5; color: #b45309; }
+  .pill-wc { background: #dbeafe; color: #1d4ed8; }
+  .pill-gl { background: #ede9fe; color: #6d28d9; }
+  .pill-lop { background: #cffafe; color: #0e7490; }
+  .pill-carrier { background: #dcfce7; color: #15803d; }
+  .pill-std { background: #f1f1f1; color: #555; }
+
+  .yn-yes { color: #15803d; font-weight: 700; }
+  .yn-no { color: #a0898c; font-weight: 600; }
+
+  .status-ok { color: #16a34a; font-size: 16px; font-weight: 800; }
+  .status-bad { color: #dc2626; font-size: 16px; font-weight: 800; }
+
+  .count-chip { display: inline-block; min-width: 24px; padding: 2px 8px; border-radius: 6px; background: #f3e8ea; color: #7b1a2e; font-weight: 700; text-align: center; }
+  .count-zero { background: #f3f3f3; color: #b0a4a6; }
+
+  .card-btn { background: #7b1a2e; color: #fff; border: none; border-radius: 6px; padding: 6px 12px; font-size: 11.5px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background .15s; white-space: nowrap; }
+  .card-btn:hover { background: #9e1b32; }
+
+  footer { text-align: center; padding: 22px 20px; font-size: 11px; color: #7a6b6d; border-top: 1px solid #e5d3d6; background: #fff; }
+  footer a { color: #7b1a2e; text-decoration: none; }
+
+  @media (max-width: 760px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+    .search-box { width: 150px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <img src="../CIG_Logo_transparent_small.png" alt="Capital Injury Group">
+  <h1>Capital Injury Group</h1>
+  <p>Patient Case Dashboard</p>
+</header>
+
+<main>
+  <div class="demo-banner">
+    <span>&#9888;&#65039;</span>
+    <span><b>Mockup / sample data.</b> All patients, attorneys, firms, dollar figures and case details below are fabricated for layout review only.</span>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <span class="toolbar-title">Active Patient Cases</span>
+      <span class="toolbar-count" id="rowCount">12 patients</span>
+    </div>
+    <div class="toolbar-right">
+      <input class="search-box" type="text" placeholder="Search patients…" disabled>
+      <button class="btn-ghost" disabled>Filters</button>
+      <button class="btn-ghost" disabled>Export</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="sticky-col">Patient Name</th>
+          <th>Referral Source</th>
+          <th>Attorney Name</th>
+          <th>Attorney Firm</th>
+          <th class="num">Service Days</th>
+          <th class="num">Total Charges</th>
+          <th class="num">Total Adjustments</th>
+          <th class="num">Total Payments</th>
+          <th class="num">BI Policy Limits</th>
+          <th class="num">UM Policy Limits</th>
+          <th class="ctr">DME</th>
+          <th class="ctr">MRI Count</th>
+          <th class="ctr">Hospital Treatment</th>
+          <th class="num">Hospital Estimate</th>
+          <th class="ctr">Billing Status</th>
+          <th>Case Type</th>
+          <th class="num">Days Since First Tx</th>
+          <th class="num">Days Since Last Tx</th>
+          <th class="ctr">Settlement Card</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</main>
+
+<footer>
+  Capital Injury Group &middot; Patient Case Dashboard &middot; <span style="color:#a0898c;">demo build</span>
+</footer>
+
+<script>
+  // ── Case Type options sourced from the Airtable "Patients" base ──
+  // pillClass maps a case type to a colored badge.
+  function caseTypePill(t) {
+    var map = {
+      "Personal Injury — Auto Accident": "pill-pi-auto",
+      "Personal Injury — Slip & Fall": "pill-pi-slip",
+      "Workers Compensation": "pill-wc",
+      "General Liability": "pill-gl",
+      "Litigation/LOP": "pill-lop",
+      "None / Standard": "pill-std"
+    };
+    return map[t] || "pill-carrier"; // carrier codes (PM GEICO, DC STATE FARM, etc.)
+  }
+
+  // ── Fabricated sample data (12 patients) ──
+  var PATIENTS = [
+    { name:"Marcus Holloway",     ref:"Dr. Howard Finkel",     atty:"Jonathan Pierce",  firm:"Pierce & Associates",       svc:34, charges:48250, adj:6400,  pay:12300, bi:100000, um:50000,  dme:2, mri:3, hosp:true,  hospEst:32400, billing:true,  caseType:"Personal Injury — Auto Accident", firstTx:187, lastTx:12 },
+    { name:"Elena Vasquez",       ref:"Dr. Susan Albright",    atty:"Alicia Tran",      firm:"Tran Law Group",            svc:22, charges:18900, adj:2150,  pay:9800,  bi:25000,  um:25000,  dme:0, mri:1, hosp:false, hospEst:null,  billing:false, caseType:"Personal Injury — Slip & Fall",   firstTx:96,  lastTx:41 },
+    { name:"Tyrone Jefferson",    ref:"Dr. Raymond Cho",       atty:"Michael Stein",    firm:"Stein Injury Partners",     svc:41, charges:72600, adj:11200, pay:24500, bi:250000, um:100000, dme:4, mri:5, hosp:true,  hospEst:47800, billing:true,  caseType:"Litigation/LOP",                  firstTx:302, lastTx:8 },
+    { name:"Priya Patel",         ref:"Dr. Lisa Hammond",      atty:"Rosa Delgado",     firm:"Delgado & Cruz, P.A.",      svc:17, charges:9750,  adj:980,   pay:5200,  bi:10000,  um:0,      dme:1, mri:0, hosp:false, hospEst:null,  billing:true,  caseType:"PM GEICO",                        firstTx:54,  lastTx:33 },
+    { name:"Brandon Mitchell",    ref:"Dr. Anthony Russo",     atty:"Kevin Brooks",     firm:"Brooks Trial Lawyers",      svc:38, charges:55400, adj:7900,  pay:18600, bi:50000,  um:50000,  dme:3, mri:2, hosp:true,  hospEst:21150, billing:false, caseType:"Workers Compensation",            firstTx:221, lastTx:19 },
+    { name:"Sofia Romano",        ref:"Dr. Meredith Vance",    atty:"Stephanie Nguyen", firm:"Nguyen Legal",              svc:29, charges:31200, adj:4300,  pay:14000, bi:100000, um:25000,  dme:0, mri:4, hosp:false, hospEst:null,  billing:true,  caseType:"DC STATE FARM",                   firstTx:143, lastTx:27 },
+    { name:"Darnell Washington",  ref:"Dr. Gregory Pruitt",    atty:"David Okafor",     firm:"Okafor & Bright LLP",       svc:45, charges:84900, adj:13500, pay:29700, bi:300000, um:250000, dme:4, mri:5, hosp:true,  hospEst:49600, billing:true,  caseType:"Personal Injury — Auto Accident", firstTx:365, lastTx:5 },
+    { name:"Hannah Kim",          ref:"Dr. Naomi Sandberg",    atty:"Laura Whitfield",  firm:"Whitfield Law Firm",        svc:13, charges:7300,  adj:620,   pay:3100,  bi:25000,  um:0,      dme:1, mri:1, hosp:false, hospEst:null,  billing:false, caseType:"General Liability",               firstTx:38,  lastTx:30 },
+    { name:"Carlos Mendoza",      ref:"Dr. Victor Ramirez",    atty:"Benjamin Cohen",   firm:"Cohen Accident Attorneys",  svc:33, charges:42800, adj:5700,  pay:16900, bi:100000, um:100000, dme:2, mri:3, hosp:true,  hospEst:15300, billing:true,  caseType:"PM Progressive",                  firstTx:176, lastTx:14 },
+    { name:"Rebecca Sterling",    ref:"Dr. Deborah Klein",     atty:"Crystal Rivera",   firm:"Rivera & Park, P.A.",       svc:26, charges:24600, adj:3100,  pay:11400, bi:50000,  um:25000,  dme:0, mri:2, hosp:false, hospEst:null,  billing:true,  caseType:"DC USAA",                         firstTx:112, lastTx:22 },
+    { name:"Jamal Carter",        ref:"Dr. Patrick O'Donnell", atty:"Aaron Goldberg",   firm:"Goldberg Injury Law",       svc:40, charges:67100, adj:9800,  pay:22300, bi:250000, um:50000,  dme:3, mri:4, hosp:true,  hospEst:38900, billing:false, caseType:"PM ALLSTATE",                     firstTx:258, lastTx:9 },
+    { name:"Olivia Bennett",      ref:"Dr. Yvonne Carter",     atty:"Megan Foster",     firm:"Foster & Hayes, LLP",       svc:20, charges:14500, adj:1750,  pay:7600,  bi:25000,  um:25000,  dme:1, mri:0, hosp:false, hospEst:null,  billing:true,  caseType:"None / Standard",                 firstTx:71,  lastTx:18 }
+  ];
+
+  var usd = new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', maximumFractionDigits:0 });
+
+  function moneyCell(v) { return '<td class="money">' + usd.format(v) + '</td>'; }
+  function policyCell(v) {
+    if (!v) return '<td class="num muted">None</td>';
+    return '<td class="num">' + usd.format(v) + '</td>';
+  }
+  function countCell(n) {
+    var cls = n === 0 ? 'count-chip count-zero' : 'count-chip';
+    return '<td class="ctr"><span class="' + cls + '">' + n + '</span></td>';
+  }
+
+  var tbody = document.getElementById('tbody');
+  var totalCharges = 0, totalPay = 0, hospCount = 0;
+
+  PATIENTS.forEach(function(p) {
+    totalCharges += p.charges;
+    totalPay += p.pay;
+    if (p.hosp) hospCount++;
+
+    var hospTreat = p.hosp
+      ? '<span class="yn-yes">Yes</span>'
+      : '<span class="yn-no">No</span>';
+    var hospEst = p.hosp
+      ? '<td class="money">' + usd.format(p.hospEst) + '</td>'
+      : '<td class="num muted">&mdash;</td>';
+    var billing = p.billing
+      ? '<span class="status-ok" title="Billing complete">&#10003;</span>'
+      : '<span class="status-bad" title="Billing incomplete">&#10007;</span>';
+
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td class="sticky-col pat-name">' + p.name + '</td>' +
+      '<td class="ref-doc">' + p.ref + '</td>' +
+      '<td>' + p.atty + '</td>' +
+      '<td>' + p.firm + '</td>' +
+      '<td class="num">' + p.svc + '</td>' +
+      moneyCell(p.charges) +
+      moneyCell(p.adj) +
+      moneyCell(p.pay) +
+      policyCell(p.bi) +
+      policyCell(p.um) +
+      countCell(p.dme) +
+      countCell(p.mri) +
+      '<td class="ctr">' + hospTreat + '</td>' +
+      hospEst +
+      '<td class="ctr">' + billing + '</td>' +
+      '<td><span class="pill ' + caseTypePill(p.caseType) + '">' + p.caseType + '</span></td>' +
+      '<td class="num">' + p.firstTx + '</td>' +
+      '<td class="num">' + p.lastTx + '</td>' +
+      '<td class="ctr"><button class="card-btn" onclick="alert(\'Settlement card — demo only\')">View Card</button></td>';
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('rowCount').textContent = PATIENTS.length + ' patients';
+
+  // Summary tiles
+  var stats = [
+    { label:'Active Patients', value: PATIENTS.length, sub:'In demo dataset' },
+    { label:'Total Charges', value: usd.format(totalCharges), sub:'Across all cases' },
+    { label:'Total Payments', value: usd.format(totalPay), sub:'Collected to date' },
+    { label:'Hospital Treatment', value: hospCount + ' / ' + PATIENTS.length, sub:'Patients with inpatient/ER' }
+  ];
+  document.getElementById('stats').innerHTML = stats.map(function(s) {
+    return '<div class="stat"><div class="stat-label">' + s.label + '</div>' +
+      '<div class="stat-value">' + s.value + '</div>' +
+      '<div class="stat-sub">' + s.sub + '</div></div>';
+  }).join('');
+</script>
+
+</body>
+</html>
