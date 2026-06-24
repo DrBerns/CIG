@@ -12,6 +12,12 @@ Format: reverse-chronological. Newest at top.
 
 ## 2026-06-24
 
+### CI gate hardened: now requires CHANGELOG.md + BACKLOG.md + SESSION_STATE.md
+- `changelog-gate.yml` updated — PRs missing any of the three required docs now fail CI
+- `CLAUDE.md` updated to reflect the new three-doc rule
+- `docs/SESSION_STATE.md` created with current session state (first-ever SESSION_STATE for CIG)
+- Fixes the "honor system" gap: nothing is optional anymore
+
 ### Doc scaffold: CLAUDE.md, system blueprint, backlog, CI changelog gate
 - `CLAUDE.md` added — auto-loads rules + doc index every session
 - `docs/SYSTEM_BLUEPRINT.md` — full architecture reference (stack, site map,

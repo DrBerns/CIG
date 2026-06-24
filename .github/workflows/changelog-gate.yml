@@ -1,8 +1,9 @@
 name: Changelog Gate
 
-# Fail any PR that touches site files without a CHANGELOG.md update.
-# Policy: every change to HTML, JS, CSS, or workflows MUST include
-# a CHANGELOG.md entry in the same PR.
+# Fail any PR that touches code without updating all three required docs.
+# Policy: every change to HTML, JS, CSS, or workflows MUST include updates
+# to CHANGELOG.md, docs/BACKLOG.md, AND docs/SESSION_STATE.md in the same PR.
+# Nothing is on honor system.
 
 on:
   pull_request:
@@ -16,23 +17,31 @@ on:
 
 jobs:
   changelog-check:
-    name: Require CHANGELOG.md update
+    name: Require CHANGELOG + BACKLOG + SESSION_STATE update
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Check CHANGELOG.md was updated
+      - name: Check all required docs were updated
         run: |
-          if git diff --name-only origin/main...HEAD | grep -q "^CHANGELOG\.md$"; then
-            echo "✅ CHANGELOG.md updated — gate passed"
+          CHANGED=$(git diff --name-only origin/main...HEAD)
+          MISSING=()
+
+          echo "$CHANGED" | grep -q "^CHANGELOG\.md$"            || MISSING+=("CHANGELOG.md")
+          echo "$CHANGED" | grep -q "^docs/BACKLOG\.md$"         || MISSING+=("docs/BACKLOG.md")
+          echo "$CHANGED" | grep -q "^docs/SESSION_STATE\.md$"   || MISSING+=("docs/SESSION_STATE.md")
+
+          if [ ${#MISSING[@]} -eq 0 ]; then
+            echo "✅ All required docs updated — gate passed"
+            echo "   CHANGELOG.md ✅  docs/BACKLOG.md ✅  docs/SESSION_STATE.md ✅"
           else
-            echo "❌ CHANGELOG.md was NOT updated."
+            echo "❌ Missing required doc updates: ${MISSING[*]}"
             echo ""
-            echo "Policy: every change to HTML, JS, CSS, or workflows"
-            echo "MUST include a CHANGELOG.md entry in the same PR."
-            echo ""
-            echo "Add an entry under the current date and re-push."
+            echo "Policy: every code change MUST update all three docs in the same PR:"
+            echo "  CHANGELOG.md          — what changed and why"
+            echo "  docs/BACKLOG.md       — mark completed items; add newly identified items"
+            echo "  docs/SESSION_STATE.md — update 'where we are right now'"
             exit 1
           fi
