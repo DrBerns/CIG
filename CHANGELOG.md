@@ -10,6 +10,19 @@ Format: reverse-chronological. Newest at top.
 
 ---
 
+## 2026-06-25
+
+### CI: make the changelog gate safe to mark as a REQUIRED status check
+- `changelog-gate.yml` no longer uses a `paths:` filter. A path-filtered check never reports
+  on PRs that miss the filter, leaving them stuck "expected" and unmergeable once the check is
+  *required* in branch protection. The gate now runs on every PR and decides pass/fail
+  internally (detects HTML/JS/CSS/workflow changes from the diff; job name preserved so the
+  required-check context is stable).
+- Prerequisite for a branch ruleset on `main` that requires a PR + this check with an empty
+  bypass list (no admin override).
+
+---
+
 ## 2026-06-24
 
 ### CI gate hardened: now requires CHANGELOG.md + BACKLOG.md + SESSION_STATE.md
