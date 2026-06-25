@@ -1,19 +1,20 @@
 name: Changelog Gate
 
 # Fail any PR that touches code without updating all three required docs.
-# Policy: every change to HTML, JS, CSS, or workflows MUST include updates
-# to CHANGELOG.md, docs/BACKLOG.md, AND docs/SESSION_STATE.md in the same PR.
+# Policy: every change to HTML, JS, CSS, or workflows MUST include updates to
+# CHANGELOG.md, docs/BACKLOG.md, AND docs/SESSION_STATE.md in the same PR.
 # Nothing is on honor system.
+#
+# IMPORTANT: this runs on EVERY PR (no `paths:` filter) and decides pass/fail
+# internally. A path-filtered required check never reports on PRs that miss the
+# filter, leaving them stuck "expected" and unmergeable. Running always +
+# checking the diff internally keeps the check safe to mark as a *required*
+# status check in branch protection.
 
 on:
   pull_request:
     branches:
       - main
-    paths:
-      - '*.html'
-      - '*.js'
-      - '*.css'
-      - '.github/workflows/**'
 
 jobs:
   changelog-check:
@@ -24,7 +25,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check all required docs were updated
+      - name: Detect whether this PR touches code
+        id: code_changed
+        run: |
+          CHANGED=$(git diff --name-only origin/main...HEAD)
+          if echo "$CHANGED" | grep -qE "(\.html$|\.js$|\.css$|^\.github/workflows/)"; then
+            echo "code_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "code_changed=false" >> "$GITHUB_OUTPUT"
+            echo "ℹ️ No code paths changed — docs gate not required for this PR."
+          fi
+
+      - name: Require CHANGELOG + BACKLOG + SESSION_STATE when code changed
+        if: steps.code_changed.outputs.code_changed == 'true'
         run: |
           CHANGED=$(git diff --name-only origin/main...HEAD)
           MISSING=()

@@ -1,4 +1,15 @@
-# What's going on right now — updated 2026-06-24
+# What's going on right now — updated 2026-06-25
+
+## This session (2026-06-25) — make the docs gate enforceable
+
+The `changelog-gate.yml` now runs on every PR (no `paths:` filter) so it can be set as a
+*required* status check in a branch ruleset on `main` — the missing piece that made the gate
+advisory. Next: enable the ruleset (require PR + this check, empty bypass list) so changes
+can't merge without the three docs. Same hardening applied across JFBDC, SpineMed, PainMed.
+
+---
+
+# (prior) What's going on right now — updated 2026-06-24
 
 ## This session (2026-06-24) — docs scaffold + CI gate hardening
 
