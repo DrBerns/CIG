@@ -28,6 +28,8 @@ _No items yet — add epics here as scope is defined._
 
 ## Completed
 
+- [x] **CI gate hardened** (2026-06-24) — gate now requires CHANGELOG.md + BACKLOG.md + SESSION_STATE.md; nothing on honor system
+- [x] **Docs scaffold** (PR #12, 2026-06-24) — CLAUDE.md, SYSTEM_BLUEPRINT.md, BACKLOG.md, CHANGELOG.md seed, changelog CI gate
 - [x] LEDD outcome assessment added to `CIG_Outcome_Assessments.html`
 - [x] Spanish Procedure Consent + dashboard tiles
 - [x] Spanish versions of Signature Packet, Intake, Outcome Assessments

@@ -7,14 +7,15 @@ Before any non-trivial work, read these in order:
 3. `CHANGELOG.md` — what's already shipped
 4. `docs/SYSTEM_BLUEPRINT.md` — architecture reference when you need it
 
-## HARD RULE — changelog on every change (CI-enforced)
-Every change to the site (HTML, JS, CSS, workflows) MUST include a `CHANGELOG.md`
-entry in the same commit/PR. No changelog = PR is incomplete.
-The CI gate (`changelog-gate.yml`) will fail any PR that touches site files without it.
+## HARD RULE — update all three docs on every change (CI-enforced)
+Every PR that touches the site (HTML, JS, CSS, workflows) MUST update all three
+of these in the same commit:
+1. `CHANGELOG.md` — what changed and why
+2. `docs/BACKLOG.md` — mark completed items done; add newly identified items
+3. `docs/SESSION_STATE.md` — update "where we are right now"
 
-## HARD RULE — update BACKLOG.md when scope changes
-When a backlog item ships, mark it done. When a new one is identified, add it.
-Do this in the same PR as the work, not as a follow-up.
+The CI gate (`changelog-gate.yml`) checks for all three and fails the PR if any is missing.
+Nothing is on honor system.
 
 ## HARD RULE — propose before you dig or edit
 Before any non-trivial investigation or change based on an assumption, state:
